@@ -1,4 +1,4 @@
-require 'semantic_navigation'
+require 'semantic_navigation/helper_methods'
 
 module SemanticNavigation
   class Railtie < Rails::Railtie
