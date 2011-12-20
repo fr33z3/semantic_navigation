@@ -26,9 +26,9 @@ module SemanticNavigation
       yield menu if block_given?
     end
 
-    def render(name)
+    def render(view_object, name)
       if @menus[name.to_sym]
-        return @menus[name.to_sym].render
+        return @menus[name.to_sym].render(view_object)
       else
         return nil  
       end

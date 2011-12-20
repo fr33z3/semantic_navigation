@@ -13,9 +13,9 @@ module SemanticNavigation
       yield item if block_given?
     end
 
-    def render
-      s = @items.map{|i| i.render}.join('/n')
-      "<ul>#{s}</ul>"
+    def render(view_object)
+      s = @items.map{|i| i.render(view_object)}.join
+      "<ul>#{s}</ul>".html_safe
     end
     
   end

@@ -1,9 +1,10 @@
 module SemanticNavigation
   class Item
-
-    def initialize(id, *args)
+ 
+    def initialize(id, args)
       @id = id
       @name = args.first
+      @url_options = args.second
       @sub_items = {}
     end
 
@@ -14,9 +15,13 @@ module SemanticNavigation
       #yield menu if block_given?
     end
 
-    def render
-      "<li>#{@name}<li>"
+    def render(view_object)
+      url = view_object.url_for @url_options
+      ["<li>",
+        "<a href = '#{url}'>",
+          "#{@name}",
+        "</a>",
+      "</li>"].join
     end
-    
   end
 end
