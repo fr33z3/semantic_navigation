@@ -7,17 +7,17 @@ The purpose of this gem is to generate simple and usefull navigation. You can de
 ###How to install
 
 Write the gem dependency in your Gemfile:
-```ruby
+```
 gem 'semantic_navigation', :git => 'git://github.com/fr33z3/semantic_navigation.git'
 ```
 
 Make the install by bundler
-```sh
+```
 $ bundle install
 ```
 
 Generate the config file:
-```sh
+```
 $ rake semantic_navigation:install
 ```
 
