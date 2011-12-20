@@ -21,8 +21,8 @@ module SemanticNavigation
     end
   
     def method_missing(name)
-      menu = SemanticNavigation::Menu.new
-      @menus.merge!({name.to_sym => menu})
+      menu = SemanticNavigation::Menu.new(name.to_s)
+      @menus.merge!({name => menu})
       yield menu if block_given?
     end
 

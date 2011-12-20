@@ -15,22 +15,16 @@ module SemanticNavigation
     end
 
     def render(view_object)
-      url = view_object.url_for @url_options
-      ["<li id='#{@item_id}'>",
-        "<a href = '#{url}'>",
-          "#{@name}",
-        "</a>",
-        sub_render(view_object),
-      "</li>"].join("\n")
+      link = view_object.link_to @name, @url_options
+      view_object.content_tag(:li, link + sub_render(view_object), :id => @item_id)
     end
     
     private
     
     def sub_render(view_object)
       if @sub_items.count > 0
-        ["<ul>",
-         @sub_items.map{|s| s.render(view_object)}.join("\n"),
-         "</ul>"].join("\n")
+        sub = @sub_items.map{|s| s.render(view_object)}.sum
+        view_object.content_tag(:ul, sub)
       end
     end
     

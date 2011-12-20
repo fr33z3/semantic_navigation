@@ -3,7 +3,8 @@ require 'semantic_navigation/item'
 module SemanticNavigation
   class Menu
 
-    def initialize
+    def initialize(id)
+      @menu_id = id
       @items = []
     end
 
@@ -14,8 +15,8 @@ module SemanticNavigation
     end
 
     def render(view_object)
-      s = @items.map{|i| i.render(view_object)}.join
-      "<ul>\n#{s}\n</ul>".html_safe
+      s = @items.map{|i| i.render(view_object)}.sum
+      view_object.content_tag(:ul, s, :id => @menu_id)
     end
     
   end
