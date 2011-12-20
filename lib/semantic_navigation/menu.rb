@@ -15,7 +15,7 @@ module SemanticNavigation
 
     def render(view_object)
       s = @items.map{|i| i.render(view_object)}.join
-      "<ul>#{s}</ul>".html_safe
+      "<ul>\n#{s}\n</ul>".html_safe
     end
     
   end
