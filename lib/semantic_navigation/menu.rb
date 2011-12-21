@@ -9,7 +9,7 @@ module SemanticNavigation
     end
 
     def method_missing(name, *args)
-      item = SemanticNavigation::Item.new(name.to_s, args)
+      item = SemanticNavigation::Item.new(name.to_s, args, nil)
       @items << item
       yield item if block_given?
     end
@@ -18,6 +18,5 @@ module SemanticNavigation
       s = @items.map{|i| i.render(view_object)}.sum
       view_object.content_tag(:ul, s, :id => @menu_id)
     end
-    
   end
 end
