@@ -22,10 +22,11 @@ module SemanticNavigation
       @view_object = view_object
       if parent
         set_as_active if active?
-        link = view_object.link_to @name, @url_options
-        view_object.content_tag(:li, link + sub_render, :id => @item_id, :class => classes)
+        sub = render_subitems
+        link = view_object.link_to @name, @url_options, :class => classes, :id => @item_id
+        view_object.content_tag(:li, link + sub, :id => @item_id, :class => classes)
       else
-        sub_render
+        render_subitems
       end  
     end
 
@@ -36,10 +37,10 @@ module SemanticNavigation
     
     private
     
-    def sub_render
+    def render_subitems
       if @sub_items.count > 0
         sub = @sub_items.map{|s| s.render(@view_object)}.sum
-        @view_object.content_tag(:ul, sub)
+        @view_object.content_tag(:ul, sub, :id => @item_id)
       end
     end
     
@@ -54,9 +55,7 @@ module SemanticNavigation
     end
     
     def parent
-      if @parent.class == Item
-        @parent
-      end
+      @parent.is_a?(SemanticNavigation::Item) ? @parent : nil
     end
     
   end
