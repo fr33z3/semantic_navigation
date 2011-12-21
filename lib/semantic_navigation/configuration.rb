@@ -1,4 +1,4 @@
-require 'semantic_navigation/menu'
+require 'semantic_navigation/item'
 
 module SemanticNavigation
   class Configuration
@@ -20,8 +20,8 @@ module SemanticNavigation
       @menus = {}
     end
   
-    def method_missing(name)
-      menu = SemanticNavigation::Menu.new(name.to_s)
+    def method_missing(name, *args)
+      menu = Item.new(name.to_s, args, self)
       @menus.merge!({name => menu})
       yield menu if block_given?
     end

@@ -20,14 +20,18 @@ module SemanticNavigation
 
     def render(view_object)
       @view_object = view_object
-      set_as_active if active?
-      link = view_object.link_to @name, @url_options
-      view_object.content_tag(:li, link + sub_render, :id => @item_id, :class => classes)
+      if parent
+        set_as_active if active?
+        link = view_object.link_to @name, @url_options
+        view_object.content_tag(:li, link + sub_render, :id => @item_id, :class => classes)
+      else
+        sub_render
+      end  
     end
 
     def set_as_active
       @active = true
-      @parent.set_as_active if @parent
+      parent.set_as_active if parent
     end
     
     private
@@ -47,6 +51,12 @@ module SemanticNavigation
     
     def active?
       @view_object.current_page?(@url_options)
+    end
+    
+    def parent
+      if @parent.class == Item
+        @parent
+      end
     end
     
   end
