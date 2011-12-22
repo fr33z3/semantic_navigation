@@ -3,15 +3,15 @@ $:.push File.expand_path("../lib", __FILE__)
 require "semantic_navigation/version"
 
 Gem::Specification.new do |s|
-  s.name        = "semantic_navigation"
+  s.name        = "snavi"
   s.version     = SemanticNavigation::VERSION
   s.authors     = ["Sergey Gribovski"]
   s.email       = ["megacoder@rambler.ru"]
-  s.homepage    = ""
-  s.summary     = %q{Simplify the creation of navigation in the rails app}
-  s.description = %q{Simplify the creation of navigation in the rails app}
+  s.homepage    = "https://github.com/fr33z3/semantic_navigation"
+  s.summary     = %q{Make the navigation in your Rails app by several lines}
+  s.description = %q{Simply and customizable navigation in the Rails application}
 
-  s.rubyforge_project = "semantic_navigation"
+  s.rubyforge_project = "snavi"
 
   s.files         = `git ls-files`.split("\n")
   s.test_files    = `git ls-files -- {test,spec,features}/*`.split("\n")
