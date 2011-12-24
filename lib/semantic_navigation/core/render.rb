@@ -4,7 +4,7 @@ module SemanticNavigation
       
       def render
         if @parent
-          sub = @active || @show_submenu ? render_submenu : nil
+          sub = @active || show_submenu? ? render_submenu : nil
           link = view_object.link_to @name, @url_options, :class => classes, :id => a_id
           view_object.content_tag(:li, link + sub, :id => li_id, :class => classes)
         else

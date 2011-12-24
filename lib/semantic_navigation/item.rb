@@ -53,8 +53,9 @@ module SemanticNavigation
     end
     
     def classes
+      active_class = @active_class.nil? ? @@active_class : @active_class
       flag = @show_active_class.nil? ? @@show_active_class : @show_active_class
-      @active && flag ? @@active_class :nil 
+      @active && flag ? active_class : nil 
     end
     
     def view_object
