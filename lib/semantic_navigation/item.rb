@@ -21,7 +21,8 @@ module SemanticNavigation
       @parent = parent
       
       @sub_items = []
-      @active = false
+      
+      set_as_active if active?
     end
 
     def method_missing(name, *args)
@@ -57,7 +58,11 @@ module SemanticNavigation
     end
     
     def view_object
-      
+      @@view_object
+    end
+    
+    def show_submenu?
+      @show_submenu.nil? ? @@show_submenu : @show_submenu
     end
   end
 end

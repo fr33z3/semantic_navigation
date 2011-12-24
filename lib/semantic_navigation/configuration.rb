@@ -18,15 +18,15 @@ module SemanticNavigation
       if name.chomp('=') != name
         SemanticNavigation::Item.set_default_option(name.chop,args[0])
       else  
-        menu = Item.new(name, args, self)
+        menu = Item.new(name, args, nil)
         @menus.merge!({name.to_sym => menu})
         yield menu if block_given?
       end
     end
 
-    def render(view_object, name)
+    def render(name)
       if @menus[name.to_sym]
-        return @menus[name.to_sym].render(view_object)
+        return @menus[name.to_sym].render
       else
         return nil  
       end
