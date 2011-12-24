@@ -3,27 +3,25 @@ require 'semantic_navigation/item'
 module SemanticNavigation
   class Configuration
     
-    attr_accessor :active_class, :create_ids, :show_submenu 
-
-    class << self
-      def run
-        instance = self.new
-        yield instance if block_given?
-        instance
-      end
+    def self.run
+      instance = self.new
+      yield instance if block_given?
+      instance
     end
 
     def initialize
-      @active_class = 'active'
-      @create_ids = true
-      @show_submenu = false
       @menus = {}
     end
   
     def method_missing(name, *args)
-      menu = Item.new(name.to_s, args, self)
-      @menus.merge!({name => menu})
-      yield menu if block_given?
+      name = name.to_s
+      if name.chomp('=') != name
+        SemanticNavigation::Item.set_default_option(name.chop,args[0])
+      else  
+        menu = Item.new(name, args, self)
+        @menus.merge!({name.to_sym => menu})
+        yield menu if block_given?
+      end
     end
 
     def render(view_object, name)

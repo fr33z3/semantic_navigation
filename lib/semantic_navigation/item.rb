@@ -1,6 +1,19 @@
+require 'semantic_navigation/core/render'
+
 module SemanticNavigation
   class Item
- 
+    include Core::Render
+    
+    @@active_class = 'active'
+    @@show_active_class = true
+    @@show_menu_id = true
+    @@show_item_id = true
+    @@show_name_id = true
+    @@show_submenu = false
+    
+    attr_accessor :active_class, :show_active_class, :show_menu_id,
+                  :show_item_id, :show_name_id, :show_submenu
+    
     def initialize(id, args, parent)
       @item_id = id
       @name = args.first
@@ -8,7 +21,6 @@ module SemanticNavigation
       @parent = parent
       
       @sub_items = []
-      @active_class = 'active'
       @active = false
     end
 
@@ -18,45 +30,34 @@ module SemanticNavigation
       yield item if block_given?
     end
 
-    def render(view_object)
-      @view_object = view_object
-      if parent
-        set_as_active if active?
-        sub = render_subitems
-        link = view_object.link_to @name, @url_options, :class => classes, :id => @item_id
-        view_object.content_tag(:li, link + sub, :id => @item_id, :class => classes)
-      else
-        render_subitems
-      end  
-    end
-
-    def set_as_active
-      @active = true
-      parent.set_as_active if parent
+    def self.set_default_option(name, value)
+      class_variable_set("@@#{name}".to_sym, value)
     end
     
     private
     
-    def render_subitems
-      if @sub_items.count > 0
-        sub = @sub_items.map{|s| s.render(@view_object)}.sum
-        @view_object.content_tag(:ul, sub, :id => @item_id)
-      end
+    def ul_id
+      flag = @show_menu_id.nil? ? @@show_menu_id : @show_menu_id
+      flag ? @item_id : nil
+    end
+    
+    def li_id
+      flag = @show_item_id.nil? ? @@show_item_id : @show_item_id
+      flag ? @item_id : nil
+    end
+    
+    def a_id
+      flag = @show_name_id.nil? ? @@show_name_id : @show_name_id
+      flag ? @item_id : nil
     end
     
     def classes
-      if @active
-        @active_class
-      end
+      flag = @show_active_class.nil? ? @@show_active_class : @show_active_class
+      @active && flag ? @@active_class :nil 
     end
     
-    def active?
-      @view_object.current_page?(@url_options)
+    def view_object
+      
     end
-    
-    def parent
-      @parent.is_a?(SemanticNavigation::Item) ? @parent : nil
-    end
-    
   end
 end
