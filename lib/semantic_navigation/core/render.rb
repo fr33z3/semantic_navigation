@@ -17,6 +17,16 @@ module SemanticNavigation
         @parent.set_as_active if @parent
       end
       
+     def active_item_name
+       if @active && @sub_items.count > 0
+        name = @sub_items.map{|s| s.active_item_name}.find{|s| s != nil}
+       end
+       if active?
+         name = @name  
+       end
+       name
+     end
+      
       private
     
       def render_submenu
@@ -27,7 +37,7 @@ module SemanticNavigation
       end
     
       def active?
-        view_object.current_page?(@url_options)
+        view_object.current_page?(@url_options) if !@url_options.nil?
       end
       
     end  

@@ -65,5 +65,6 @@ module SemanticNavigation
     def show_submenu?
       @show_submenu.nil? ? @@show_submenu : @show_submenu
     end
+    
   end
 end

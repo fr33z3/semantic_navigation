@@ -24,11 +24,17 @@ module SemanticNavigation
       end
     end
 
-    def render(name)
+    def render(name, command = :render)
       if @menus[name.to_sym]
-        return @menus[name.to_sym].render
+        if command == :render
+          return @menus[name.to_sym].render
+        elsif command == :active_item_name
+          return @menus[name.to_sym].active_item_name
+        else
+          raise NoMethodError.new("Wrong menu render parameter:`#{command.to_s}`")
+        end
       else
-        return nil  
+        raise NoMethodError.new("No such menu name:`#{name}` check your #{Rails.root}/config/semantic_navigation.rb) file")
       end
     end
 

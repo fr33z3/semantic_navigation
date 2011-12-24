@@ -1,12 +1,12 @@
 module SemanticNavigation::HelperMethods
   
-  def method_missing(name)
-    name_parts = name.to_s.split('_')
-    if (name_parts.count == 3 && name_parts[0] == 'render' && name_parts[2] == 'menu')
+  def method_missing(name, command = :render)
+    name = name.to_s
+    if name[0..6] == 'render_'
       SemanticNavigation::Item.set_default_option('view_object',self)
-      semantic_navigation_config.render(name_parts[1])
+      semantic_navigation_config.render(name[7..-1], command)
     else
-      super
+      raise NoMethodError.new("NoMethodError:#{name}")
     end
   end
 
