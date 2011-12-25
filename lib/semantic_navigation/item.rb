@@ -1,8 +1,9 @@
 require 'semantic_navigation/core/render'
-
+require 'semantic_navigation/core/procs'
 module SemanticNavigation
   class Item
     include Core::Render
+    include Core::Procs
     
     @@active_class = 'active'
     @@show_active_class = true
@@ -24,7 +25,6 @@ module SemanticNavigation
       @name = args.first
       @url_options = args.second
       @parent = parent
-      
       @sub_items = []
       
       set_as_active if active?

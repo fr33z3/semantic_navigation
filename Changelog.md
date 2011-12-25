@@ -8,6 +8,7 @@
 * Added helper method to render active name submenu
 * Changed helper method to render menu
 * Added prefixes for menu, item, name ids
+* Added conditions for rendering (function show_if)
 
 ### 0.0.1 / December 23th, 2011
 
