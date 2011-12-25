@@ -5,7 +5,8 @@
 * Possibility to render or not to render submenu if parent item is inactive
 * Catch of undefined helper methods
 * Catch of undefined menu render calls
-* Render active name submenu
+* Added helper method to render active name submenu
+* Changed helper method to render menu
 
 ### 0.0.1 / December 23th, 2011
 
