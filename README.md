@@ -8,7 +8,7 @@ The purpose of this gem is to generate simple and usefull navigation. You can de
 
 Write the gem dependency in your Gemfile:
 ```
-gem 'semantic_navigation', :git => 'git://github.com/fr33z3/semantic_navigation.git'
+gem 'semantic_navigation'
 ```
 
 Make the install by bundler
