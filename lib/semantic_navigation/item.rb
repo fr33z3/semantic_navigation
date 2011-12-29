@@ -5,6 +5,8 @@ module SemanticNavigation
     include Core::Render
     include Core::Procs
     
+    attr_accessor :name, :parent
+    
     @@active_class = 'active'
     @@show_active_class = true
     @@show_menu_id = true

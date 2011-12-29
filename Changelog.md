@@ -5,7 +5,8 @@
 * Definition of default option that says render submenu always or only then parent is active
 * Raise error on undefined helper methods calls
 * Raise error on undefined menu render calls
-* Added helper method to render active name submenu
+* Added helper method to render active name item
+* Added helper method to render active item parent name
 * Changed helper method to render menu
 * Added prefixes for menu, item, name ids
 * Added conditions for rendering (function show_if)

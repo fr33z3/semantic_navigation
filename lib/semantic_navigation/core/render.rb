@@ -18,15 +18,18 @@ module SemanticNavigation
         @parent.set_as_active if @parent
       end
       
-     def active_item_name
-       if @active && @sub_items.count > 0
-         name = @sub_items.map{|s| s.active_item_name}.find{|s| s != nil}
-       end
-       if active?
-         name = @name  
-       end
-       name
-     end
+      def find_active_item
+        item = nil
+        if active?
+          item = self
+        elsif @active
+          @sub_items.each do |s|
+            buff = s.find_active_item
+            item = buff if !buff.nil?
+          end
+        end
+        item
+      end 
       
       private
     
@@ -38,7 +41,7 @@ module SemanticNavigation
       end
     
       def active?
-        view_object.current_page?(@url_options) if !@url_options.nil?
+        !@parent.nil? ? view_object.current_page?(@url_options) : false
       end
     end  
   end

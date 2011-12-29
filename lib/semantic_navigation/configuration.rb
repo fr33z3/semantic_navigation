@@ -29,7 +29,11 @@ module SemanticNavigation
         if command == :render
           return @menus[name.to_sym].render
         elsif command == :active_item_name
-          return @menus[name.to_sym].active_item_name
+          item = @menus[name.to_sym].find_active_item
+          !item.nil? ? item.name : ''
+        elsif command == :active_item_parent_name
+          item = @menus[name.to_sym].find_active_item
+          !item.nil? && !item.parent.nil? ? item.parent.name : ''
         else
           raise NoMethodError.new("Wrong menu render parameter:`#{command.to_s}`")
         end
