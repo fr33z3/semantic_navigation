@@ -36,13 +36,6 @@ SemanticNavigation::Configuration.run do |config|
   #Define bread crumb classes
   #config.breadcrumb_classes = "breadcrumb"
   
-  #That's how you can create your userbar menu
-  #config.userbar do |userbar|
-  #  userbar.signin :controller => :session, :action => :signin, :if => current_user.nil?
-  #  userbar.signout :controller => :session, :action => :signout, :if => !current_user.nil?
-  #end
-  #so you can use the helper 'render_userbar_menu' to render it.
-
   #That's the creation of the `navigation` menu
   #config.navigation {|n|
   #  n.dashboard 'Dashboard', :controller => :dashboard, :action => :index do |d|
