@@ -1,4 +1,4 @@
-### 0.0.2 / Unknown
+### 0.0.2 / December 30th, 2011
 
 * Definition of default render options (active_class and show_ids)
 * Definition of the private render options to each menu item
