@@ -31,8 +31,26 @@ module SemanticNavigation
         item
       end 
       
+      def render_breadcrumb
+        breadcrumb = nil
+        if @active
+          if @name
+            link = view_object.link_to @name, @url_options, :id => a_id
+            breadcrumb = view_object.content_tag(:li, link + breadcrumb_name, :id => li_id) if @name  
+          end
+          buff = @sub_items.map{|s| s.render_breadcrumb}.find{|s| !s.nil?}
+          if !breadcrumb.nil?
+            breadcrumb += buff if !buff.nil?
+          else
+            breadcrumb = buff
+          end
+        end
+        breadcrumb = view_object.content_tag(:ul, breadcrumb, :id => ul_id, :class => breadcrumb_classes) if !@parent
+        breadcrumb
+      end
+      
       private
-    
+  
       def render_submenu
         if @sub_items.count > 0
           sub = @sub_items.map{|s| s.render}.sum

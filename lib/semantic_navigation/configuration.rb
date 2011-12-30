@@ -34,6 +34,8 @@ module SemanticNavigation
         elsif command == :active_item_parent_name
           item = @menus[name.to_sym].find_active_item
           !item.nil? && !item.parent.nil? ? item.parent.name : ''
+        elsif command == :breadcrumb
+          return @menus[name.to_sym].render_breadcrumb
         else
           raise NoMethodError.new("Wrong menu render parameter:`#{command.to_s}`")
         end

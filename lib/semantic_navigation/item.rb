@@ -5,22 +5,29 @@ module SemanticNavigation
     include Core::Render
     include Core::Procs
     
-    attr_accessor :name, :parent
-    
+    #Menu variables
     @@active_class = 'active'
     @@show_active_class = true
     @@show_menu_id = true
-    @@show_item_id = true
-    @@show_name_id = true
     @@show_submenu = false
     @@menu_prefix = ''
+    
+    #Item variables
     @@item_perfix = ''
     @@name_prefix = ''
+    @@show_name_id = true
+    @@show_item_id = true
+    
+    #Breadcrumb variables
+    @@breadcrumb_divider = "/"
+        
+    
     
     attr_accessor :active_class, :show_active_class, :show_menu_id,
                   :show_item_id, :show_name_id, :show_submenu,
                   :menu_prefix, :item_prefix, :name_prefix,
-                  :item_classes
+                  :item_classes,
+                  :name, :parent
     
     def initialize(id, args, parent)
       @item_id = id
@@ -79,6 +86,18 @@ module SemanticNavigation
     
     def show_submenu?
       @show_submenu.nil? ? @@show_submenu : @show_submenu
+    end
+    
+    def breadcrumb_name
+      @@breadcrumb_divider.html_safe
+    end
+    
+    def breadcrumb_classes
+      if @@breadcrumb_classes.is_a? Array
+        return @@breadcrumb_classes.join(' ')
+      else
+        return @@breadcrumb_classes
+      end
     end
     
   end
