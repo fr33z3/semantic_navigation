@@ -1,6 +1,7 @@
-### 0.0.3 /
+### 0.0.3 / January 4th, 2012
 
 * Added levels rendering
+* Added menu classes
 
 ### 0.0.2.1 / December 30th, 2011
 

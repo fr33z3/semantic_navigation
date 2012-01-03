@@ -16,7 +16,7 @@ module SemanticNavigation
       def render_submenu(last_level = nil)
         if @sub_items.count > 0
           sub = @sub_items.map{|s| s.render(last_level)}.sum
-          view_object.content_tag(:ul, sub, :id => ul_id) if sub != 0
+          view_object.content_tag(:ul, sub, :id => ul_id, :class => menu_classes) if sub != 0
         end
       end
       

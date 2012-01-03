@@ -23,7 +23,7 @@ module SemanticNavigation
     attr_accessor :active_class, :show_active_class, :show_menu_id,
                   :show_item_id, :show_name_id, :show_submenu,
                   :menu_prefix, :item_prefix, :name_prefix,
-                  :item_classes,
+                  :item_classes, :menu_classes,
                   :name, :parent, :level
     
     def initialize(id, args, parent)
@@ -95,6 +95,14 @@ module SemanticNavigation
         return @@breadcrumb_classes.join(' ')
       else
         return @@breadcrumb_classes
+      end
+    end
+    
+    def menu_classes
+      if @menu_classes.is_a? Array
+        return @menu_classes.join(' ')
+      else
+        return @menu_classes
       end
     end
     
