@@ -10,11 +10,8 @@ module SemanticNavigation
     @@show_active_class = true
     @@show_menu_id = true
     @@show_submenu = false
-    @@menu_prefix = ''
     
     #Item variables
-    @@item_perfix = ''
-    @@name_prefix = ''
     @@show_name_id = true
     @@show_item_id = true
     
@@ -27,7 +24,7 @@ module SemanticNavigation
                   :show_item_id, :show_name_id, :show_submenu,
                   :menu_prefix, :item_prefix, :name_prefix,
                   :item_classes,
-                  :name, :parent
+                  :name, :parent, :level
     
     def initialize(id, args, parent)
       @item_id = id
@@ -41,6 +38,7 @@ module SemanticNavigation
 
     def method_missing(name, *args)
       item = SemanticNavigation::Item.new(name.to_s, args, self)
+      item.level = @level + 1
       @sub_items << item
       yield item if block_given?
     end

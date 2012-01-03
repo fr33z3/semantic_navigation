@@ -1,5 +1,5 @@
 This is semantic_menu manual
-Current version: 0.0.2.1
+Current version: 0.0.3
 
 ###Purpose
 The purpose of this gem is to generate simple and usefull navigation. You can define different menus and render them separately, specify root nodes, setup your own renderers and other.

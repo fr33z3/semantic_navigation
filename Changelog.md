@@ -1,3 +1,11 @@
+### 0.0.3 /
+
+* Added levels rendering
+
+### 0.0.2.1 / December 30th, 2011
+
+* Fix one bug with configuration
+
 ### 0.0.2 / December 30th, 2011
 
 * Definition of default render options (active_class and show_ids)

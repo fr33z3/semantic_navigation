@@ -19,6 +19,7 @@ module SemanticNavigation
         SemanticNavigation::Item.set_default_option(name.chop,args[0])
       else  
         menu = Item.new(name, args, nil)
+        menu.level = 0
         @menus.merge!({name.to_sym => menu})
         yield menu if block_given?
       end
@@ -36,11 +37,13 @@ module SemanticNavigation
           !item.nil? && !item.parent.nil? ? item.parent.name : ''
         elsif command == :breadcrumb
           return @menus[name.to_sym].render_breadcrumb
+        elsif command.is_a?(Hash) && command.keys == [:levels]
+          return @menus[name.to_sym].render_levels command[:levels]
         else
           raise NoMethodError.new("Wrong menu render parameter:`#{command.to_s}`")
         end
       else
-        raise NoMethodError.new("No such menu name:`#{name}` check your #{Rails.root}/config/semantic_navigation.rb) file")
+        raise NoMethodError.new("No such menu name:`#{name}` check your #{Rails.root}/config/semantic_navigation.rb file")
       end
     end
 

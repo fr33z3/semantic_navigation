@@ -2,15 +2,22 @@ module SemanticNavigation
   module Core
     module Render
       
-      def render
+      def render(last_level = nil)
         return nil if !render_item?
         if @parent
-          sub = @active || show_submenu? ? render_submenu : nil
-          link = view_object.link_to @name, @url_options, :class => classes, :id => a_id
-          view_object.content_tag(:li, link + sub, :id => li_id, :class => classes)
+          level_condition = last_level.nil? ? true : @level < last_level
+          sub = (@active || show_submenu?) && level_condition ? render_submenu(last_level) : nil
+          view_object.content_tag(:li, item_link + sub, :id => li_id, :class => classes)
         else
           render_submenu
         end  
+      end
+
+      def render_submenu(last_level = nil)
+        if @sub_items.count > 0
+          sub = @sub_items.map{|s| s.render(last_level)}.sum
+          view_object.content_tag(:ul, sub, :id => ul_id) if sub != 0
+        end
       end
       
       def set_as_active
@@ -35,8 +42,7 @@ module SemanticNavigation
         breadcrumb = nil
         if @active
           if @name
-            link = view_object.link_to @name, @url_options, :id => a_id
-            breadcrumb = view_object.content_tag(:li, link + breadcrumb_name, :id => li_id) if @name  
+            breadcrumb = view_object.content_tag(:li, item_link + breadcrumb_name, :id => li_id) if @name  
           end
           buff = @sub_items.map{|s| s.render_breadcrumb}.find{|s| !s.nil?}
           if !breadcrumb.nil?
@@ -49,18 +55,25 @@ module SemanticNavigation
         breadcrumb
       end
       
-      private
-  
-      def render_submenu
-        if @sub_items.count > 0
-          sub = @sub_items.map{|s| s.render}.sum
-          view_object.content_tag(:ul, sub, :id => ul_id) if sub != 0
+      def render_levels levels
+        levels = levels.to_a
+        item = find_active_item
+        while item.level > levels.first-1 && item.level != 0
+          item = item.parent
         end
+        item.level == levels.first-1 ? item.render_submenu(levels.last) : nil
       end
+      
+      private
     
       def active?
         !@parent.nil? ? view_object.current_page?(@url_options) : false
       end
+      
+      def item_link
+        view_object.link_to @name, @url_options, :class => classes, :id => a_id    
+      end
+      
     end  
   end
 end
