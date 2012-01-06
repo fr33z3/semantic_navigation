@@ -1,3 +1,9 @@
+### 0.0.4 / Januarry 6th, 2012
+
+* Added helper method wrapping the level 1 (root) render
+* Fix breadcrumbs render
+* Added helper method rendering menu from some level
+
 ### 0.0.3 / January 4th, 2012
 
 * Added levels rendering

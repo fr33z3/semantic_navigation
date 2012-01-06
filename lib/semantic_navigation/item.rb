@@ -17,6 +17,7 @@ module SemanticNavigation
     
     #Breadcrumb variables
     @@breadcrumb_divider = "/"
+    @@breadcrumb_active_class = 'active'
         
     
     
@@ -78,6 +79,13 @@ module SemanticNavigation
       class_array.flatten.join(' ')
     end
     
+    def breadcrumb_classes
+      class_array = []
+      class_array += item_classes.to_a
+      class_array.push(@@breadcrumb_active_class) if active?
+      class_array
+    end
+    
     def view_object
       @@view_object
     end
@@ -86,11 +94,11 @@ module SemanticNavigation
       @show_submenu.nil? ? @@show_submenu : @show_submenu
     end
     
-    def breadcrumb_name
-      @@breadcrumb_divider.html_safe
+    def breadcrumb_divider
+      @@breadcrumb_divider.html_safe if !active?
     end
     
-    def breadcrumb_classes
+    def breadcrumb_menu_classes
       if @@breadcrumb_classes.is_a? Array
         return @@breadcrumb_classes.join(' ')
       else

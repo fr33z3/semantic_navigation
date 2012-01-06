@@ -3,7 +3,7 @@
 #Wiki pages link: https://github.com/fr33z3/semantic_navigation/wiki/_pages
 SemanticNavigation::Configuration.run do |config|
 
-  #What's the name of the active menu class will be (the dafault is 'active')
+  #What's the name of the active item class will be (the dafault is 'active')
   #config.active_class = 'active';
   
   #Do you want to show active class? (default = true)
@@ -33,8 +33,11 @@ SemanticNavigation::Configuration.run do |config|
   #Define breadcrumb divider
   #config.breadcrumb_divider = "<span class ='divider'>/</span>"
   
-  #Define bread crumb classes
+  #Define breadcrumb classes
   #config.breadcrumb_classes = "breadcrumb"
+  
+  #Define breadcrumb active class name (default = 'active')
+  #config.breadcrumb_active_class = 'active'
   
   #That's the creation of the `navigation` menu
   #config.navigation {|n|

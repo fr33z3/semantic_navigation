@@ -7,7 +7,7 @@ module SemanticNavigation
         if @parent
           level_condition = last_level.nil? ? true : @level < last_level
           sub = (@active || show_submenu?) && level_condition ? render_submenu(last_level) : nil
-          view_object.content_tag(:li, item_link + sub, :id => li_id, :class => classes)
+          view_object.content_tag(:li, item_link(classes) + sub, :id => li_id, :class => classes)
         else
           render_submenu
         end  
@@ -42,7 +42,7 @@ module SemanticNavigation
         breadcrumb = nil
         if @active
           if @name
-            breadcrumb = view_object.content_tag(:li, item_link + breadcrumb_name, :id => li_id) if @name  
+            breadcrumb = view_object.content_tag(:li, item_link(breadcrumb_classes) + breadcrumb_divider, :id => li_id) if @name  
           end
           buff = @sub_items.map{|s| s.render_breadcrumb}.find{|s| !s.nil?}
           if !breadcrumb.nil?
@@ -51,7 +51,7 @@ module SemanticNavigation
             breadcrumb = buff
           end
         end
-        breadcrumb = view_object.content_tag(:ul, breadcrumb, :id => ul_id, :class => breadcrumb_classes) if !@parent
+        breadcrumb = view_object.content_tag(:ul, breadcrumb, :id => ul_id, :class => breadcrumb_menu_classes) if !@parent
         breadcrumb
       end
       
@@ -64,14 +64,22 @@ module SemanticNavigation
         item.level == levels.first-1 ? item.render_submenu(levels.last) : nil
       end
       
+      def render_from level_num
+        item = find_active_item
+        while item.level > level_num-1 && item.level != 0
+          item = item.parent
+        end
+        item.level == level_num-1 ? item.render_submenu : nil 
+      end
+      
       private
     
       def active?
         !@parent.nil? ? view_object.current_page?(@url_options) : false
       end
       
-      def item_link
-        view_object.link_to @name, @url_options, :class => classes, :id => a_id    
+      def item_link(classes_string)
+        view_object.link_to @name, @url_options, :class => classes_string, :id => a_id    
       end
       
     end  

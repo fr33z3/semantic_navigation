@@ -37,8 +37,12 @@ module SemanticNavigation
           !item.nil? && !item.parent.nil? ? item.parent.name : ''
         elsif command == :breadcrumb
           return @menus[name.to_sym].render_breadcrumb
+        elsif command == :root
+          return @menus[name.to_sym].render_levels 1
         elsif command.is_a?(Hash) && command.keys == [:levels]
           return @menus[name.to_sym].render_levels command[:levels]
+        elsif command.is_a?(Hash) && command.keys == [:from_level]
+          return @menus[name.to_sym].render_from command[:from_level]
         else
           raise NoMethodError.new("Wrong menu render parameter:`#{command.to_s}`")
         end
