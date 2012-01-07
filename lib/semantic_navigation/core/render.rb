@@ -58,6 +58,7 @@ module SemanticNavigation
       def render_levels levels
         levels = levels.to_a
         item = find_active_item
+        return nil if item.nil?
         while item.level > levels.first-1 && item.level != 0
           item = item.parent
         end
@@ -66,6 +67,7 @@ module SemanticNavigation
       
       def render_from level_num
         item = find_active_item
+        return nil if item.nil?
         while item.level > level_num-1 && item.level != 0
           item = item.parent
         end

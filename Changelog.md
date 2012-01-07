@@ -1,3 +1,7 @@
+### 0.0.5 /Januarry 7th, 2012
+
+* Bugfix for levels render
+
 ### 0.0.4 / Januarry 6th, 2012
 
 * Added helper method wrapping the level 1 (root) render
