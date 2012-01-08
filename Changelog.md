@@ -1,3 +1,7 @@
+### 0.1.0 / 
+
+* Speed up the rendering
+
 ### 0.0.5 /Januarry 7th, 2012
 
 * Bugfix for levels render
