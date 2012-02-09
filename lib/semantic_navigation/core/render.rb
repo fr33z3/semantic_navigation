@@ -56,7 +56,11 @@ module SemanticNavigation
       end
       
       def render_levels levels
-        levels = levels.to_a
+        if levels.is_a? Fixnum
+          levels = [levels]
+        else
+          levels = levels.to_a
+        end
         item = find_active_item
         return nil if item.nil?
         while item.level > levels.first-1 && item.level != 0

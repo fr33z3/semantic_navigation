@@ -1,4 +1,4 @@
-require 'ftools'
+require 'fileutils'
 
 namespace :semantic_navigation do
   desc "The semantic navigation install"

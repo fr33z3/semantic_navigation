@@ -1,3 +1,8 @@
+### 0.0.6 /February 10th, 2012
+
+* Now uses fileutils raver ftools for ruby-1.9.x
+* Some fixes for ruby-1.9.x
+
 ### 0.0.5 /Januarry 7th, 2012
 
 * Bugfix for levels render
