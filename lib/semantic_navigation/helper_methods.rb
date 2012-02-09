@@ -13,7 +13,10 @@ module SemanticNavigation::HelperMethods
   private
  
   def semantic_navigation_config
-    eval(IO.read("#{Rails.root}/config/semantic_navigation.rb"))
+    if @__semantic_navigation_config.nil?
+      @__semantic_navigation_config = eval(IO.read("#{Rails.root}/config/semantic_navigation.rb"))
+    end
+    @__semantic_navigation_config
   end
  
 
