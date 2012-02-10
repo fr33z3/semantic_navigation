@@ -1,6 +1,6 @@
 This is semantic_navigation
 
-Current version: 0.1.0
+Current version: 0.0.6
 
 ###Purpose
 The purpose of this gem is to generate simple and usefull navigation. You can define different menus and render them separately, specify root nodes, setup your own renderers and other.
