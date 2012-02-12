@@ -1,116 +1,12 @@
-require 'semantic_navigation/core/render'
-require 'semantic_navigation/core/procs'
 module SemanticNavigation
   class Item
-    include Core::Render
-    include Core::Procs
-    
-    #Menu variables
-    @@active_class = 'active'
-    @@show_active_class = true
-    @@show_menu_id = true
-    @@show_submenu = false
-    
-    #Item variables
-    @@show_name_id = true
-    @@show_item_id = true
-    
-    #Breadcrumb variables
-    @@breadcrumb_divider = "/"
-    @@breadcrumb_active_class = 'active'
-        
-    
-    
-    attr_accessor :active_class, :show_active_class, :show_menu_id,
-                  :show_item_id, :show_name_id, :show_submenu,
-                  :menu_prefix, :item_prefix, :name_prefix,
-                  :item_classes, :menu_classes,
-                  :name, :parent, :level
-    
-    def initialize(id, args, parent)
-      @item_id = id
-      @name = args.first
-      @url_options = args.second
-      @parent = parent
-      @sub_items = []
-      
-      set_as_active if active?
-    end
 
-    def method_missing(name, *args)
-      item = SemanticNavigation::Item.new(name.to_s, args, self)
-      item.level = @level + 1
-      @sub_items << item
-      yield item if block_given?
-    end
-
-    def self.set_default_option(name, value)
-      class_variable_set("@@#{name}".to_sym, value)
-    end
-    
-    private
-    
-    def ul_id
-      prefix = @menu_prefix.nil? ? @@menu_prefix : @menu_prefix
-      flag = @show_menu_id.nil? ? @@show_menu_id : @show_menu_id
-      flag ? prefix+@item_id : nil
-    end
-    
-    def li_id
-      prefix = @item_prefix.nil? ? @@item_prefix : @item_prefix
-      flag = @show_item_id.nil? ? @@show_item_id : @show_item_id
-      flag ? prefix+@item_id : nil
-    end
-    
-    def a_id
-      prefix = @name_prefix.nil? ? @@name_prefix : @name_prefix
-      flag = @show_name_id.nil? ? @@show_name_id : @show_name_id
-      flag ? prefix+@item_id : nil
-    end
-    
-    def classes
-      class_array = []
-      class_array << item_classes
-      active_class = @active_class.nil? ? @@active_class : @active_class
-      flag = @show_active_class.nil? ? @@show_active_class : @show_active_class
-      if @active && flag
-        class_array << active_class
-      end
-      class_array.flatten.join(' ')
-    end
-    
-    def breadcrumb_classes
-      class_array = []
-      class_array += item_classes.to_a
-      class_array.push(@@breadcrumb_active_class) if active?
-      class_array
-    end
-    
-    def view_object
-      @@view_object
-    end
-    
-    def show_submenu?
-      @show_submenu.nil? ? @@show_submenu : @show_submenu
-    end
-    
-    def breadcrumb_divider
-      @@breadcrumb_divider.html_safe if !active?
-    end
-    
-    def breadcrumb_menu_classes
-      if @@breadcrumb_classes.is_a? Array
-        return @@breadcrumb_classes.join(' ')
-      else
-        return @@breadcrumb_classes
-      end
-    end
-    
-    def menu_classes
-      if @menu_classes.is_a? Array
-        return @menu_classes.join(' ')
-      else
-        return @menu_classes
+    attr :item_id, :name, :url
+   
+    def initialize(options)
+      @elements = {}
+      options.keys.each do |key|
+        self.instance_variable_set("@#{key}",options[key])
       end
     end
     

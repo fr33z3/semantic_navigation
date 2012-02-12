@@ -1,10 +1,9 @@
 module SemanticNavigation::HelperMethods
   
-  def method_missing(name, command = :render)
+  def method_missing(name, options = {})
     name = name.to_s
     if name[0..6] == 'render_'
-      SemanticNavigation::Item.set_default_option('view_object',self)
-      semantic_navigation_config.render(name[7..-1], command)
+      semantic_navigation_config.render(name[7..-1].to_sym, options)
     else
       raise NoMethodError.new("NoMethodError:#{name}")
     end
@@ -13,10 +12,7 @@ module SemanticNavigation::HelperMethods
   private
  
   def semantic_navigation_config
-    if @__semantic_navigation_config.nil?
-      @__semantic_navigation_config = eval(IO.read("#{Rails.root}/config/semantic_navigation.rb"))
-    end
-    @__semantic_navigation_config
+    eval(IO.read("#{Rails.root}/config/semantic_navigation.rb"))
   end
  
 
