@@ -3,29 +3,20 @@ require 'semantic_navigation/item'
 module SemanticNavigation
   class Menu 
       
-   attr :menu_id, :name, :link
+   attr :menu_id, :items
    
    def initialize(options)
-     @elements = {}
+     @items = {}
      options.keys.each do |key|
        self.instance_variable_set("@#{key}",options[key])
      end
    end
    
-   def method_missing(element_id, name = '', url = nil, options = {}, &block)
-     if block_given?
-       options[:menu_id] = element_id.to_s
-       @elements[element_id] = Menu.new options
-       @elements[element_id].instance_eval(&block)
-     else
-       options[:item_id] = element_id.to_s
-       @elements[element_id] = Item.new options
-     end
+   def method_missing(element_id, name = '', url = nil, item_options = {}, menu_options = {}, &block)
+     item_options[:item_id] = element_id.to_s
+     menu = block_given? ? Menu.new(menu_options) : nil
+     @items[element_id] = Item.new item_options, menu
    end
-   
-   def render(options)
-   
-   end
-   
+      
   end
 end
