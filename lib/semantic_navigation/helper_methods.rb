@@ -1,12 +1,7 @@
 module SemanticNavigation::HelperMethods
-  
-  def method_missing(name, options = {})
-    name = name.to_s
-    if name[0..6] == 'render_'
-      semantic_navigation_config.render(name[7..-1].to_sym, options)
-    else
-      raise NoMethodError.new("NoMethodError:#{name}")
-    end
+
+  def semantic_render(name, options = {})
+    semantic_navigation_config.render(name.to_sym, options)
   end
 
   private

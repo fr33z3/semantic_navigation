@@ -1,4 +1,9 @@
-### 0.0.6 /February 10th, 2012
+### 0.0.8 /
+
+* New configuration logic
+* New helper render method
+
+### 0.0.6 / February 10th, 2012
 
 * Now uses fileutils raver ftools for ruby-1.9.x
 * Some fixes for ruby-1.9.x

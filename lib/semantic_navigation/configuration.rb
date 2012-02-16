@@ -14,14 +14,14 @@ module SemanticNavigation
     end
     
     def method_missing(menu_id, options = {}, &block)
-      options[:menu_id] = menu_id.to_s
+      options[:menu_id] ||= menu_id.to_s
       @menus[menu_id] = Menu.new options
       @menus[menu_id].instance_eval(&block) if block_given?
     end
     
     def render(menu_id, options)
       options[:as] = :menu if options[:as].nil?
-      @menus[menu_id].send(options[:as], options)
+      @menus[menu_id].send(options[:as])
     end
     
   end
