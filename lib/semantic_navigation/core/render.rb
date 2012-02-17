@@ -10,11 +10,23 @@ module SemanticNavigation
           else
             item_text = @name.html_safe + sub_menu
           end
+          #todo: change to real_active class
+          if @active
+            @item_classes ||= []
+            @item_classes.push('active') if @active
+          end
           content_tag :li, item_text, :id => @item_id, :class => @item_classes
         end 
       end
   
       module MenuRender
+        
+        def from_level(level)
+          from_menu = self
+          
+          from_menu
+        end
+        
         def menu
           content_tag :ul, 
                       @items.count > 0 ? @items.map{|item| item.menu}.sum : '', 

@@ -6,6 +6,7 @@ module SemanticNavigation
 
    include ActionView::Helpers::TagHelper
    include SemanticNavigation::Core::Render::MenuRender
+   
    attr :menu_id, :items,
         :menu_classes
    

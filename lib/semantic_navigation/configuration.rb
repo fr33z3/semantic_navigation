@@ -20,9 +20,20 @@ module SemanticNavigation
     end
     
     def render(menu_id, options)
-      options[:as] = :menu if options[:as].nil?
-      @menus[menu_id].send(options[:as])
+      as = options.delete :as
+      menu = @menus[menu_id]
+      options.keys.each do |key|
+        menu.send(key, options[key])
+      end
+      menu.send(as)
     end
     
+    def self.view_object=(view_object)
+      @@view_object = view_object
+    end
+    
+    def self.view_object
+      @@view_object
+    end
   end
 end
