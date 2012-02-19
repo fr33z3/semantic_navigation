@@ -7,8 +7,9 @@ module SemanticNavigation
     include ActionView::Helpers::UrlHelper 
     include SemanticNavigation::Core::Render::ItemRender
     
-    attr :item_id, :name, :url, :sub_menu,
+    attr :item_id, :name, :url,
          :item_classes, :active
+    attr_accessor :sub_menu
     
     def initialize(options, sub_menu = nil)
       @active = false
@@ -16,7 +17,11 @@ module SemanticNavigation
       options.keys.each do |key|
         self.instance_variable_set("@#{key}",options[key])
       end
-      @active = view_object.current_page?(@url) unless url.nil?
+      unless @url.nil?
+        @active = view_object.current_page? @url
+      else
+        @item_disabled = true
+      end
       @active ||= @sub_menu.items.select{|item| item.active == true}.count > 0 unless @sub_menu.nil?
     end
     

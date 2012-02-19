@@ -21,11 +21,11 @@ module SemanticNavigation
     
     def render(menu_id, options)
       as = options.delete :as
-      menu = @menus[menu_id]
+      rendering_menu = @menus[menu_id]
       options.keys.each do |key|
-        menu.send(key, options[key])
+        rendering_menu = rendering_menu.send(key, options[key])
       end
-      menu.send(as)
+      rendering_menu.send(as)
     end
     
     def self.view_object=(view_object)
