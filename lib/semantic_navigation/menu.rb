@@ -1,11 +1,13 @@
 require 'semantic_navigation/item'
 require 'semantic_navigation/core/render'
+require 'semantic_navigation/core/render_helpers'
 
 module SemanticNavigation
   class Menu 
 
    include ActionView::Helpers::TagHelper
    include SemanticNavigation::Core::Render::MenuRender
+   include SemanticNavigation::Core::RenderHelpers
    
    attr :menu_id, :items,
         :menu_classes
