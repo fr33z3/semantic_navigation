@@ -1,16 +1,16 @@
 require 'semantic_navigation/item'
 require 'semantic_navigation/core/render'
 require 'semantic_navigation/core/render_helpers'
+require 'semantic_navigation/core/item_block_styles'
 
 module SemanticNavigation
-  class Menu 
+  class ItemBlock
 
-   include ActionView::Helpers::TagHelper
    include SemanticNavigation::Core::Render::MenuRender
    include SemanticNavigation::Core::RenderHelpers
+   include SemanticNavigation::Core::ItemBlockStyles
    
-   attr :menu_id, :items,
-        :menu_classes
+   attr :item_block_id, :items
    
    def initialize(options)
      @items = []
@@ -19,26 +19,24 @@ module SemanticNavigation
      end
    end
    
-   def method_missing(element_id, name = '', url = nil, options = {}, &block)
-     menu_options = {:menu_id => element_id.to_s}
+   def method_missing(element_id, name = '', url = nil, item_options = {}, item_block_options = {}, &block)
+     item_block_options[:item_block_id] ||= element_id.to_s
      item_options = {:item_id => element_id.to_s,
                      :url => url,
                      :name => name}
      
-     options.keys.each do |key|
-       if key.to_s[0..3] == 'menu'
-         menu_options[key] = options[key]
-       elsif key.to_s[0..3] == 'item'
-         item_options[key] = options[key]
-       end
-     end
-     
-     menu = nil
+     item_block = nil
      if block_given?
-       menu = Menu.new(menu_options)
-       menu.instance_eval(&block)
+       item_block = ItemBlock.new(item_block_options)
+       item_block.instance_eval(&block)
      end
-     @items.push(Item.new item_options, menu)
+     @items.push(Item.new item_options, item_block)
+   end
+   
+   private
+    
+   def view_object
+     SemanticNavigation::Configuration.view_object
    end
         
   end

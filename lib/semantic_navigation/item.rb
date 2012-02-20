@@ -1,19 +1,18 @@
 require 'semantic_navigation/core/render'
+require 'semantic_navigation/core/item_styles'
 
 module SemanticNavigation
   class Item
     
-    include ActionView::Helpers::TagHelper
-    include ActionView::Helpers::UrlHelper 
     include SemanticNavigation::Core::Render::ItemRender
+    include SemanticNavigation::Core::ItemStyles
     
-    attr :item_id, :name, :url,
-         :item_classes, :active
-    attr_accessor :sub_menu
+    attr :item_id, :name, :active
+    attr_accessor :item_block
     
-    def initialize(options, sub_menu = nil)
+    def initialize(options, item_block = nil)
       @active = false
-      @sub_menu = sub_menu
+      @item_block = item_block
       options.keys.each do |key|
         self.instance_variable_set("@#{key}",options[key])
       end
@@ -22,14 +21,14 @@ module SemanticNavigation
       else
         @item_disabled = true
       end
-      @active ||= @sub_menu.items.select{|item| item.active == true}.count > 0 unless @sub_menu.nil?
+      @active ||= @item_block.items.select{|item| item.active == true}.count > 0 unless @item_block.nil?
     end
-    
+   
     private
     
     def view_object
       SemanticNavigation::Configuration.view_object
     end
-    
+   
   end
 end

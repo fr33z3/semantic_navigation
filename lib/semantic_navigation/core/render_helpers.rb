@@ -16,8 +16,8 @@ module SemanticNavigation
       def from_level(level)
         from_menu = self
         if level > 0
-          next_item = @items.find{|item| item.active && !item.sub_menu.nil?} || @items.first
-          from_menu = next_item.sub_menu.from_level(level-1) unless next_item.nil? && next_item.sub_menu.nil?
+          next_item = @items.find{|item| item.active && !item.item_block.nil?} || @items.first
+          from_menu = next_item.item_block.from_level(level-1) unless next_item.nil? && next_item.item_block.nil?
         end
         from_menu
       end
@@ -25,9 +25,9 @@ module SemanticNavigation
       def until_level(level)
         @items.each do |item|
           if level > 0
-            item.sub_menu.until_level(level-1) unless item.sub_menu.nil?
+            item.item_block.until_level(level-1) unless item.item_block.nil?
           else
-            item.sub_menu = nil
+            item.item_block = nil
           end
         end
         self
@@ -37,7 +37,7 @@ module SemanticNavigation
         return self if name.to_s == @menu_id
         from_menu = nil
         @items.each do |item|
-          from_menu ||= item.sub_menu.from_menu(name)
+          from_menu ||= item.item_block.from_menu(name)
         end
         from_menu
       end
