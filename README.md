@@ -3,7 +3,13 @@ This is semantic_navigation
 Current version: 0.0.6
 
 ###Purpose
-The purpose of this gem is to generate simple and usefull navigation. You can define different menus and render them separately, specify root nodes, setup your own renderers and other.
+This gem generates the navigation for your Rails app.
+Really customizable and simple to use.
+Using this gem you have 4 types of renderers: menu, breadcrumb, tabs, and, pills
+
+You can define different menus and render them separatelly.
+
+Now with simple integration with a twitter-bootstrap css framework.
 
 ###How to install
 
@@ -19,7 +25,17 @@ $ bundle install
 
 Generate the config file:
 <pre><code>
-$ rake semantic_navigation:install
+$ rails generate semantic_navigation:install
 </code></pre>
 
-For the information of how to configure and render your menus read the <a href='https://github.com/fr33z3/semantic_navigation/wiki'>Wiki</a>
+###Quick start
+
+Configure your navigation in config/semantic_navigation.rb
+
+<pre><code>
+
+</code></pre>
+
+Render the navigation using the semantic_navigation helper methods and options for them.
+
+For the information of how to configure and render your navigation read the <a href='https://github.com/fr33z3/semantic_navigation/wiki'>Wiki</a>

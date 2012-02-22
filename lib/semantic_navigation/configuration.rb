@@ -17,7 +17,7 @@ module SemanticNavigation
     end
     
     def method_missing(menu_id, options = {}, &block)
-      options[:menu_id] ||= menu_id.to_s
+      options[:item_block_id] ||= menu_id.to_s
       @menus[menu_id] = ItemBlock.new options
       @menus[menu_id].instance_eval(&block) if block_given?
     end
@@ -29,8 +29,8 @@ module SemanticNavigation
         rendering_menu = rendering_menu.send(key, options[key])
       end
       
-      if !@styles[:menu_id].nil? && !@styles[:menu_id][as].nil?
-        @@current_style = @styles[:menu_id][as]
+      if !@styles[menu_id].nil? && !@styles[menu_id][as].nil?
+        @@current_style = @styles[menu_id][as]
       else
         @@current_style = self.send("#{as.to_s}_default_styles")
       end
@@ -38,8 +38,13 @@ module SemanticNavigation
       rendering_menu.send(as)
     end
     
-    def styles_for(name,render_type)
-      @styles ||= {}
+    def styles_for(name,render_name,styles)
+      @styles[name] ||= {}
+      render_name = [render_name] if render_name.is_a? Symbol
+      render_name.each do |r|
+        @styles[name][r] ||= self.send("#{r.to_s}_default_styles")
+        @styles[name][r].merge! styles
+      end
     end
     
     def self.view_object=(view_object)

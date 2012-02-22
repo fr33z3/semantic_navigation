@@ -5,25 +5,29 @@ module SemanticNavigation
       def menu_default_styles
         {:expand_inactive => true,
          :item_active_class => 'active',
-         :menu_active_class => 'active',
+         :item_block_active_class => 'active',
          :link_active_class => 'active',
+         
+         :item_id_visible => true,
+         :item_block_id_visible => true,
+         :link_id_visible => true,
           
          :item_mark_active => true,
-         :menu_mark_active => false,
+         :item_block_mark_active => false,
          :link_mark_active => false,
          
          :item_classes => [],
-         :menu_classes => [],
+         :item_block_classes => [],
          :link_classes => [],
          :disabled_classes => [],
                       
-         :item_params => [],
-         :menu_params => [],
-         :link_params => [],
-         :disabled_params => [],
+         :item_options => {},
+         :item_block_options => {},
+         :link_options => {},
+         :disabled_options => {},
                      
          :item_wrapper => [],
-         :menu_wrapper => [],
+         :item_block_wrapper => [],
          :link_wrapper => []
         }
       end

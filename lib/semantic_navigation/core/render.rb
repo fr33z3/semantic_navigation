@@ -6,12 +6,12 @@ module SemanticNavigation
         def menu
           sub_menu = !@item_block.nil? && (expand_inactive? || @active) ? @item_block.menu : ''
           unless @item_disabled
-            item_text = view_object.link_to(@name, @url) + sub_menu
+            item_text = view_object.link_to(link_name(:menu), @url, :id => link_id_string, :class => link_classes(:menu)) + sub_menu
+            return view_object.content_tag :li, item_text, item_options(:menu).merge(:id => item_id_string, :class => item_classes(:menu))
           else
-            item_text = @name.html_safe + sub_menu
+            item_text = link_name(:menu).html_safe + sub_menu
+            return view_object.content_tag :li, item_text, disabled_options(:menu).merge(:id => item_id_string, :class => disabled_classes(:menu))
           end
-
-          view_object.content_tag :li, item_text, :id => @item_id, :class => item_classes
         end 
       end
   

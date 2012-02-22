@@ -4,8 +4,8 @@ module SemanticNavigation
       
       private
       
-      def menu_classes
-        @menu_classes
+      def item_block_classes
+        @item_block_classes
       end
       
     end

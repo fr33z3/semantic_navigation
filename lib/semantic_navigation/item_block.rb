@@ -19,11 +19,11 @@ module SemanticNavigation
      end
    end
    
-   def method_missing(element_id, name = '', url = nil, item_options = {}, item_block_options = {}, &block)
+   def method_missing(element_id, link_name = '', url = nil, item_options = {}, item_block_options = {}, &block)
      item_block_options[:item_block_id] ||= element_id.to_s
-     item_options = {:item_id => element_id.to_s,
-                     :url => url,
-                     :name => name}
+     item_options[:item_id] ||= element_id.to_s
+     item_options[:url] ||= url
+     item_options[:link_name] ||= link_name
      
      item_block = nil
      if block_given?
