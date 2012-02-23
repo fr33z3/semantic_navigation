@@ -13,24 +13,22 @@ module SemanticNavigation
       
       def item_classes(render_name)
         #TODO: make the code understand that string should be used too
-        r = current_style[:item_classes]
-        r += @item_classes if !@item_classes.nil?
-        rc = instance_variable_get("@#{render_name}")
-        if !rc.nil? && !rc[:item_classes].nil?
-          r += rc[:item_classes]
-        end
-        r += [current_style[:item_active_class]] if @active && current_style[:item_mark_active]
-        r
+        style = instance_variable_get("@#{render_name}")
+        classes = current_style[:item_classes]
+        classes += @item_classes unless @item_classes.nil?
+        classes += style[:item_classes] if !style.nil? && !style[:item_classes].nil?
+        classes += [current_style[:item_active_class]] if @active && current_style[:item_mark_active]
+        !classes.empty? ? classes : nil
       end
 
       def link_classes(render_name)
         #TODO: make the code understand that string should be used too
         style = instance_variable_get("@#{render_name}")
         classes = current_style[:link_classes]
-        classes += @item_classes unless @item_classes.nil?
+        classes += @link_classes unless @link_classes.nil?
         classes += style[:link_classes] if !style.nil? && !style[:link_classes].nil?
         classes += [current_style[:link_active_class]] if @active && current_style[:link_mark_active]
-        classes
+        !classes.empty? ? classes : nil
       end
       
       def disabled_classes(render_name)

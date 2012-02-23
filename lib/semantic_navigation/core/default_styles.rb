@@ -5,7 +5,6 @@ module SemanticNavigation
       def menu_default_styles
         {:expand_inactive => true,
          :item_active_class => 'active',
-         :item_block_active_class => 'active',
          :link_active_class => 'active',
          
          :item_id_visible => true,
@@ -13,7 +12,6 @@ module SemanticNavigation
          :link_id_visible => true,
           
          :item_mark_active => true,
-         :item_block_mark_active => false,
          :link_mark_active => false,
          
          :item_classes => [],
@@ -24,12 +22,20 @@ module SemanticNavigation
          :item_options => {},
          :item_block_options => {},
          :link_options => {},
-         :disabled_options => {},
-                     
-         :item_wrapper => [],
-         :item_block_wrapper => [],
-         :link_wrapper => []
+         :disabled_options => {}
         }
+      end
+      
+      def bootstrap_default_menu
+        {:expand_inactive => false,
+         
+         :item_id_visible => false,
+         :item_block_id_visible => false,
+         :link_id_visible => false,
+          
+         :item_block_classes => ['nav','nav-list'],         
+         :disabled_classes => ['nav-header'],
+        }        
       end
       
       def breadcrumb_default_styles

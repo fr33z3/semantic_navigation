@@ -24,9 +24,8 @@ module SemanticNavigation
         
         def menu
           view_object.content_tag :ul, 
-                                  @items.count > 0 ? @items.map{|item| item.menu}.sum : '', 
-                                  :id => @item_block_id,
-                                  :class => item_block_classes
+                                  @items.count > 0 ? @items.map{|item| item.menu}.sum : '',
+                                  item_block_options(:menu).merge(:id => item_block_id_string, :class => item_block_classes(:menu))
         end 
       end
       
