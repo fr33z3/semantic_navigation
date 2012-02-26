@@ -4,11 +4,20 @@ module SemanticNavigation
       
       private
       
+      def icon(position)
+        icon = nil
+        icon = @active ? current_style[:"active_icon_#{position}"] || current_style[:"icon_#{position}"] : current_style[:"icon_#{position}"]
+        icon = icon.call(@icon, item_block.nil? || item_block.empty?) if icon.is_a? Proc
+        icon
+      end
+      
       def link_name(render_name)
         style = instance_variable_get("@#{render_name}")
         name = style[:link_name] unless style.nil?
         name ||= @link_name
-        name
+        [icon(:before),
+         name,
+         icon(:after)].join.html_safe
       end
       
       def item_classes(render_name)

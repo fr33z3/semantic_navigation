@@ -41,6 +41,17 @@ module SemanticNavigation
         end
         from_menu
       end
+      
+      def except_for(names)
+        @items = @items.select do |item|
+          !item.item_id.to_sym.in?(names.map{|n| n.to_sym})
+        end
+        @items.each do |item|
+          item.item_block.except_for(names) unless item.item_block.nil?
+        end
+        self
+      end
+      
     end
   end
 end

@@ -16,7 +16,7 @@ module SemanticNavigation
       configuration_instance
     end
     
-    def method_missing(menu_id, options = {}, &block)
+    def navigate(menu_id, options = {}, &block)
       options[:item_block_id] ||= menu_id.to_s
       @menus[menu_id] = ItemBlock.new options
       @menus[menu_id].instance_eval(&block) if block_given?
@@ -42,7 +42,7 @@ module SemanticNavigation
       @styles[name] ||= {}
       render_name = [render_name] if render_name.is_a? Symbol
       render_name.each do |r|
-        @styles[name][r] ||= self.send("#{r.to_s}_default_styles")
+        @styles[name][r] ||= default_styles
         @styles[name][r].merge! styles
       end
     end

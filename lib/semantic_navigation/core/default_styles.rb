@@ -2,7 +2,7 @@ module SemanticNavigation
   module Core
     module DefaultStyles
       
-      def menu_default_styles
+      def default_styles
         {:expand_inactive => true,
          :item_active_class => 'active',
          :link_active_class => 'active',
@@ -22,7 +22,12 @@ module SemanticNavigation
          :item_options => {},
          :item_block_options => {},
          :link_options => {},
-         :disabled_options => {}
+         :disabled_options => {},
+         
+         :icon_before => nil,
+         :icon_after => nil,
+         :active_icon_before => nil,
+         :active_icon_after => nil
         }
       end
       
@@ -35,19 +40,9 @@ module SemanticNavigation
           
          :item_block_classes => ['nav','nav-list'],         
          :disabled_classes => ['nav-header'],
+         :icon_before => proc {|icon| "<i class='icon-#{icon}'></i>" unless icon.nil?},
+         :active_icon_before => proc {|icon| "<i class='icon-#{icon} icon-white'></i>" unless icon.nil?}
         }        
-      end
-      
-      def breadcrumb_default_styles
-        
-      end
-      
-      def tabs_default_styles
-        
-      end
-      
-      def pills_default_styles
-        
       end
      
     end
