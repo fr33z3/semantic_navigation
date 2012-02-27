@@ -32,7 +32,7 @@ module SemanticNavigation
       if !@styles[menu_id].nil? && !@styles[menu_id][as].nil?
         @@current_style = @styles[menu_id][as]
       else
-        @@current_style = self.send("#{as.to_s}_default_styles")
+        @@current_style = default_styles
       end
       
       rendering_menu.send(as)
