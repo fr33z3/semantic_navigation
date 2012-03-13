@@ -12,7 +12,9 @@ module SemanticNavigation
     end
     
     def self.navigate(id, options = {}, &block)
-      navigation = Core::Navigation.new(id.to_sym, options)
+      id = id.to_sym
+      options[:id] = id
+      navigation = Core::Navigation.new(options)
       navigation.instance_eval &block if block_given?
       @@navigations[id.to_sym] = navigation
     end

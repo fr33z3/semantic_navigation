@@ -1,11 +1,26 @@
 module SemanticNavigation
   module Core
-    class Navigation < Node
-          
-      def initialize(id, options)
-        super id, nil, options, 0
-      end    
+    class Navigation < Base
+      attr :sub_elements
       
+      def initialize(options, level = 0)
+        @sub_elements = []
+        super options, level
+      end
+
+      def item(id, url=nil, options={}, &block)
+        options[:id] = id.to_sym
+        options[:url] = url unless url.nil?
+        
+        if block_given?
+          element = Node.new(options, @level+1)
+          element.instance_eval &block
+        else
+          element = Leaf.new(options, @level+1)
+        end
+        
+        @sub_elements.push element
+      end 
     end
   end
 end

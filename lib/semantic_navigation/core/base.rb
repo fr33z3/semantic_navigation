@@ -2,11 +2,9 @@ module SemanticNavigation
   module Core
     class Base      
       
-      attr :id, :url, :level
+      attr :id, :level
       
-      def initialize(id, url, options, level)
-        @id = id
-        @url = url
+      def initialize(options, level)
         @level = level
         options.keys.each do |option_name|
           instance_variable_set :"@#{option_name}", options[option_name]
@@ -16,10 +14,6 @@ module SemanticNavigation
       def render(renderer)
         class_name = self.class.name.split('::').last.downcase
         renderer.send :"render_#{class_name}", self
-      end
-      
-      def name
-        @name || ""
       end
       
     end    
