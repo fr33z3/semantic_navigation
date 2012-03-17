@@ -5,7 +5,7 @@ module SemanticNavigation
       
       def initialize(options, level)
         super options, level
-        @name ||= ""
+        @name ||= @i18n_hash || ""
       end
       
     end    
