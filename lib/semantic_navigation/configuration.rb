@@ -14,6 +14,10 @@ module SemanticNavigation
     def self.navigate(id, options = {}, &block)
       id = id.to_sym
       options[:id] = id
+      i18n_hash = I18n.t(:semantic_navigation)
+      if i18n_hash.is_a? Hash
+        options[:i18n_hash] = i18n_hash[id]
+      end
       navigation = Core::Navigation.new(options)
       navigation.instance_eval &block if block_given?
       @@navigations[id.to_sym] = navigation
@@ -24,11 +28,11 @@ module SemanticNavigation
       @@navigations[menu_id].render(renderer)
     end
     
-    def styles_for(name,render_name,styles)
+    def self.styles_for(name,render_name,styles)
     
     end
     
-    def register_renderer(renderer_class)
+    def self.register_renderer(renderer_class)
       
     end
   
