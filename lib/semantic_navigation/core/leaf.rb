@@ -1,7 +1,7 @@
 module SemanticNavigation
   module Core
     class Leaf < Base
-      attr :url
+      attr :url, :active
       
       def initialize(options, level)
         super options, level
@@ -9,6 +9,10 @@ module SemanticNavigation
       
       def name
         @name || I18n.t(@i18n_name) || ''
+      end
+      
+      def mark_active(view_object)
+        @active = view_object.current_page?(@url)
       end
       
     end    

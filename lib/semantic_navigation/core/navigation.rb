@@ -1,7 +1,7 @@
 module SemanticNavigation
   module Core
     class Navigation < Base
-      attr :sub_elements
+      attr :sub_elements, :active
       
       def initialize(options, level = 0)
         @sub_elements = []
@@ -22,6 +22,13 @@ module SemanticNavigation
         
         @sub_elements.push element
       end 
+      
+      def mark_active(view_object)
+        @sub_elements.each do |element| 
+          element.mark_active(view_object)
+        end
+        @active = !@sub_elements.find{|element| element.active}.nil?
+      end
       
     end
   end
