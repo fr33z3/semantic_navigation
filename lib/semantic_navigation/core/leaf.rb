@@ -1,11 +1,14 @@
 module SemanticNavigation
   module Core
     class Leaf < Base
-      attr :url, :name
+      attr :url
       
       def initialize(options, level)
         super options, level
-        @name ||= @i18n_hash || ""
+      end
+      
+      def name
+        @name || I18n.t(@i18n_name) || ''
       end
       
     end    

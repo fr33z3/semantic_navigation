@@ -1,17 +1,20 @@
 module SemanticNavigation
   module Core
     class Node < Navigation      
-      attr :url, :name
+      attr :url
       
       def initialize(options, level)
         super options, level
-        @name ||= i18n_name || ""
       end
       
+      def name
+        @name || i18n_name || ''
+      end
+            
       private
       
       def i18n_name
-        @i18n_hash.is_a?(Hash) ? @i18n_hash[:_name_] : @i18n_hash
+        I18n.t(@i18n_name).is_a?(Hash) ? I18n.t("#{@i18n_name}._name_") : I18n.t(@i18n_name)
       end
     end
   end

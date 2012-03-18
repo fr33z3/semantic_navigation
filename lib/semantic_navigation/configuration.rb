@@ -12,12 +12,8 @@ module SemanticNavigation
     end
     
     def self.navigate(id, options = {}, &block)
-      id = id.to_sym
-      options[:id] = id
-      i18n_hash = I18n.t(:semantic_navigation)
-      if i18n_hash.is_a? Hash
-        options[:i18n_hash] = i18n_hash[id]
-      end
+      options[:id] = id.to_sym
+      options[:i18n_name] = "semantic_navigation.#{id}"
       navigation = Core::Navigation.new(options)
       navigation.instance_eval &block if block_given?
       @@navigations[id.to_sym] = navigation
