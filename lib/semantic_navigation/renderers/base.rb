@@ -42,21 +42,6 @@ module SemanticNavigation
       
       private
       
-      def tag(tag_name, object, options = {}, &block)
-        object_name = object.class.name.split('::').last.downcase
-        options ={:id => ids(object_name, object.id),
-                  :class => classes(object_name, object.active)
-                 }.merge(options)
-        content_tag(tag_name, nil, options) {yield}
-      end
-      
-      def link(object, options = {})
-        options = {:id => ids('link', object.id),
-                   :class => classes('link', object.active) 
-                  }.merge(options)
-        link_to(object.id, object.url, options)
-      end
-      
       def content_tag(tag_name, content, options={}, &block)
         @view_object.content_tag(tag_name, content, options) {yield}
       end
@@ -65,18 +50,17 @@ module SemanticNavigation
         @view_object.link_to(link_name, url, options)
       end
       
-      def classes(name, active)
+      def merge_classes(name, active, object_classes = [])
         classes = []
         classes += [send("#{name}_default_classes")].flatten
         if active && send("show_#{name}_active_class")
           classes.push [send("#{name}_active_class")].flatten
         end
+        classes += [object_classes].flatten
       end
       
-      def ids(name, id)
-        result_id = nil
-        result_id = id if send("show_#{name}_id")
-        result_id
+      def show_id(name, id)
+        id if send("show_#{name}_id")
       end
   
     end    

@@ -10,23 +10,29 @@ module SemanticNavigation
       
       def render_navigation(object)
         super
-        tag :ul, object do
+        content_tag :ul, nil, :id => show_id(:navigation, object.id),
+                              :class => merge_classes(:navigation, object.active) do
           object.sub_elements.sum{|element| element.render(self)}
         end
       end    
       
       def render_node(object)
-        tag :li, object do
-          link(object) + 
-          tag(:ul, object) do
+        content_tag :li, nil, :id => show_id(:leaf, object.id),
+                              :class => merge_classes(:leaf, object.active) do
+          link_to(object.name, object.url, :id => show_id(:link, object.id),
+                                           :class => merge_classes(:link, object.active))+
+          content_tag(:ul, nil, :id => show_id(:node, object.id),
+                                :class => merge_classes(:node, object.active)) do
             object.sub_elements.sum{|element| element.render(self)}
           end
         end 
       end
       
       def render_leaf(object)
-        tag :li, object do
-          link object
+        content_tag :li, nil, :id => show_id(:leaf, object.id),
+                              :class => merge_classes(:leaf, object.active) do
+          link_to object.name, object.url, :id => show_id(:link, object.id),
+                                           :class => merge_classes(:link, object.active)
         end
       end
       

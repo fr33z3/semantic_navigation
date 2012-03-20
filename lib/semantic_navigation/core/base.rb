@@ -2,7 +2,7 @@ module SemanticNavigation
   module Core
     class Base      
       
-      attr :id, :level
+      attr :id, :level, :classes, :active
       
       def initialize(options, level)
         @level = level
