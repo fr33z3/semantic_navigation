@@ -21,7 +21,10 @@ module SemanticNavigation
     
     def render(menu_id, renderer_name, options, view_object)
       renderer = @@renderers[renderer_name].new(view_object)
-      @@navigations[menu_id].render(renderer)
+      options.keys.each{|key| renderer.send "#{key}=", options[key]}
+      navigation = @@navigations[menu_id]
+      navigation.mark_active(view_object)
+      navigation.render(renderer)
     end
     
     def self.styles_for(name,render_name,styles)

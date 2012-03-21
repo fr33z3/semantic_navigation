@@ -1,43 +1,46 @@
 module SemanticNavigation
   module Renderers
     class Base
-    
-      attr_accessor :from_level, :until_level
+      include SemanticNavigation::Core::Helpers
       
-      cattr_accessor :navigation_active_class, :node_active_class, :leaf_active_class, 
-                     :link_active_class, :show_navigation_active_class,
-                     :show_node_active_class, :show_leaf_active_class, 
-                     :show_link_active_class,
-                     :show_navigation_id, :show_node_id, :show_leaf_id, :show_link_id,
-                     :navigation_default_classes, :leaf_default_classes, 
-                     :node_default_classes, :link_default_classes
+      style_accessor :navigation_active_class => [:active],
+                     :node_active_class => [:active],
+                     :leaf_active_class => [:active],
+                     :link_active_class => [:active],
       
-      @@navigation_active_class = [:active]
-      @@node_active_class = [:active]
-      @@leaf_active_class = [:active]
-      @@link_active_class = [:active]
+                     :show_navigation_active_class => true,
+                     :show_node_active_class => true,
+                     :show_leaf_active_class => true,
+                     :show_link_active_class => true,
       
-      @@show_navigation_active_class = true
-      @@show_node_active_class = true
-      @@show_leaf_active_class = true
-      @@show_link_active_class = true
+                     :show_navigation_id => true,
+                     :show_node_id => true,
+                     :show_leaf_id => true,
+                     :show_link_id => true,
       
-      @@show_navigation_id = true
-      @@show_node_id = true
-      @@show_leaf_id = true
-      @@show_link_id = true
-      
-      @@navigation_default_classes = []
-      @@node_default_classes = []
-      @@leaf_default_classes = []
-      @@link_default_classes = []
-          
+                     :navigation_default_classes => [], 
+                     :node_default_classes => [],
+                     :leaf_default_classes => [],
+                     :link_default_classes => []                    
+
       def initialize(view_object)
         @view_object = view_object
       end
       
       def render_navigation(object)
-        object.mark_active(@view_object)
+        navigation(object) do
+          object.sub_elements.sum{|element| element.render(self)}
+        end
+      end
+      
+      def render_node(object)
+        node(object) do
+          object.sub_elements.sum{|element| element.render(self)}
+        end
+      end
+      
+      def render_leaf(object)
+        leaf(object)
       end
       
       private
@@ -62,6 +65,8 @@ module SemanticNavigation
       def show_id(name, id)
         id if send("show_#{name}_id")
       end
+      
+
   
     end    
   end

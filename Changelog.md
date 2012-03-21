@@ -2,6 +2,10 @@
 
 * New configuration logic
 * New helper render method
+* Reloadable in development, and caching in production
+* I18n support
+* Render config, can be set through helper render method
+* Included support for custom renderers
 
 ### 0.0.6 / February 10th, 2012
 
