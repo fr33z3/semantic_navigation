@@ -23,38 +23,22 @@ module SemanticNavigation
                      :leaf_default_classes => [],
                      :link_default_classes => []      
        
-      def render_navigation(object)
-        navigation(object) do
-          object.sub_elements.sum{|element| element.render(self)}
-        end
-      end
-      
-      def render_node(object)
-        node(object) do
-          object.sub_elements.sum{|element| element.render(self)}
-        end
-      end
-      
-      def render_leaf(object)
-        leaf(object)
-      end
-      
       private
       
       def navigation(object)
         content_tag :ul, nil, :id => show_id(:navigation, object.id),
-                              :class => merge_classes(:navigation, object.active) do
+                              :class => merge_classes(:navigation, object.active, object.classes) do
           yield
         end
       end
       
       def node(object)
         content_tag :li, nil, :id => show_id(:leaf, object.id),
-                              :class => merge_classes(:leaf, object.active) do
+                              :class => merge_classes(:leaf, object.active, object.classes) do
           link_to(object.name, object.url, :id => show_id(:link, object.id),
-                                           :class => merge_classes(:link, object.active))+
+                                           :class => merge_classes(:link, object.active, object.link_classes))+
           content_tag(:ul, nil, :id => show_id(:node, object.id),
-                                :class => merge_classes(:node, object.active)) do
+                                :class => merge_classes(:node, object.active, object.node_classes)) do
             yield
           end
         end 
@@ -62,9 +46,9 @@ module SemanticNavigation
       
       def leaf(object)
         content_tag :li, nil, :id => show_id(:leaf, object.id),
-                              :class => merge_classes(:leaf, object.active) do
+                              :class => merge_classes(:leaf, object.active, object.classes) do
           link_to object.name, object.url, :id => show_id(:link, object.id),
-                                           :class => merge_classes(:link, object.active)
+                                           :class => merge_classes(:link, object.active, object.link_classes)
         end
       end
       

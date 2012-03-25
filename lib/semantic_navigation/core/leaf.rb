@@ -1,7 +1,7 @@
 module SemanticNavigation
   module Core
     class Leaf < Base
-      attr :url
+      attr :url, :link_classes
       
       def initialize(options, level)
         super options, level

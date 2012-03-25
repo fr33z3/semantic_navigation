@@ -8,6 +8,7 @@ module SemanticNavigation
       end
       
       module ClassMethods
+        
         def style_accessor(hash)
           hash.keys.each do |key|
             class_eval "
@@ -19,6 +20,7 @@ module SemanticNavigation
              end
 
              def #{key}(value = nil)
+               @#{key} = value unless value.nil?
                @#{key}.nil? ? @@#{key} : @#{key}
              end
 
@@ -32,9 +34,26 @@ module SemanticNavigation
       end
       
       module InstanceMethods  
+        
         def initialize(view_object)
           @view_object = view_object
         end
+        
+        def render_navigation(object)
+          navigation(object) do
+            object.sub_elements.sum{|element| element.render(self)}
+          end
+        end
+
+        def render_node(object)
+          node(object) do
+            object.sub_elements.sum{|element| element.render(self)}
+          end
+        end
+
+        def render_leaf(object)
+          leaf(object)
+        end        
 
         private
 
@@ -58,6 +77,7 @@ module SemanticNavigation
         def show_id(name, id)
           id if send("show_#{name}_id")
         end
+        
       end
   
     end    

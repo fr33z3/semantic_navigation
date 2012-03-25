@@ -1,7 +1,7 @@
 module SemanticNavigation
   module Core
     class Node < Navigation      
-      attr :url
+      attr :url, :link_classes, :node_classes
       
       def initialize(options, level)
         super options, level
