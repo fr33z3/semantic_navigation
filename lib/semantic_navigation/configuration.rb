@@ -32,7 +32,14 @@ module SemanticNavigation
       "<#{self.name}:#{@@navigations};#{@@renderers}>"
     end
     
-    def self.register_renderer(renderer_class)
+    def self.register_renderer(*options)
+      if options.count == 1
+        name = options[0].name.demodulize.underscore.to_sym
+        @@renderers[name] = options[0]
+      elsif options.count == 2 
+        name = options[0].to_sym
+        @@renderers[name] = options[1]
+      end
     end
   
   end
