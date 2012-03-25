@@ -1,4 +1,3 @@
-require 'semantic_navigation/core/helpers'
 require 'semantic_navigation/core/base'
 require 'semantic_navigation/core/navigation'
 require 'semantic_navigation/core/leaf'

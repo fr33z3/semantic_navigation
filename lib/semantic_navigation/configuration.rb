@@ -1,12 +1,9 @@
-require 'semantic_navigation/core'
-require 'semantic_navigation/renderers'
-
 module SemanticNavigation
   class Configuration
     
     @@navigations = {}
     @@renderers = {:list => Renderers::List}
-      
+    
     def self.run(&block)
       self.class_eval &block if block_given?
     end
@@ -27,12 +24,15 @@ module SemanticNavigation
       navigation.render(renderer)
     end
     
-    def self.styles_for(name,render_name,styles)
+    def self.styles_for(name, &block)
+      @@renderers[name].class_eval &block if block_given?
+    end
     
+    def self.to_s
+      "<#{self.name}:#{@@navigations};#{@@renderers}>"
     end
     
     def self.register_renderer(renderer_class)
-      
     end
   
   end
