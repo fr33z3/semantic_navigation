@@ -34,6 +34,17 @@ module SemanticNavigation
       end
       
       module InstanceMethods  
+        attr_accessor :from_level, :until_level, :except_for
+        
+        def level=(level)
+          @from_level = level
+          @until_level = level
+        end
+        
+        def levels=(level_range)
+          @from_level = level_range.first
+          @until_level = level_range.last
+        end
         
         def initialize(view_object)
           @view_object = view_object
@@ -41,24 +52,37 @@ module SemanticNavigation
         
         def render_navigation(object)
           navigation(object) do
-            object.sub_elements.sum{|element| element.render(self)}
+            while !object.class.in?(SemanticNavigation::Core::Leaf, NilClass) && 
+                  from_level.to_i > object.level
+              object = object.sub_elements.find{|e| e.active}
+            end
+            show = !until_level.nil? ? object.level <= until_level : true
+            if !object.class.in?(SemanticNavigation::Core::Leaf, NilClass) && show
+              object.sub_elements.map{|element| element.render(self)}.compact.sum
+            end
           end
         end
 
         def render_node(object)
-          node(object) do
-            render_node_content(object)
+          if !object.id.in?([except_for].flatten)
+            node(object) do
+              render_node_content(object)
+            end
           end
         end
         
         def render_node_content(object)
-          node_content(object) do
-            object.sub_elements.sum{|element| element.render(self)}
+          if (!until_level.nil? && until_level >= object.level) || until_level.nil?
+            node_content(object) do
+              object.sub_elements.map{|element| element.render(self)}.compact.sum
+            end
           end
         end
 
         def render_leaf(object)
-          leaf(object)
+          if !object.id.in?([except_for].flatten)
+            leaf(object)
+          end
         end        
 
         private
