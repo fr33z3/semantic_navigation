@@ -37,11 +37,15 @@ module SemanticNavigation
                               :class => merge_classes(:leaf, object.active, object.classes) do
           link_to(object.name, object.url, :id => show_id(:link, object.id),
                                            :class => merge_classes(:link, object.active, object.link_classes))+
-          content_tag(:ul, nil, :id => show_id(:node, object.id),
-                                :class => merge_classes(:node, object.active, object.node_classes)) do
-            yield
-          end
+          yield
         end 
+      end
+      
+      def node_content(object)
+        content_tag(:ul, nil, :id => show_id(:node, object.id),
+                              :class => merge_classes(:node, object.active, object.node_classes)) do
+          yield  
+        end
       end
       
       def leaf(object)

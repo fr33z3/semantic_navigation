@@ -47,6 +47,12 @@ module SemanticNavigation
 
         def render_node(object)
           node(object) do
+            render_node_content(object)
+          end
+        end
+        
+        def render_node_content(object)
+          node_content(object) do
             object.sub_elements.sum{|element| element.render(self)}
           end
         end
