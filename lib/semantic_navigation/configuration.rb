@@ -2,7 +2,9 @@ module SemanticNavigation
   class Configuration
     
     @@navigations = {}
-    @@renderers = {:list => Renderers::List}
+    @@renderers = {:list => Renderers::List,
+                   :breadcrumb => Renderers::BreadCrumb
+                  }
     @@render_styles = {}
         
     def self.run(&block)

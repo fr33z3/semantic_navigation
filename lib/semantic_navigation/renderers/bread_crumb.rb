@@ -1,10 +1,12 @@
 module SemanticNavigation
   module Renderers
-    class List
+    class BreadCrumb
       include RenderHelpers
-      include ActsAsList
+      include ActsAsBreadcrumb
+
+      style_accessor :last_as_link => false
       
-      navigation_default_classes [:list]
+      navigation_default_classes [:breadcrumb]
       
       private
       
@@ -23,22 +25,18 @@ module SemanticNavigation
           yield
         end 
       end
-      
-      def node_content(object)
-        content_tag(:ul, nil, :id => show_id(:node, object.id),
-                              :class => merge_classes(:node, object.active, object.node_classes)) do
-          yield  
-        end
-      end
-      
+     
       def leaf(object)
         content_tag :li, nil, :id => show_id(:leaf, object.id),
                               :class => merge_classes(:leaf, object.active, object.classes) do
-          link_to object.name, object.url, :id => show_id(:link, object.id),
+          if last_as_link
+            link_to object.name, object.url, :id => show_id(:link, object.id),
                                            :class => merge_classes(:link, object.active, object.link_classes)
+          else
+            object.name
+          end
         end
       end
-      
     end
   end
 end

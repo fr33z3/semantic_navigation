@@ -1,6 +1,7 @@
 module SemanticNavigation
   module Renderers
     module ActsAsList
+        
         def render_navigation(object)
           navigation(object) do
             while !object.class.in?(SemanticNavigation::Core::Leaf, NilClass) && 
