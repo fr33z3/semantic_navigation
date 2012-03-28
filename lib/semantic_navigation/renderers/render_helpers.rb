@@ -99,6 +99,7 @@ module SemanticNavigation
             classes.push [send("#{name}_active_class")].flatten
           end
           classes += [object_classes].flatten
+          classes.compact
         end
 
         def show_id(name, id)
