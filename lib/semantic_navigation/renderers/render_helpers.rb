@@ -5,6 +5,27 @@ module SemanticNavigation
       def self.included(base)
         base.send :include, InstanceMethods
         base.extend(ClassMethods)
+        base.class_eval do
+          style_accessor :navigation_active_class => [:active],
+                         :node_active_class => [:active],
+                         :leaf_active_class => [:active],
+                         :link_active_class => [:active],
+      
+                         :show_navigation_active_class => true,
+                         :show_node_active_class => true,
+                         :show_leaf_active_class => true,
+                         :show_link_active_class => true,
+      
+                         :show_navigation_id => true,
+                         :show_node_id => true,
+                         :show_leaf_id => true,
+                         :show_link_id => true,
+      
+                         :navigation_default_classes => [], 
+                         :node_default_classes => [],
+                         :leaf_default_classes => [],
+                         :link_default_classes => []   
+        end
       end
       
       module ClassMethods
@@ -50,41 +71,6 @@ module SemanticNavigation
           @view_object = view_object
         end
         
-        def render_navigation(object)
-          navigation(object) do
-            while !object.class.in?(SemanticNavigation::Core::Leaf, NilClass) && 
-                  from_level.to_i > object.level
-              object = object.sub_elements.find{|e| e.active}
-            end
-            show = !until_level.nil? && !object.nil? ? object.level <= until_level : true
-            if !object.class.in?(SemanticNavigation::Core::Leaf, NilClass) && show
-              object.sub_elements.map{|element| element.render(self)}.compact.sum
-            end
-          end
-        end
-
-        def render_node(object)
-          if !object.id.in?([except_for].flatten)
-            node(object) do
-              render_node_content(object)
-            end
-          end
-        end
-        
-        def render_node_content(object)
-          if (!until_level.nil? && until_level >= object.level) || until_level.nil?
-            node_content(object) do
-              object.sub_elements.map{|element| element.render(self)}.compact.sum
-            end
-          end
-        end
-
-        def render_leaf(object)
-          if !object.id.in?([except_for].flatten)
-            leaf(object)
-          end
-        end        
-
         private
 
         def content_tag(tag_name, content, options={}, &block)
