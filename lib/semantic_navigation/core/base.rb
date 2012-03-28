@@ -8,15 +8,6 @@ module SemanticNavigation
         @level = level
         options.keys.each do |option_name|
           instance_variable_set :"@#{option_name}", options[option_name]
-          instance_eval "
-            unless defined?(#{option_name})
-              #{self.class}.class_eval '
-                def #{option_name}
-                  @#{option_name}
-                end
-              '
-            end
-          "
         end
       end
 

@@ -52,6 +52,17 @@ module SemanticNavigation
             send key, hash[key]
           end        
         end
+        
+        def property_for(class_name,name)
+          class_object = "semantic_navigation/core/#{class_name}".classify.constantize
+          class_object.class_eval "
+            unless defined?(#{name})
+              def #{name}
+                @#{name}
+              end
+            end
+          "
+        end
       end
       
       module InstanceMethods  
