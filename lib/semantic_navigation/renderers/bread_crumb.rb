@@ -4,9 +4,14 @@ module SemanticNavigation
       include RenderHelpers
       include ActsAsBreadcrumb
 
-      style_accessor :last_as_link => false
+      style_accessor :last_as_link => false,
+                     :breadcrumb_separator => '/'
       
       navigation_default_classes [:breadcrumb]
+      show_navigation_active_class false
+      show_node_active_class false
+      show_leaf_active_class false
+      show_link_active_class false
       
       private
       
@@ -18,12 +23,15 @@ module SemanticNavigation
       end
       
       def node(object)
-        content_tag :li, nil, :id => show_id(:leaf, object.id),
-                              :class => merge_classes(:leaf, object.active, object.classes) do
+        content_tag(:li, nil, :id => show_id(:leaf, object.id),
+                              :class => merge_classes(:leaf, object.active, object.classes)) do
           link_to(object.name, object.url, :id => show_id(:link, object.id),
-                                           :class => merge_classes(:link, object.active, object.link_classes))+
-          yield
-        end 
+                                           :class => merge_classes(:link, object.active, object.link_classes))
+        end +
+        content_tag(:li) do
+          breadcrumb_separator
+        end +
+        yield
       end
      
       def leaf(object)

@@ -84,7 +84,7 @@ module SemanticNavigation
         
         private
 
-        def content_tag(tag_name, content, options={}, &block)
+        def content_tag(tag_name, content = nil, options={}, &block)
           @view_object.content_tag(tag_name, content, options) {yield}
         end
 
