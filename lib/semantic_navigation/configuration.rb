@@ -3,7 +3,8 @@ module SemanticNavigation
     
     @@navigations = {}
     @@renderers = {:list => Renderers::List,
-                   :breadcrumb => Renderers::BreadCrumb
+                   :breadcrumb => Renderers::BreadCrumb,
+                   :twitter_breadcrumb => TwitterBootstrap::Breadcrumb
                   }
     @@render_styles = {}
         
