@@ -4,6 +4,8 @@ module SemanticNavigation
       include SemanticNavigation::Renderers::RenderHelpers
       include SemanticNavigation::Renderers::ActsAsList
       
+      style_accessor :direction => 'left'
+      
       navigation_default_classes [:nav, 'nav-tabs']
       show_navigation_id false
       show_node_id false
@@ -16,7 +18,7 @@ module SemanticNavigation
       
       def navigation(object)
         content_tag :ul, nil, :id => show_id(:navigation, object.id),
-                              :class => merge_classes(:navigation, object.active, object.classes) do
+                              :class => merge_classes(:navigation, object.active, object.classes).push("pull-#{direction}") do
           yield
         end
       end
@@ -62,7 +64,7 @@ module SemanticNavigation
           end
         end
       end
-      
+           
     end
   end
 end
