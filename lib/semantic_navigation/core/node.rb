@@ -8,7 +8,8 @@ module SemanticNavigation
       end
       
       def name
-        @name || i18n_name
+        rendering_name = @name || i18n_name
+        rendering_name.is_a?(Proc) ? rendering_name.call.to_s : rendering_name
       end
       
       def mark_active(view_object)

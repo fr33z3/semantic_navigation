@@ -13,6 +13,7 @@ module SemanticNavigation
         +===============================================================+
         EOM
         copy_file "semantic_navigation.rb", "config/semantic_navigation.rb"
+        copy_file "semantic_navigation.en.yml", "config/locales/semantic_navigation.en.yml"
       end
     end
   end

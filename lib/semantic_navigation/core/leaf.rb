@@ -8,7 +8,8 @@ module SemanticNavigation
       end
       
       def name
-        @name || I18n.t(@i18n_name, :default => '')
+        rendering_name = @name || I18n.t(@i18n_name, :default => '')
+        rendering_name.is_a?(Proc) ? rendering_name.call.to_s : rendering_name
       end
       
       def mark_active(view_object)
