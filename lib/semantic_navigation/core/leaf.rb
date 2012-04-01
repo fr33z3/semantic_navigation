@@ -12,7 +12,11 @@ module SemanticNavigation
       end
       
       def mark_active(view_object)
-        @active = view_object.current_page?(@url)
+        if @url
+          @active = view_object.current_page?(@url)
+        else
+          @active = false
+        end
       end
       
     end    

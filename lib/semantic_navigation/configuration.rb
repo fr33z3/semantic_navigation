@@ -4,7 +4,8 @@ module SemanticNavigation
     @@navigations = {}
     @@renderers = {:list => Renderers::List,
                    :breadcrumb => Renderers::BreadCrumb,
-                   :twitter_breadcrumb => TwitterBootstrap::Breadcrumb
+                   :bootstrap_breadcrumb => TwitterBootstrap::Breadcrumb,
+                   :bootstrap_list => TwitterBootstrap::List
                   }
     @@render_styles = {}
         
