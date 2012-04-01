@@ -6,9 +6,13 @@ module SemanticNavigation
                    :breadcrumb => Renderers::BreadCrumb,
                    :bootstrap_breadcrumb => TwitterBootstrap::Breadcrumb,
                    :bootstrap_list => TwitterBootstrap::List,
-                   :bootstrap_tabs => TwitterBootstrap::Tabs
+                   :bootstrap_tabs => TwitterBootstrap::Tabs,
+                   :bootstrap_pills => TwitterBootstrap::Tabs
                   }
-    @@render_styles = {}
+    @@render_styles = {:bootstrap_pills => proc {
+        navigation_default_classes [:nav, 'nav-pills']
+      }  
+    }
         
     def self.run(&block)
       self.class_eval &block if block_given?
