@@ -8,7 +8,7 @@ module SemanticNavigation
       end
       
       def name
-        @name || I18n.t(@i18n_name) || ''
+        @name || I18n.t(@i18n_name, :default => '')
       end
       
       def mark_active(view_object)
