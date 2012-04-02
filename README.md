@@ -38,10 +38,14 @@ SemanticNavigation::Configuration.run do
     item :header_item, nil, :name => 'Header'
     item :first_item, '#', :name => 'First Item', :ico => :tag
     item :divide
-    item :second_item, '', :name => 'Second Item', :ico => :user
+    item :second_item, '#', :name => 'Second Item', :ico => :user
   end
 end
 </code></pre>
+
+And try to render it in your layout(code in haml):
+.well
+  = navigation_for :root_menu, :as => :bootstrap_list
 
 Render the navigation using the semantic_navigation helper methods and options for them.
 
