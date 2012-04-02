@@ -1,0 +1,1 @@
+require File.expand_path(File.dirname(__FILE__)+'/semantic_navigation/custom_renderer')
