@@ -6,6 +6,15 @@ module SemanticNavigation::HelperMethods
     SemanticNavigation::Configuration.new.render(name, render_name, options, self)
   end
   
-  private
+  def active_item_for(name, level = nil)
+    navigation = SemanticNavigation::Configuration.new.navigation(name)
+    item = navigation
+    while !item.is_a?(SemanticNavigation::Core::Leaf) &&
+          !item.sub_elements.find{|e| e.active}.nil? && 
+          (!level.nil? ? item.level < level : true)
+      item = item.sub_elements.find{|e| e.active}
+    end
+    item.name if item != navigation
+  end
 
 end

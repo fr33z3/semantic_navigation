@@ -54,6 +54,10 @@ module SemanticNavigation
         @@renderers[name] = options[1]
       end
     end
+    
+    def navigation(name)
+      @@navigations[name]
+    end
   
   end
 end
