@@ -17,9 +17,14 @@ module SemanticNavigation
 
         def render_node(object)
           if !object.id.in?([except_for].flatten)
-            node(object) do
-              render_node_content(object)
-            end
+            content = render_node_content(object)
+            if content
+              node(object) do
+                content
+              end
+            else
+              render_leaf(object)
+            end  
           end
         end
         
