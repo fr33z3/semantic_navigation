@@ -44,8 +44,10 @@ end
 </code></pre>
 
 And try to render it in your layout(code in haml):
+<pre><code>
 .well
   = navigation_for :root_menu, :as => :bootstrap_list
+</code></pre>
 
 Render the navigation using the semantic_navigation helper methods and options for them.
 
