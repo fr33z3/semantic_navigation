@@ -9,7 +9,8 @@ Gem::Specification.new do |s|
   s.email       = ["megacoder@rambler.ru"]
   s.homepage    = "https://github.com/fr33z3/semantic_navigation"
   s.summary     = %q{Make the navigation in your Rails app by several lines}
-  s.description = %q{Simply and customizable navigation in the Rails application}
+  s.description = %q{Simply and customizable navigation in the Ruby on Rails 3 application.
+                     Predefined bootstrap renderers}
 
   s.rubyforge_project = "semantic_navigation"
 
@@ -21,5 +22,4 @@ Gem::Specification.new do |s|
   # specify any dependencies here; for example:
    s.add_development_dependency "rspec", ">=2.0.1"
    s.add_runtime_dependency "rails", ">=3.0.0"
-   #s.add_runtime_dependency "fileutils"
 end

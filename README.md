@@ -33,7 +33,14 @@ $ rails generate semantic_navigation:install
 Configure your navigation in config/semantic_navigation.rb
 
 <pre><code>
-
+SemanticNavigation::Configuration.run do
+  navigate :root_menu do
+    item :header_item, nil, :name => 'Header'
+    item :first_item, '#', :name => 'First Item', :ico => :tag
+    item :divide
+    item :second_item, '', :name => 'Second Item', :ico => :user
+  end
+end
 </code></pre>
 
 Render the navigation using the semantic_navigation helper methods and options for them.
