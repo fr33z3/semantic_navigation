@@ -8,7 +8,7 @@ module SemanticNavigation
       end
       
       def name
-        rendering_name = @name || I18n.t(@i18n_name, :default => '')
+        rendering_name = @name || I18n.t("#{@i18n_name}.#{@id}", :default => '')
         rendering_name.is_a?(Proc) ? rendering_name.call.to_s : rendering_name
       end
       

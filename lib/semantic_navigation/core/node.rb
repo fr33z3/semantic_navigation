@@ -21,7 +21,7 @@ module SemanticNavigation
       private
       
       def i18n_name
-        I18n.t(@i18n_name).is_a?(Hash) ? I18n.t("#{@i18n_name}._name_", :default => '') : I18n.t(@i18n_name, :default => '')
+        I18n.t("#{@i18n_name}.#{@id}", :default => '')
       end
       
     end

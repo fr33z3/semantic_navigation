@@ -11,7 +11,7 @@ module SemanticNavigation
       def item(id, url=nil, options={}, &block)
         options[:id] = id.to_sym
         options[:url] = url unless url.nil?
-        options[:i18n_name] = "#{@i18n_name}.#{id}"
+        options[:i18n_name] = @i18n_name
         
         if block_given?
           element = Node.new(options, @level+1)
