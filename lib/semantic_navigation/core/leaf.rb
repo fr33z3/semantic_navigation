@@ -9,11 +9,14 @@ module SemanticNavigation
       
       def name
         rendering_name = @name || I18n.t("#{@i18n_name}.#{@id}", :default => '')
-        rendering_name.is_a?(Proc) ? rendering_name.call.to_s : rendering_name
+        if rendering_name.is_a?(Proc)
+          view_object.instance_eval(&rendering_name).to_s
+        else
+          rendering_name
+        end
       end
       
       def mark_active
-        view_object = SemanticNavigation::Configuration.view_object
         if @url
           @active = view_object.current_page?(@url)
         else

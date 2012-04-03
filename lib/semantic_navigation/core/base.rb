@@ -16,6 +16,12 @@ module SemanticNavigation
         renderer.send :"render_#{class_name}", self
       end
       
+      private
+      
+      def view_object
+        SemanticNavigation::Configuration.view_object
+      end
+      
     end    
   end
 end

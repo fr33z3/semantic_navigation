@@ -24,7 +24,6 @@ module SemanticNavigation
       end 
       
       def mark_active
-        view_object = SemanticNavigation::Configuration.view_object
         @sub_elements.each do |element| 
           element.mark_active
         end
