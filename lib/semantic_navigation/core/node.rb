@@ -12,8 +12,9 @@ module SemanticNavigation
         rendering_name.is_a?(Proc) ? rendering_name.call.to_s : rendering_name
       end
       
-      def mark_active(view_object)
-        @sub_elements.each{|element| element.mark_active(view_object)}
+      def mark_active
+        view_object = SemanticNavigation::Configuration.view_object
+        @sub_elements.each{|element| element.mark_active}
         @active = view_object.current_page?(@url)
         @active |= !@sub_elements.find{|element| element.active}.nil?
       end

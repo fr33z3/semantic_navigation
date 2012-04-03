@@ -78,8 +78,8 @@ module SemanticNavigation
           @until_level = level_range.last
         end
         
-        def initialize(view_object)
-          @view_object = view_object
+        def initialize
+          @view_object = SemanticNavigation::Configuration.view_object
         end
         
         private

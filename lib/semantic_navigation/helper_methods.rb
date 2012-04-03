@@ -7,7 +7,7 @@ module SemanticNavigation::HelperMethods
   end
   
   def active_item_for(name, level = nil)
-    navigation = SemanticNavigation::Configuration.new.navigation(name)
+    navigation = SemanticNavigation::Configuration.navigation(name)
     item = navigation
     while !item.is_a?(SemanticNavigation::Core::Leaf) &&
           !item.sub_elements.find{|e| e.active}.nil? && 

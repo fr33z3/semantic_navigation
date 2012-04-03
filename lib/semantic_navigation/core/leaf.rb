@@ -12,7 +12,8 @@ module SemanticNavigation
         rendering_name.is_a?(Proc) ? rendering_name.call.to_s : rendering_name
       end
       
-      def mark_active(view_object)
+      def mark_active
+        view_object = SemanticNavigation::Configuration.view_object
         if @url
           @active = view_object.current_page?(@url)
         else

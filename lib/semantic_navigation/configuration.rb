@@ -1,6 +1,7 @@
 module SemanticNavigation
   class Configuration
     
+    @@view_object = nil
     @@navigations = {}
     @@renderers = {:list => Renderers::List,
                    :breadcrumb => Renderers::BreadCrumb,
@@ -27,13 +28,14 @@ module SemanticNavigation
     end
     
     def render(menu_id, renderer_name, options, view_object)
-      renderer = @@renderers[renderer_name].new(view_object)
+      @@view_object = view_object
+      renderer = @@renderers[renderer_name].new
       unless @@render_styles[renderer_name].nil?
         renderer.instance_eval &@@render_styles[renderer_name]
       end
       options.keys.each{|key| renderer.send "#{key}=", options[key]}
       navigation = @@navigations[menu_id]
-      navigation.mark_active(view_object)
+      navigation.mark_active
       navigation.render(renderer)
     end
     
@@ -55,7 +57,11 @@ module SemanticNavigation
       end
     end
     
-    def navigation(name)
+    def self.view_object
+      @@view_object
+    end
+    
+    def self.navigation(name)
       @@navigations[name]
     end
   

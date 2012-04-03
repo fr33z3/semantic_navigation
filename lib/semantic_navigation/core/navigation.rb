@@ -23,9 +23,10 @@ module SemanticNavigation
         @sub_elements.push element
       end 
       
-      def mark_active(view_object)
+      def mark_active
+        view_object = SemanticNavigation::Configuration.view_object
         @sub_elements.each do |element| 
-          element.mark_active(view_object)
+          element.mark_active
         end
         @active = !@sub_elements.find{|element| element.active}.nil?
       end
