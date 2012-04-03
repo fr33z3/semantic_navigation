@@ -3,6 +3,7 @@ module SemanticNavigation
     module ActsAsBreadcrumb
       
       def render_navigation(object)
+        return '' unless object.render_if
         navigation(object) do
           while !object.class.in?(SemanticNavigation::Core::Leaf, NilClass) &&
                 from_level.to_i > object.level
@@ -17,7 +18,9 @@ module SemanticNavigation
 
       def render_node(object)
         active_element = object.sub_elements.find{|e| e.active}
-        render_element = active_element.render(self) if active_element
+        if active_element && !active_element.id.in?([except_for].flatten) && active_element.render_if
+          render_element = active_element.render(self)  
+        end
         if render_element
           node(object) do
             render_element

@@ -1,15 +1,15 @@
 This is semantic_navigation
 
-Current version: 0.0.8
+Current version: 0.0.9
 
 ###Purpose
 This gem generates the navigation for your Rails app.
 Really customizable and simple to use.
 Using this gem you have 4 types of renderers: menu, breadcrumb, tabs, and, pills
 
-You can define different menus and render them separatelly.
+You can define different menus and render them separate.
 
-Now with simple integration with a twitter-bootstrap css framework.
+Now with simple integration with a twitter-bootstrap CSS framework.
 
 ###How to install
 

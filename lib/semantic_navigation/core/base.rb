@@ -3,6 +3,11 @@ module SemanticNavigation
     class Base      
       
       attr :id, :level, :classes, :active
+      attr_writer :render_if
+      
+      def render_if
+        !@render_if.nil? ? view_object.instance_eval(&@render_if) : true
+      end
       
       def initialize(options, level)
         @level = level

@@ -1,4 +1,10 @@
-### 0.0.8 /
+### 0.0.9 / April 4, 2012
+
+* Fixed bug with Proc names
+* Breadcrumbs now support except_for
+* Added render_if option to elements
+
+### 0.0.8 / April 3rd, 2012
 
 * New configuration logic
 * New helper render method

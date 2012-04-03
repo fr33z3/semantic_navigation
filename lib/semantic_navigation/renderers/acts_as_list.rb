@@ -3,6 +3,7 @@ module SemanticNavigation
     module ActsAsList
         
         def render_navigation(object)
+          return '' unless object.render_if
           navigation(object) do
             while !object.class.in?(SemanticNavigation::Core::Leaf, NilClass) && 
                   from_level.to_i > object.level
@@ -16,7 +17,7 @@ module SemanticNavigation
         end
 
         def render_node(object)
-          if !object.id.in?([except_for].flatten)
+          if !object.id.in?([except_for].flatten) && object.render_if
             content = render_node_content(object)
             if content
               node(object) do
@@ -37,7 +38,7 @@ module SemanticNavigation
         end
 
         def render_leaf(object)
-          if !object.id.in?([except_for].flatten)
+          if !object.id.in?([except_for].flatten) && object.render_if
             leaf(object)
           end
         end     
