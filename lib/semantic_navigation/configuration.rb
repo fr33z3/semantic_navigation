@@ -8,10 +8,15 @@ module SemanticNavigation
                    :bootstrap_breadcrumb => TwitterBootstrap::Breadcrumb,
                    :bootstrap_list => TwitterBootstrap::List,
                    :bootstrap_tabs => TwitterBootstrap::Tabs,
-                   :bootstrap_pills => TwitterBootstrap::Tabs
+                   :bootstrap_pills => TwitterBootstrap::Tabs,
+                   :bootstrap_simple_nav => SemanticNavigation::Renderers::List
                   }
-    @@render_styles = {:bootstrap_pills => proc {
+    @@render_styles = {
+      :bootstrap_pills => proc {
         navigation_default_classes [:nav, 'nav-pills']
+      },
+      :bootstrap_simple_nav => proc {
+        navigation_default_classes [:nav]
       }  
     }
         
