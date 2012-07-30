@@ -1,6 +1,4 @@
-This is semantic_navigation
-
-Current version: 0.0.9
+This is semantic_navigation gem
 
 ###Purpose
 This gem generates the navigation for your Rails app.

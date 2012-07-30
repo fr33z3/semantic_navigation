@@ -3,23 +3,9 @@ module SemanticNavigation
     
     @@view_object = nil
     @@navigations = {}
-    @@renderers = {:list => Renderers::List,
-                   :breadcrumb => Renderers::BreadCrumb,
-                   :bootstrap_breadcrumb => TwitterBootstrap::Breadcrumb,
-                   :bootstrap_list => TwitterBootstrap::List,
-                   :bootstrap_tabs => TwitterBootstrap::Tabs,
-                   :bootstrap_pills => TwitterBootstrap::Tabs,
-                   :bootstrap_simple_nav => SemanticNavigation::Renderers::List
-                  }
-    @@render_styles = {
-      :bootstrap_pills => proc {
-        navigation_default_classes [:nav, 'nav-pills']
-      },
-      :bootstrap_simple_nav => proc {
-        navigation_default_classes [:nav]
-      }  
-    }
-        
+    @@renderers = {}
+    @@render_styles = {}
+
     def self.run(&block)
       self.class_eval &block if block_given?
     end
@@ -55,11 +41,18 @@ module SemanticNavigation
     def self.register_renderer(*options)
       if options.count == 1
         name = options[0].name.demodulize.underscore.to_sym
-        @@renderers[name] = options[0]
+        renderer_class = options[0]
       elsif options.count == 2 
         name = options[0].to_sym
-        @@renderers[name] = options[1]
+        renderer_class = options[1]
       end
+      @@renderers[name] = renderer_class
+      SemanticNavigation::HelperMethods.class_eval "
+        def #{name}_for(name, options = {})
+          options[:as] = :#{name}
+          navigation_for name, options
+        end
+      "
     end
     
     def self.view_object
@@ -69,6 +62,6 @@ module SemanticNavigation
     def self.navigation(name)
       @@navigations[name]
     end
-  
+
   end
 end

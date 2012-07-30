@@ -1,3 +1,8 @@
+### 0.0.10 / July 30, 2012
+
+* Added Simple bootstrap navigation class
+* Created aliases for renderers
+
 ### 0.0.9 / April 4, 2012
 
 * Fixed bug with Proc names

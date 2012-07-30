@@ -16,5 +16,4 @@ module SemanticNavigation::HelperMethods
     end
     item.name if item != navigation
   end
-
 end
