@@ -1,6 +1,7 @@
 ### 0.0.11 / August
 
 * Added possibility to define urls in Rails routes way like 'namespace/controller#action'
+* Removed empty `class` parameter for tags
 
 ### 0.0.10 / July 30, 2012
 

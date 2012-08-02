@@ -93,13 +93,11 @@ module SemanticNavigation
         end
 
         def merge_classes(name, active, object_classes = [])
-          classes = []
-          classes += [send("#{name}_default_classes")].flatten
-          if active && send("show_#{name}_active_class")
-            classes.push [send("#{name}_active_class")].flatten
-          end
-          classes += [object_classes].flatten
-          classes.compact
+          default_classes = send("#{name}_default_classes")
+          active_classes = active && send("show_#{name}_active_class") ? send("#{name}_active_class") : nil
+
+          classes = [*default_classes, *active_classes, *object_classes]
+          !classes.empty? ? classes : nil
         end
 
         def show_id(name, id)
