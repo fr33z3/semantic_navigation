@@ -1,3 +1,7 @@
+### 0.0.11 / August
+
+* Added possibility to define urls in Rails routes way like 'namespace/controller#action'
+
 ### 0.0.10 / July 30, 2012
 
 * Added Simple bootstrap navigation class

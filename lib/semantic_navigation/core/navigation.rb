@@ -10,7 +10,7 @@ module SemanticNavigation
 
       def item(id, url=nil, options={}, &block)
         options[:id] = id.to_sym
-        options[:url] = url unless url.nil?
+        options[:url] = decode_url(url) unless url.nil?
         options[:i18n_name] = @i18n_name
         
         if block_given?
@@ -21,13 +21,25 @@ module SemanticNavigation
         end
         
         @sub_elements.push element
-      end 
-      
+      end
+
       def mark_active
         @sub_elements.each do |element| 
           element.mark_active
         end
         @active = !@sub_elements.find{|element| element.active}.nil?
+      end
+
+      private
+
+      def decode_url(url)
+        if url.is_a? String
+          controller_name, action_name = url.split('#')
+          if controller_name && action_name
+            url = view_object.url_for(:controller => controller_name, :action => action_name) rescue url
+          end
+        end
+        url
       end
       
     end
