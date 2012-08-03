@@ -23,6 +23,28 @@ module SemanticNavigation
         @sub_elements.push element
       end
 
+      def header(id, options={})
+        options[:id] = id.to_sym
+        options[:url] = nil
+        options[:i18n_name] = @i18n_name
+        @sub_elements.push Leaf.new(options, @level+1)
+      end
+
+      def divider
+        options = {:id => :divider,
+                   :url => nil,
+                   :i18n_name => nil}
+        @sub_elements.push Leaf.new(options, @level+1)
+      end
+
+      def method_missing(m,*args,&block)
+        if m.to_s.match(/^[_]+$/).to_a.size > 0
+          divider
+        else
+          super(m,args,&block)
+        end
+      end
+
       def mark_active
         @sub_elements.each do |element| 
           element.mark_active

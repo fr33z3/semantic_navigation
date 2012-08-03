@@ -2,6 +2,7 @@
 
 * Added possibility to define urls in Rails routes way like 'namespace/controller#action'
 * Removed empty `class` parameter for tags
+* Added new semantic navigation configuration methods `header` and `divider`
 
 ### 0.0.10 / July 30, 2012
 
