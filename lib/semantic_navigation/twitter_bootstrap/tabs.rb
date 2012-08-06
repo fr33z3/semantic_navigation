@@ -18,17 +18,17 @@ module SemanticNavigation
       
       def navigation(object)
         content_tag :ul, nil, :id => show_id(:navigation, object.id),
-                              :class => merge_classes(:navigation, object.active, object.classes).push("pull-#{direction}") do
+                              :class => merge_classes(:navigation, object.active, [object.classes,"pull-#{direction}"]) do
           yield
         end
       end
       
       def node(object)
         content_tag :li, nil, :id => show_id(:leaf, object.id),
-                              :class => merge_classes(:leaf, object.active, object.classes).push(:dropdown) do
+                              :class => merge_classes(:leaf, object.active, [object.classes,'dropdown'].flatten) do
           content_tag(:a, :href => '#',
                           :id => show_id(:link, object.id),
-                          :class => merge_classes(:link, object.active, object.link_classes).push('dropdown-toggle'),
+                          :class => merge_classes(:link, object.active, [object.link_classes,'dropdown-toggle'].flatten),
                           'data-toggle'=> :dropdown) do
             [object.ico ? content_tag(:i,nil,:class => "icon-#{object.ico}") : '',
              object.name,
@@ -41,7 +41,7 @@ module SemanticNavigation
       
       def node_content(object)
         content_tag(:ul, nil, :id => show_id(:node, object.id),
-                              :class => merge_classes(:node, false, object.node_classes).push('dropdown-menu')) do
+                              :class => merge_classes(:node, false, [object.node_classes,'dropdown-menu'].flatten)) do
           yield
         end
       end
