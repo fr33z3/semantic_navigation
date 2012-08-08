@@ -105,4 +105,63 @@ describe SemanticNavigation::Core::Navigation do
     end
 
   end
+
+  describe '#render_if' do
+    it 'should return true if render_if proc is nil' do
+      navigation = SemanticNavigation::Core::Navigation.new({})
+      navigation.render_if.should be_true  
+    end
+
+    it 'should return true if render_if proc return true' do
+      navigation = SemanticNavigation::Core::Navigation.new({:render_if => proc{true}})
+      navigation.render_if.should be_true
+    end
+
+    it 'should return false if render_if proc return false' do
+      navigation = SemanticNavigation::Core::Navigation.new({:render_if => proc{false}})
+      navigation.render_if.should be_false
+    end
+  end
+
+  describe '#render' do
+    it 'should call renderer class :render_navigation method' do
+      renderer = mock
+      navigation = SemanticNavigation::Core::Navigation.new({})
+      renderer.should_receive(:render_navigation).with(navigation)
+      navigation.render(renderer)
+    end
+  end
+
+  describe '#mark_active' do
+    before :each do
+      @navigation = SemanticNavigation::Core::Navigation.new({})
+
+      @view_object = mock
+      SemanticNavigation::Configuration.stub(:view_object).and_return @view_object
+    end
+
+    it 'should define @active variable to false if no sub_elemetns' do
+      @navigation.mark_active
+      @navigation.instance_variable_get("@active").should be false
+    end
+
+    it 'should define @active variable to true if at least one sub_element is active' do
+      @navigation.item :first_item, '111'
+      @navigation.item :second_item, '222'
+      @view_object.should_receive(:current_page?).with('111').and_return true
+      @view_object.should_receive(:current_page?).with('222').and_return false
+      
+      @navigation.mark_active
+    end
+
+    it 'should define @active variable to false if all sub_elements is unactive' do
+      @navigation.item :first_item, '333'
+      @navigation.item :secodn_item, '444'
+      @view_object.should_receive(:current_page?).with('333').and_return false
+      @view_object.should_receive(:current_page?).with('444').and_return false
+
+      @navigation.mark_active
+    end
+
+  end
 end
