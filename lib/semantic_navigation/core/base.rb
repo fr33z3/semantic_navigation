@@ -26,6 +26,18 @@ module SemanticNavigation
       def view_object
         SemanticNavigation::Configuration.view_object
       end
+
+      def current_page?(options = {})
+       result = true
+        if options.is_a? Hash
+          options.each do |key, value|
+            result &= (view_object.params[key.to_sym].to_s == value.to_s)
+          end
+        else
+          result = view_object.current_page? options
+        end
+        result
+      end
       
     end    
   end

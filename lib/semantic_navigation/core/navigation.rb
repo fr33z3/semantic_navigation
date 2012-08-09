@@ -58,7 +58,7 @@ module SemanticNavigation
         if url.is_a? String
           controller_name, action_name = url.split('#')
           if controller_name && action_name
-            url = view_object.url_for(:controller => controller_name, :action => action_name) rescue url
+            url = {:controller => controller_name, :action => action_name}
           end
         end
         url
