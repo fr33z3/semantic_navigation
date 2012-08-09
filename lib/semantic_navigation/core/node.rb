@@ -18,7 +18,7 @@ module SemanticNavigation
       
       def mark_active
         @sub_elements.each{|element| element.mark_active}
-        @active = view_object.current_page?(@url)
+        @active = view_object.current_page?(@url) rescue false
         @active |= !@sub_elements.find{|element| element.active}.nil?
       end
             

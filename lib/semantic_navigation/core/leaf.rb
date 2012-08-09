@@ -18,7 +18,7 @@ module SemanticNavigation
       
       def mark_active
         if @url
-          @active = view_object.current_page?(@url)
+          @active = view_object.current_page?(@url) rescue false
         else
           @active = false
         end
