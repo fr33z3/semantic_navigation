@@ -86,24 +86,11 @@ describe SemanticNavigation::Core::Navigation do
 
     it "while creating the item make support for urls in format controller#action" do
       view_object = mock
-      @navigation.should_receive(:view_object).and_return view_object
-      view_object.should_receive(:url_for).with({:controller => 'controller', :action => 'action'}).and_return '/controller/action'
-      
+     
       @navigation.item :some_id, 'controller#action'
       @navigation.sub_elements.size.should == 1
-      @navigation.sub_elements.first.url.should == '/controller/action'
+      @navigation.sub_elements.first.url.should == {:controller => "controller", :action => "action"}
     end
-
-    it 'should return the passed string if url_for raises error' do
-      view_object = mock
-      @navigation.should_receive(:view_object).and_return view_object
-      view_object.should_receive(:url_for).with({:controller => 'controller', :action => 'action'}).and_raise :error
-      
-      @navigation.item :some_id, 'controller#action'
-      @navigation.sub_elements.size.should == 1
-      @navigation.sub_elements.first.url.should == 'controller#action'
-    end
-
   end
 
   describe '#render_if' do
@@ -162,6 +149,26 @@ describe SemanticNavigation::Core::Navigation do
 
       @navigation.mark_active
     end
+
+    it 'should use custom current_page? for Hash url params' do
+      @navigation.item :first_item, {:controller => "controller1", :action => "action"}
+      @navigation.item :second_item, {:controller => "controller2", :action => "action"}
+      @view_object.stub(:params).and_return({:controller => "controller1", :action => "action", :some_other_params => "blablabla"})
+      
+      @navigation.mark_active
+      @navigation.sub_elements[0].active.should be_true
+      @navigation.sub_elements[1].active.should be_false
+    end
+
+    it 'should work for route like urls as good as for Hash url params' do
+      @navigation.item :first_item, "controller1#action"
+      @navigation.item :second_item, "controller2#action"
+      @view_object.stub(:params).and_return({:controller => "controller1", :action => "action", :some_other_params => "blablabla"})
+
+      @navigation.mark_active
+      @navigation.sub_elements[0].active.should be_true
+      @navigation.sub_elements[1].active.should be_false
+    end    
 
   end
 end
