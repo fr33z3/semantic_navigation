@@ -171,4 +171,11 @@ describe SemanticNavigation::Core::Navigation do
     end    
 
   end
+
+  describe '#method_missing' do
+    it 'should get unknown method and call super' do
+      @navigation = SemanticNavigation::Core::Navigation.new({})
+      lambda{@navigation.unknow_method}.should raise_exception
+    end
+  end
 end
