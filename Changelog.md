@@ -1,3 +1,8 @@
+### 0.0.12 / Not yet
+
+* Bug fixes in renderers
+* Added possibility to pass an array of urls for one item
+
 ### 0.0.11 / August 4, 2012
 
 * Added possibility to define urls in Rails routes way like 'namespace/controller#action'

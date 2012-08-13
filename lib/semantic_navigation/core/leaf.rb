@@ -1,8 +1,12 @@
 module SemanticNavigation
   module Core
     class Leaf < Base
-      attr :url, :link_classes
+      attr :link_classes
       
+      def url
+        @url.is_a?(Array) ? @url.first : @url
+      end
+
       def initialize(options, level)
         super options, level
       end
@@ -18,7 +22,7 @@ module SemanticNavigation
       
       def mark_active
         if @url
-          @active = current_page?(@url) rescue false
+          @active = [@url].flatten(1).map{|u| current_page?(u) rescue false}.reduce(:"|")
         else
           @active = false
         end

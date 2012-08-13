@@ -33,11 +33,7 @@ module SemanticNavigation
     def self.styles_for(name)
       @@render_styles[name.to_sym] = proc
     end
-    
-    def self.to_s
-      "<#{self.name}:#{@@navigations};#{@@renderers}>"
-    end
-    
+       
     def self.register_renderer(*options)
       if options.count == 1
         name = options[0].name.demodulize.underscore.to_sym

@@ -19,11 +19,25 @@ describe SemanticNavigation::Core::Node do
       node = SemanticNavigation::Core::Node.new({:name => proc{'some name'}},1)
       node.name.should == 'some name'
     end
-  end	
+  end
+
+  describe '#url' do	
+    it 'should return passed url' do
+      node = SemanticNavigation::Core::Node.new({:url => {:controller => 'controller', :action => 'action'}},1)
+      node.url.should == {:controller => 'controller', :action => 'action'}
+    end
+
+    it 'should return first url if passed array of urls' do
+      node = SemanticNavigation::Core::Node.new({:url => [{:controller => 'controller1', :action => 'action'},
+                                                          {:controller => 'controller2', :action => 'action'}]},1)
+      node.url.should == {:controller => 'controller1', :action => 'action'}
+    end
+  end
 
   describe '#mark_active' do
     before :each do
-      @node = SemanticNavigation::Core::Node.new({:url => {:controller => :node_controller, :action => :action}},1)
+      @node = SemanticNavigation::Core::Node.new({:url => [{:controller => :node_controller, :action => :action},
+                                                           {:controller => :node_controller2, :action => :action}]},1)
 
       @view_object = mock
       @view_object.stub(:params).and_return({:action => "some", :action => "some"})      
@@ -79,6 +93,24 @@ describe SemanticNavigation::Core::Node do
       @node.sub_elements[0].active.should be_true
       @node.sub_elements[1].active.should be_false
       @node.active.should be true      
+    end
+
+    it 'should be active if at least one url in passed array is active' do
+      @view_object.stub(:params).and_return(:controller => 'node_controller2', :action => 'action')
+      @node.mark_active
+      @node.active.should be_true
+    end
+
+    it 'should accept array like urls with other urls' do
+      node = SemanticNavigation::Core::Node.new({:url => [['url','with','id'],
+                                                          :symbol_url_name,
+                                                          {:controller => 'hash', :action => 'url'},
+                                                          "string_url"]}, 1)
+      node.should_receive(:current_page?).with(['url','with','id'])
+      node.should_receive(:current_page?).with(:symbol_url_name)
+      node.should_receive(:current_page?).with({:controller => 'hash', :action => 'url'})
+      node.should_receive(:current_page?).with("string_url")
+      node.mark_active
     end
 
   end  

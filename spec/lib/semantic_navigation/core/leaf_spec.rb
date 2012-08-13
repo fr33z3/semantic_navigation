@@ -20,6 +20,19 @@ describe SemanticNavigation::Core::Leaf do
   	end
   end
 
+  describe '#url' do	
+    it 'should return passed url' do
+      leaf = SemanticNavigation::Core::Leaf.new({:url => {:controller => 'controller', :action => 'action'}},1)
+      leaf.url.should == {:controller => 'controller', :action => 'action'}
+    end
+
+    it 'should return first url if passed array of urls' do
+      leaf = SemanticNavigation::Core::Leaf.new({:url => [{:controller => 'controller1', :action => 'action'},
+                                                          {:controller => 'controller2', :action => 'action'}]},1)
+      leaf.url.should == {:controller => 'controller1', :action => 'action'}
+    end
+  end
+
   describe '#mark_active' do
 
   	before :each do
@@ -60,6 +73,26 @@ describe SemanticNavigation::Core::Leaf do
       leaf.mark_active.should be_false
       leaf.active.should be_false
   	end
+
+    it 'should be active if at least one url in passed array is active' do
+      leaf = SemanticNavigation::Core::Leaf.new({:url => [{:controller => :leaf_controller1, :action => :action},
+      	                                                  {:controller => :leaf_controller2, :action => :action}]},1)
+      @view_object.stub(:params).and_return(:controller => 'leaf_controller2', :action => 'action')
+      leaf.mark_active
+      leaf.active.should be_true
+    end
+
+    it 'should accept array like urls with other urls' do
+      leaf = SemanticNavigation::Core::Leaf.new({:url => [['url','with','id'],
+                                                          :symbol_url_name,
+                                                          {:controller => 'hash', :action => 'url'},
+                                                          "string_url"]}, 1)
+      leaf.should_receive(:current_page?).with(['url','with','id'])
+      leaf.should_receive(:current_page?).with(:symbol_url_name)
+      leaf.should_receive(:current_page?).with({:controller => 'hash', :action => 'url'})
+      leaf.should_receive(:current_page?).with("string_url")
+      leaf.mark_active
+    end  	
 
   end
 end
