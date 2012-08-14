@@ -52,16 +52,33 @@ describe SemanticNavigation::Core::Navigation do
                       ['array','like','url']]
     end
 
-    it "should receive item with Proc url and decode it to normal url" do
+    it "should receive item with Proc url and decode it to normal url (leaf)" do
       @navigation.item :leaf_id, proc{'some' + 'func'}
       @navigation.sub_elements.first.url.should == 'somefunc'
     end
 
-    it 'should receive item with array of urls one of each is a Proc' do
+    it 'should receive item with array of urls one of each is a Proc (leaf)' do
       @navigation.item :leaf_id, ['string_url',proc{'some' + 'func'}]
-      urls = @navigation.sub_elements.first.instance_variable_get(:'@url')
+      urls = @navigation.sub_elements.first.send :urls
       urls.should == ['string_url', 'somefunc']
     end
+
+    it "should receive item with Proc url and decode it to normal url (node)" do
+      @navigation.item :leaf_id, proc{'some' + 'func'} do
+        item :first_value, '#'
+        item :second_value, '#'
+      end
+      @navigation.sub_elements.first.url.should == 'somefunc'
+    end
+
+    it 'should receive item with array of urls one of each is a Proc (node)' do
+      @navigation.item :leaf_id, ['string_url',proc{'some' + 'func'}] do
+        item :first_value, '#'
+        item :second_value, '#'
+      end
+      urls = @navigation.sub_elements.first.send :urls
+      urls.should == ['string_url', 'somefunc']
+    end 
   end
 
   describe '#header' do

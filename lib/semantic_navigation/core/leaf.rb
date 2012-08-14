@@ -4,7 +4,7 @@ module SemanticNavigation
       attr :link_classes
       
       def url
-        @url.is_a?(Array) ? @url.first : @url
+        urls.first
       end
 
       def initialize(options, level)
@@ -22,9 +22,21 @@ module SemanticNavigation
       
       def mark_active
         if @url
-          @active = [@url].flatten(1).map{|u| current_page?(u) rescue false}.reduce(:"|")
+          @active = urls.map{|u| current_page?(u) rescue false}.reduce(:"|")
         else
           @active = false
+        end
+      end
+
+      private
+
+      def urls
+        [@url].flatten(1).map do |url|
+          if url.is_a?(Proc)
+            view_object.instance_eval(&url) rescue ''
+          else
+            url
+          end
         end
       end
       

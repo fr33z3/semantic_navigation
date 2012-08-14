@@ -4,7 +4,7 @@ module SemanticNavigation
       attr :link_classes, :node_classes
       
       def url
-        @url.is_a?(Array) ? @url.first : @url
+        urls.first
       end
       
       def initialize(options, level)
@@ -23,7 +23,7 @@ module SemanticNavigation
       
       def mark_active
         @sub_elements.each{|element| element.mark_active}
-        @active = [@url].flatten(1).map{|u| current_page?(u) rescue false}.reduce(:"|")
+        @active = urls.map{|u| current_page?(u) rescue false}.reduce(:"|")
         @active |= !@sub_elements.find{|element| element.active}.nil?
       end
             
@@ -31,6 +31,16 @@ module SemanticNavigation
       
       def i18n_name
         I18n.t("#{@i18n_name}.#{@id}", :default => '')
+      end
+
+      def urls
+        [@url].flatten(1).map do |url|
+          if url.is_a?(Proc)
+            view_object.instance_eval(&url) rescue ''
+          else
+            url
+          end          
+        end
       end
       
     end
