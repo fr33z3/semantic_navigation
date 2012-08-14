@@ -51,6 +51,17 @@ describe SemanticNavigation::Core::Navigation do
                       :symbolic_name,
                       ['array','like','url']]
     end
+
+    it "should receive item with Proc url and decode it to normal url" do
+      @navigation.item :leaf_id, proc{'some' + 'func'}
+      @navigation.sub_elements.first.url.should == 'somefunc'
+    end
+
+    it 'should receive item with array of urls one of each is a Proc' do
+      @navigation.item :leaf_id, ['string_url',proc{'some' + 'func'}]
+      urls = @navigation.sub_elements.first.instance_variable_get(:'@url')
+      urls.should == ['string_url', 'somefunc']
+    end
   end
 
   describe '#header' do

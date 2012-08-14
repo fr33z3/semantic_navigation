@@ -64,10 +64,12 @@ module SemanticNavigation
         if url.is_a? String
           controller_name, action_name = url.split('#')
           if controller_name && action_name
-            url = {:controller => controller_name, :action => action_name}
+            decoded_url = {:controller => controller_name, :action => action_name}  
           end
+        elsif url.is_a? Proc
+          decoded_url = view_object.instance_eval(&url)          
         end
-        url
+        decoded_url || url
       end
       
     end
