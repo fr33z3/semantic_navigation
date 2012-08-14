@@ -1,4 +1,8 @@
-### 0.0.12 / Not yet
+### 0.0.13 / August 14, 2012
+
+* Bugfixes for support array of route like links
+
+### 0.0.12 / August 13, 2012
 
 * Bug fixes in renderers
 * Added possibility to pass an array of urls for one item

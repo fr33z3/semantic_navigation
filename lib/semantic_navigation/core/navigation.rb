@@ -10,7 +10,13 @@ module SemanticNavigation
 
       def item(id, url=nil, options={}, &block)
         options[:id] = id.to_sym
-        options[:url] = decode_url(url) unless url.nil?
+        
+        if url.is_a?(Array)
+          options[:url] = [url].flatten(1).map{|url| decode_url(url)}
+        else
+          options[:url] = decode_url(url)
+        end
+
         options[:i18n_name] = @i18n_name
         
         if block_given?

@@ -42,6 +42,15 @@ describe SemanticNavigation::Core::Navigation do
       @navigation.sub_elements.size.should == 1
       @navigation.sub_elements.first.is_a?(SemanticNavigation::Core::Node).should be_true
   	end
+
+    it "should receive item method with array of urls and save them properly" do
+      @navigation.item :leaf_id, ['string/url',"controller#action",:symbolic_name,['array','like','url']]
+      urls = @navigation.sub_elements.first.instance_variable_get("@url")
+      urls.should == ['string/url',
+                      {:controller => 'controller', :action => 'action'},
+                      :symbolic_name,
+                      ['array','like','url']]
+    end
   end
 
   describe '#header' do
