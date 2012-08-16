@@ -145,6 +145,13 @@ describe SemanticNavigation::Core::Navigation do
       navigation = SemanticNavigation::Core::Navigation.new({:render_if => proc{false}})
       navigation.render_if.should be_false
     end
+
+    it 'should pass self to passed proc' do
+      navigation = SemanticNavigation::Core::Navigation.new({:id => :some_id, :render_if => proc{|o| o.id == :some_id}})
+      navigation.render_if.should be_true
+      navigation = SemanticNavigation::Core::Navigation.new({:id => :another_id, :render_if => proc{|o| o.id == :some_id}})
+      navigation.render_if.should be_false
+    end
   end
 
   describe '#render' do

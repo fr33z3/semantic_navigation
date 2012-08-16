@@ -6,7 +6,7 @@ module SemanticNavigation
       attr_writer :render_if
       
       def render_if
-        !@render_if.nil? ? view_object.instance_eval(&@render_if) : true
+        !@render_if.nil? ? view_object.instance_exec(self, &@render_if) : true
       end
       
       def initialize(options, level)
