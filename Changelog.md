@@ -1,3 +1,7 @@
+### 0.0.14
+* Now in render_if proc there is possibility to catch self(rendering element)
+* Items accept procs for links definitions
+
 ### 0.0.13 / August 14, 2012
 
 * Bugfixes for support array of route like links
