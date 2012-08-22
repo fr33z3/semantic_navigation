@@ -24,6 +24,13 @@ module SemanticNavigation
           element.instance_eval &block
         else
           element = Leaf.new(options, @level+1)
+          #Deprecation warning message
+          #TODO:Should be deleted after moving the header and divider definition via item
+          if element.url.nil? && !element.name.empty?
+            puts 'Warning: do not define `headers` using `item` method. Use `header` instead. This logic will be deprecated soon.'
+          elsif element.url.nil? && element.name.empty?
+            puts 'Warning: do not define `dividers` using `item` method. Use `divider` instead. This logic will be deprecated soon.'
+          end
         end
         
         @sub_elements.push element
