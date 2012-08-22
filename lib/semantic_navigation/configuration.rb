@@ -54,6 +54,10 @@ module SemanticNavigation
     def self.view_object
       @@view_object
     end
+
+    def self.view_object=(view_object)
+      @@view_object = view_object
+    end
     
     def self.navigation(name)
       @@navigations[name]
