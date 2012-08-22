@@ -16,6 +16,6 @@ module SemanticNavigation::HelperMethods
           (!level.nil? ? item.level < level : true)
       item = item.sub_elements.find{|e| e.active}
     end
-    item.name if item != navigation
+    item != navigation ? item.name : ''
   end
 end

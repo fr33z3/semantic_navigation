@@ -2,6 +2,7 @@
 * Now in render_if proc there is possibility to catch self(rendering element)
 * Items accept procs for links definitions
 * Fixed bug in active_item_for method
+* active_item_for now returns empty string instead of nil then no active items
 
 ### 0.0.13 / August 14, 2012
 
