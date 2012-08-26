@@ -2,6 +2,10 @@ require 'spec_helper'
 
 describe SemanticNavigation::Configuration do
   
+  before :each do
+    SemanticNavigation::Configuration.class_variable_set("@@navigations",{})
+  end
+
   describe "#run" do
   	it 'should receive class eval if block passed' do
       SemanticNavigation::Configuration.should_receive(:class_eval)

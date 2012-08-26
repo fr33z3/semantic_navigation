@@ -1,5 +1,6 @@
 require 'rspec'
 require 'rails'
+require 'action_view'
 require 'simplecov'
 SimpleCov.start do
   add_filter '/spec/'
