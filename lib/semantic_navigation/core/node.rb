@@ -1,7 +1,7 @@
 module SemanticNavigation
   module Core
     class Node < Navigation      
-      attr :link_classes, :node_classes
+      attr_accessor :link_classes, :node_classes
       
       def url
         urls.first

@@ -1,7 +1,7 @@
 module SemanticNavigation
   module Core
     class Navigation < Base
-      attr :sub_elements
+      attr_accessor :sub_elements
       
       def initialize(options, level = 0)
         @sub_elements = []

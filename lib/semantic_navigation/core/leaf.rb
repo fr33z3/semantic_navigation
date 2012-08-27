@@ -1,7 +1,7 @@
 module SemanticNavigation
   module Core
     class Leaf < Base
-      attr :link_classes
+      attr_accessor :link_classes
       
       def url
         urls.first

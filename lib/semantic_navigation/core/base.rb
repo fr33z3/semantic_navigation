@@ -2,7 +2,7 @@ module SemanticNavigation
   module Core
     class Base      
       
-      attr :id, :level, :classes, :active
+      attr_accessor :id, :level, :classes, :active
       attr_writer :render_if
       
       def render_if
