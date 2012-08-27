@@ -238,4 +238,79 @@ it 'should render one multilevel navigation' do
                       "</ul>"].join  	
   end  
 
+  it 'should render divider' do
+    @configuration.run do
+      navigate :menu do
+        divider
+      end
+    end
+
+    result = @view_object.navigation_for :menu, :as => :bootstrap_list
+    result.should == ["<ul class=\"nav nav-list\">",
+                        "<li class=\"divider\">",
+                        "</li>",
+                      "</ul>"].join
+  end
+
+  it 'should render header' do
+    @configuration.run do
+      navigate :menu do
+        header :some_header, :name => 'header_name'
+      end
+    end
+
+    result = @view_object.navigation_for :menu, :as => :bootstrap_list
+    result.should == ["<ul class=\"nav nav-list\">",
+                        "<li class=\"nav-header\">",
+                          'header_name',
+                        "</li>",
+                      "</ul>"].join
+  end
+
+  it 'shoul render item with icon' do
+    @configuration.run do
+      navigate :menu do
+        item :some_item, 'some_url', :name => 'item_name', :ico => 'user'
+      end
+    end
+
+    result = @view_object.navigation_for :menu, :as => :bootstrap_list
+    result.should == ["<ul class=\"nav nav-list\">",
+                        "<li>",
+                          "<a href=\"some_url\">",
+                            "<i class=\"icon-user\">",
+                            "</i>",
+                            "item_name",
+                          "</a>",
+                        "</li>",
+                      "</ul>"].join    
+  end
+
+  it 'should render node with icon' do
+    @configuration.run do
+      navigate :menu do
+        item :node, 'node_url', :name => 'some_name', :ico => 'user' do
+          item :some_item, 'some_url', :name => 'item_name'
+        end
+      end
+    end
+
+    result = @view_object.navigation_for :menu, :as => :bootstrap_list
+    result.should == ["<ul class=\"nav nav-list\">",
+                        "<li>",
+                          "<a href=\"node_url\">",
+                            "<i class=\"icon-user\"></i>",
+                            "some_name",
+                          "</a>",
+                          "<ul>",
+                            "<li>",
+                              "<a href=\"some_url\">",
+                                "item_name",
+                              "</a>",
+                            "</li>",
+                          "</ul>",
+                        "</li>",
+                      "</ul>"].join    
+  end
+
 end

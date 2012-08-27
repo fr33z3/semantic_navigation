@@ -66,7 +66,7 @@ module SemanticNavigation
             name
           else
             link_to name, object.url, :id => show_id(:link, object.id),
-                                             :class => merge_classes(:link, object.active, object.link_classes)            
+                                      :class => merge_classes(:link, object.active, object.link_classes)            
           end
         end
       end

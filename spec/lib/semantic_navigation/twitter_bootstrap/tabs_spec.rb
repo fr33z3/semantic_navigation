@@ -286,6 +286,25 @@ describe SemanticNavigation::TwitterBootstrap::Tabs do
                       "</ul>"].join  	
   end 
 
+  it 'should render navigation only item name if url is nil' do
+    @configuration.run do
+      navigate :menu do
+        item :url1, 'url1', :name => 'url1'
+        item :url2, nil, :name => 'url2'
+      end
+    end
 
+    result = @view_object.navigation_for :menu, :as => :bootstrap_tabs
+    result.should == ["<ul class=\"nav nav-tabs  pull-left\">",
+                        "<li>",
+                          "<a href=\"url1\">",
+                            "url1",
+                          "</a>",
+                        "</li>",
+                        "<li>",
+                          "url2",
+                        "</li>",
+                      "</ul>"].join   
+  end
 
 end

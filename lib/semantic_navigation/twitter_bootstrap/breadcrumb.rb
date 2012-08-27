@@ -46,7 +46,7 @@ module SemanticNavigation
           [object.ico ? content_tag(:i,nil,:class => "icon-#{object.ico}") : ''.html_safe,
           if last_as_link
             link_to(object.name, object.url, :id => show_id(:link, object.id),
-                                           :class => merge_classes(:link, object.active, object.link_classes))
+                                             :class => merge_classes(:link, object.active, object.link_classes))
           else
             object.name
           end].sum
