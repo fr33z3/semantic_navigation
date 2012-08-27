@@ -50,3 +50,8 @@ And try to render it in your layout(code in haml):
 Render the navigation using the semantic_navigation helper methods and options for them.
 
 For the information of how to configure and render your navigation read the <a href='https://github.com/fr33z3/semantic_navigation/wiki'>Wiki</a>
+
+Dependence:
+
+* Ruby >= 1.9.2
+* Rails >= 3.0.0 
