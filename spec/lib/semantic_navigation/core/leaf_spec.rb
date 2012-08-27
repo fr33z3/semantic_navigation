@@ -8,16 +8,66 @@ describe SemanticNavigation::Core::Leaf do
       leaf.name.should == 'first'
   	end
 
+    it 'should return basic name even if renderer name sended' do
+      leaf = SemanticNavigation::Core::Leaf.new({:id => :first, :name => 'first'},1)
+      leaf.name(:renderer_name).should == 'first'      
+    end
+
+    it 'should return the name for renderer' do
+      leaf = SemanticNavigation::Core::Leaf.new({:id => :first, 
+                                                 :name => {:some_renderer => 'some_renderer_name'}},
+                                                 1)
+      leaf.name(:some_renderer).should == 'some_renderer_name'
+    end
+
+    it 'should return default name for unexpected renderer' do
+      leaf = SemanticNavigation::Core::Leaf.new({:id => :first, 
+                                                 :name => {:default => 'default_name',
+                                                           :some_renderer => 'some_renderer_name'}},
+                                                 1)
+      leaf.name(:unexpected_renderer).should == 'default_name'
+    end
+
+    it 'should return nil if no name defined' do
+      leaf = SemanticNavigation::Core::Leaf.new({:id => :first}, 1)
+      leaf.name.should == ''
+    end
+
   	it 'should return i18n name if @name is nil' do
       leaf = SemanticNavigation::Core::Leaf.new({:id => :first, :i18n_name => 'some_navigation'},1)
       I18n.should_receive(:t).with("some_navigation.first", {:default => ""}).and_return 'first'
       leaf.name.should == 'first'
   	end
 
+    it 'should return i18n_name if @name is even if renderer name is sended' do
+      leaf = SemanticNavigation::Core::Leaf.new({:id => :first, :i18n_name => 'some_navigation'},1)
+      I18n.should_receive(:t).with("some_navigation.first", {:default => ""}).and_return 'first'
+      leaf.name(:renderer_name).should == 'first'      
+    end
+
+    it 'should return i18n_name for requested renderer' do
+      leaf = SemanticNavigation::Core::Leaf.new({:id => :first, :i18n_name => 'some_navigation'},1)
+      I18n.should_receive(:t).with("some_navigation.first", {:default => ""}).and_return({:requested_renderer => 'requested_renderer_name'})
+      leaf.name(:requested_renderer).should == 'requested_renderer_name'
+    end
+
+    it 'should return default i18n_name for unexpected renderer' do
+      leaf = SemanticNavigation::Core::Leaf.new({:id => :first, :i18n_name => 'some_navigation'},1)
+      I18n.should_receive(:t).with("some_navigation.first", {:default => ""}).and_return({:default => 'default_name', :requested_renderer => 'requested_renderer_name'})
+      leaf.name(:unexpected_renderer).should == 'default_name'
+    end    
+
+    it 'should return empty string if default i18n_name was not defined' do
+      leaf = SemanticNavigation::Core::Leaf.new({:id => :first, :i18n_name => 'some_navigation'},1)
+      I18n.should_receive(:t).with("some_navigation.first", {:default => ""}).and_return({:requested_renderer => 'requested_renderer_name'})
+      leaf.name(:unexpected_renderer).should == ''      
+    end
+
   	it 'should return result of proc block if name is_a? proc' do
       leaf = SemanticNavigation::Core::Leaf.new({:name => proc{["first", "item"].join(' ')}},1)
       leaf.name.should == "first item"
   	end
+
   end
 
   describe '#url' do	

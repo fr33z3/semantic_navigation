@@ -114,7 +114,6 @@ describe SemanticNavigation::Configuration do
       @renderer = mock
       @renderer_instance = mock
       @renderer.should_receive(:new).and_return @renderer_instance
-
       @navigation = mock
 
       SemanticNavigation::Configuration.class_variable_set "@@renderers", {:renderer => @renderer}
@@ -124,6 +123,7 @@ describe SemanticNavigation::Configuration do
     it 'should send render method to Renderer class; mark active navigation elements;' do
       @navigation.should_receive(:mark_active)
       @navigation.should_receive(:render).with(@renderer_instance)
+      @renderer_instance.should_receive(:name=).with(:renderer)      
       SemanticNavigation::Configuration.new.render(:some_menu, :renderer, {}, @view_object)
     end
 
@@ -131,6 +131,7 @@ describe SemanticNavigation::Configuration do
       @navigation.should_receive(:mark_active)
       @navigation.should_receive(:render).with(@renderer_instance)
       @renderer_instance.should_receive(:level=).with(1)
+      @renderer_instance.should_receive(:name=).with(:renderer)      
       SemanticNavigation::Configuration.new.render(:some_menu, :renderer, {:level => 1}, @view_object)      
     end
 
@@ -138,6 +139,7 @@ describe SemanticNavigation::Configuration do
       render_styles = proc{}
       SemanticNavigation::Configuration.class_variable_set "@@render_styles", {:renderer => render_styles}
       @renderer_instance.should_receive(:instance_eval).with(&render_styles)
+      @renderer_instance.should_receive(:name=).with(:renderer)      
       @navigation.should_receive(:mark_active)
       @navigation.should_receive(:render).with(@renderer_instance)
       SemanticNavigation::Configuration.new.render(:some_menu, :renderer, {}, @view_object)
@@ -146,6 +148,7 @@ describe SemanticNavigation::Configuration do
     it 'should set @@view_object in configuration class' do
       @navigation.should_receive(:mark_active)
       @navigation.should_receive(:render).with(@renderer_instance)
+      @renderer_instance.should_receive(:name=).with(:renderer)      
       SemanticNavigation::Configuration.new.render(:some_menu, :renderer, {}, @view_object)
       SemanticNavigation::Configuration.view_object.should == @view_object
     end

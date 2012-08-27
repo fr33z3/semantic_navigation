@@ -29,7 +29,7 @@ module SemanticNavigation
       end
       
       module ClassMethods
-        
+
         def style_accessor(hash)
           hash.keys.each do |key|
             class_eval "
@@ -66,7 +66,7 @@ module SemanticNavigation
       end
       
       module InstanceMethods  
-        attr_accessor :from_level, :until_level, :except_for
+        attr_accessor :from_level, :until_level, :except_for, :name
         
         def level=(level)
           @from_level = level

@@ -25,6 +25,7 @@ module SemanticNavigation
         renderer.instance_eval &@@render_styles[renderer_name]
       end
       options.keys.each{|key| renderer.send "#{key}=", options[key]}
+      renderer.name = renderer_name      
       navigation = @@navigations[menu_id]
       navigation.mark_active
       navigation.render(renderer)
