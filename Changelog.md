@@ -3,6 +3,7 @@
 * Items accept procs for links definitions
 * Fixed bug in active_item_for method
 * active_item_for now returns empty string instead of nil then no active items
+* added multiname support for items
 
 ### 0.0.13 / August 14, 2012
 
