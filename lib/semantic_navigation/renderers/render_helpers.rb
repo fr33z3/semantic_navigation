@@ -103,6 +103,10 @@ module SemanticNavigation
         def show_id(name, id)
           id if send("show_#{name}_id")
         end
+
+        def object_name(object)
+          object.name(self.name)
+        end
         
       end
   

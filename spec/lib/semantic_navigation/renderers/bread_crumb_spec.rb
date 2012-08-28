@@ -195,8 +195,8 @@ it 'should render one multilevel navigation breadcrumb' do
     @view_object.should_receive(:current_page?).and_return(true, false, false, false)
     result = @view_object.navigation_for :menu, :except_for => [:suburl1], :as => :breadcrumb
     result.should == ["<ul class=\"breadcrumb\" id=\"menu\">",
-    	                "<li id=\"url1\">",
-    	                  "url1",
+    	                  "<li id=\"url1\">",
+    	                    "url1",
                         "</li>",
                       "</ul>"].join  	
   end

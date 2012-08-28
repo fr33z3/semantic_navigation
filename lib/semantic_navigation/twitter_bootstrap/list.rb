@@ -24,9 +24,9 @@ module SemanticNavigation
       def node(object)
         if object.ico
           name = [content_tag(:i,nil,:class => "icon-#{object.ico}"),
-                  object.name].sum
+                  object_name(object)].sum
         else
-          name = object.name
+          name = object_name(object)
         end
         
         content_tag :li, nil, :id => show_id(:leaf, object.id),
@@ -45,7 +45,7 @@ module SemanticNavigation
       end
       
       def leaf(object)
-        if object.name.empty? && object.url.nil?
+        if object_name(object).empty? && object.url.nil?
           classes = 'divider'
         elsif object.url.nil?
           classes = 'nav-header'
@@ -55,9 +55,9 @@ module SemanticNavigation
         
         if object.ico
           name = [content_tag(:i,nil,:class => "icon-#{object.ico}"),
-                  object.name].sum
+                  object_name(object)].sum
         else
-          name = object.name
+          name = object_name(object)
         end
                 
         content_tag :li, nil, :id => show_id(:leaf, object.id),

@@ -33,7 +33,7 @@ module SemanticNavigation
         content_tag(:li, nil, :id => show_id(:leaf, object.id),
                               :class => merge_classes(:leaf, object.active, object.classes)) do
           [object.ico ? content_tag(:i,nil,:class => "icon-#{object.ico}") : ''.html_safe,
-          link_to(object.name, object.url, :id => show_id(:link, object.id),
+          link_to(object_name(object), object.url, :id => show_id(:link, object.id),
                                            :class => merge_classes(:link, object.active, object.link_classes)),
           content_tag(:span, nil, :class=> [:divider]) {breadcrumb_separator}].sum
         end +
@@ -45,10 +45,10 @@ module SemanticNavigation
                               :class => merge_classes(:leaf, object.active, object.classes) do
           [object.ico ? content_tag(:i,nil,:class => "icon-#{object.ico}") : ''.html_safe,
           if last_as_link
-            link_to(object.name, object.url, :id => show_id(:link, object.id),
+            link_to(object_name(object), object.url, :id => show_id(:link, object.id),
                                              :class => merge_classes(:link, object.active, object.link_classes))
           else
-            object.name
+            object_name(object)
           end].sum
         end
       end

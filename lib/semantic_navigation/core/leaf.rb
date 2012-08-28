@@ -34,7 +34,7 @@ module SemanticNavigation
           name = name[renderer_name.to_sym] || name[:default]
         end
         name || ''
-      end      
+      end
 
       def urls
         [@url].flatten(1).map do |url|

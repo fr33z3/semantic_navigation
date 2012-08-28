@@ -4,6 +4,31 @@ describe SemanticNavigation::Core::Node do
   
   describe '#name' do
 
+    it 'should return basic name even if renderer name sended' do
+      node = SemanticNavigation::Core::Node.new({:id => :first, :name => 'first'},1)
+      node.name(:renderer_name).should == 'first'      
+    end
+
+    it 'should return the name for renderer' do
+      node = SemanticNavigation::Core::Node.new({:id => :first, 
+                                                 :name => {:some_renderer => 'some_renderer_name'}},
+                                                 1)
+      node.name(:some_renderer).should == 'some_renderer_name'
+    end
+
+    it 'should return default name for unexpected renderer' do
+      node = SemanticNavigation::Core::Node.new({:id => :first, 
+                                                 :name => {:default => 'default_name',
+                                                           :some_renderer => 'some_renderer_name'}},
+                                                 1)
+      node.name(:unexpected_renderer).should == 'default_name'
+    end
+
+    it 'should return nil if no name defined' do
+      node = SemanticNavigation::Core::Node.new({:id => :first}, 1)
+      node.name.should == ''
+    end    
+
     it 'should return passed name while creating node' do
       node = SemanticNavigation::Core::Node.new({:name => 'some name'}, 1)
       node.name.should == 'some name'

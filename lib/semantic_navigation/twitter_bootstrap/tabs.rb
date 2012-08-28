@@ -31,7 +31,7 @@ module SemanticNavigation
                           :class => merge_classes(:link, object.active, [object.link_classes,'dropdown-toggle'].flatten),
                           'data-toggle'=> :dropdown) do
             [object.ico ? content_tag(:i,nil,:class => "icon-#{object.ico}") : '',
-             object.name,
+             object_name(object),
              content_tag(:b,nil,:class => :caret)
             ].sum.html_safe                     
           end +
@@ -49,9 +49,9 @@ module SemanticNavigation
       def leaf(object)
         if object.ico
           name = [content_tag(:i,nil,:class => "icon-#{object.ico}"),
-                  object.name].sum
+                  object_name(object)].sum
         else
-          name = object.name
+          name = object_name(object)
         end
                 
         content_tag :li, nil, :id => show_id(:leaf, object.id),
