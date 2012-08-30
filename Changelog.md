@@ -1,4 +1,7 @@
-### 0.0.14
+### 0.1.0 
+* Making register_renderer function to catch already registered renderer class by received symbol name
+
+### 0.0.14 / August 29, 2012
 * Now in render_if proc there is possibility to catch self(rendering element)
 * Items accept procs for links definitions
 * Fixed bug in active_item_for method

@@ -4,7 +4,7 @@ This is semantic_navigation gem
 Forget fat layouts, views and controllers. This gem will do all the menu staff for you.
 You simply just have to generate configuration file, fill it with your menu hierarchy and renderer it wherever you want.
 
-Symply and customizable it will make for you all the routings you were spending a lot of time before.
+Simply and customizable it will make for you all the routins you were spending a lot of time before.
 
 * semantic_navigation supports defining as many separate menus as you want and they can be as deep as you need.
 * supports different styles of url definitions ('route#like', :symbols, 'strings', {hash: 'like'})
