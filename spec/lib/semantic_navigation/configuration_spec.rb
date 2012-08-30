@@ -93,6 +93,14 @@ describe SemanticNavigation::Configuration do
       renderers[:some_renderer].should == SomeRenderer
     end
 
+    it 'should reregister the renderer class regigstered before' do
+      SemanticNavigation::Configuration.register_renderer SomeRenderer
+      SemanticNavigation::Configuration.register_renderer :another_name, :some_renderer
+      renderers = SemanticNavigation::Configuration.class_variable_get("@@renderers")
+      renderers[:another_name].should_not be_nil
+      renderers[:another_name].should == SomeRenderer      
+    end
+
     it 'should register a new helper method based on name of a renderer and depending on method navigation_for' do
       SemanticNavigation::Configuration.register_renderer SomeRenderer
       SemanticNavigation::HelperMethods.method_defined?(:some_renderer_for).should be_true

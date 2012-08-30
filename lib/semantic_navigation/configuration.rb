@@ -41,7 +41,7 @@ module SemanticNavigation
         renderer_class = options[0]
       elsif options.count == 2 
         name = options[0].to_sym
-        renderer_class = options[1]
+        renderer_class = options[1].is_a?(Symbol) ? @@renderers[options[1]] : options[1]
       end
       @@renderers[name] = renderer_class
       SemanticNavigation::HelperMethods.class_eval "
