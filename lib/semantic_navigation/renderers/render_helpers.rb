@@ -1,7 +1,7 @@
 module SemanticNavigation
   module Renderers
     module RenderHelpers
-      
+
       def self.included(base)
         base.send :include, InstanceMethods
         base.extend(ClassMethods)
@@ -10,24 +10,24 @@ module SemanticNavigation
                          :node_active_class => [:active],
                          :leaf_active_class => [:active],
                          :link_active_class => [:active],
-      
+
                          :show_navigation_active_class => true,
                          :show_node_active_class => true,
                          :show_leaf_active_class => true,
                          :show_link_active_class => true,
-      
+
                          :show_navigation_id => true,
                          :show_node_id => true,
                          :show_leaf_id => true,
                          :show_link_id => true,
-      
-                         :navigation_default_classes => [], 
+
+                         :navigation_default_classes => [],
                          :node_default_classes => [],
                          :leaf_default_classes => [],
-                         :link_default_classes => []   
+                         :link_default_classes => []
         end
       end
-      
+
       module ClassMethods
 
         def style_accessor(hash)
@@ -50,9 +50,9 @@ module SemanticNavigation
              end
             "
             send key, hash[key]
-          end        
+          end
         end
-        
+
         def property_for(class_name,name)
           class_object = "semantic_navigation/core/#{class_name}".classify.constantize
           class_object.class_eval "
@@ -64,24 +64,24 @@ module SemanticNavigation
           "
         end
       end
-      
-      module InstanceMethods  
+
+      module InstanceMethods
         attr_accessor :from_level, :until_level, :except_for, :name
-        
+
         def level=(level)
           @from_level = level
           @until_level = level
         end
-        
+
         def levels=(level_range)
           @from_level = level_range.first
           @until_level = level_range.last
         end
-        
+
         def initialize
           @view_object = SemanticNavigation::Configuration.view_object
         end
-        
+
         private
 
         def content_tag(tag_name, content = nil, options={}, &block)
@@ -107,9 +107,9 @@ module SemanticNavigation
         def object_name(object)
           object.name(self.name)
         end
-        
+
       end
-  
-    end    
+
+    end
   end
 end

@@ -1,3 +1,3 @@
 class CustomRenderer
-  
+
 end

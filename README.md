@@ -35,7 +35,7 @@ $ rails generate semantic_navigation:install
 
 ###Quick start
 
-Configure your navigation in config/semantic_navigation.rb
+Configure your navigation in config/initializers/semantic_navigation.rb
 
 <pre><code>
 SemanticNavigation::Configuration.run do
@@ -66,4 +66,4 @@ For the information of how to configure and render your navigation read the <a h
 Dependence:
 
 * Ruby >= 1.9.2
-* Rails >= 3.0.0 
+* Rails >= 3.0.0

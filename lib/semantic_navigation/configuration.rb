@@ -1,6 +1,6 @@
 module SemanticNavigation
   class Configuration
-    
+
     @@view_object = nil
     @@navigations = {}
     @@renderers = {}
@@ -9,7 +9,7 @@ module SemanticNavigation
     def self.run(&block)
       self.class_eval &block if block_given?
     end
-    
+
     def self.navigate(id, options = {}, &block)
       options[:id] = id.to_sym
       options[:i18n_name] = "semantic_navigation.#{id}"
@@ -17,7 +17,7 @@ module SemanticNavigation
       navigation.instance_eval &block if block_given?
       @@navigations[id.to_sym] = navigation
     end
-    
+
     def render(menu_id, renderer_name, options, view_object)
       @@view_object = view_object
       renderer = @@renderers[renderer_name].new
@@ -25,21 +25,21 @@ module SemanticNavigation
         renderer.instance_eval &@@render_styles[renderer_name]
       end
       options.keys.each{|key| renderer.send "#{key}=", options[key]}
-      renderer.name = renderer_name      
+      renderer.name = renderer_name
       navigation = @@navigations[menu_id]
       navigation.mark_active
       navigation.render(renderer)
     end
-    
+
     def self.styles_for(name)
       @@render_styles[name.to_sym] = proc
     end
-       
+
     def self.register_renderer(*options)
       if options.count == 1
         name = options[0].name.demodulize.underscore.to_sym
         renderer_class = options[0]
-      elsif options.count == 2 
+      elsif options.count == 2
         name = options[0].to_sym
         renderer_class = options[1].is_a?(Symbol) ? @@renderers[options[1]] : options[1]
       end
@@ -51,7 +51,7 @@ module SemanticNavigation
         end
       "
     end
-    
+
     def self.view_object
       @@view_object
     end
@@ -59,7 +59,7 @@ module SemanticNavigation
     def self.view_object=(view_object)
       @@view_object = view_object
     end
-    
+
     def self.navigation(name)
       @@navigations[name]
     end

@@ -2,7 +2,7 @@ require 'semantic_navigation/helper_methods'
 
 module SemanticNavigation
   class Railtie < Rails::Railtie
-   
+
     initializer "semantic_navigation.extend_helper_methods" do
       ActiveSupport.on_load :action_view do
         ActionView::Base.send :include, HelperMethods
@@ -16,7 +16,7 @@ module SemanticNavigation
       conf.register_renderer :bootstrap_tabs, TwitterBootstrap::Tabs
       conf.register_renderer :bootstrap_pills, TwitterBootstrap::Tabs
       conf.register_renderer :bootstrap_simple_nav, SemanticNavigation::Renderers::List
-      
+
       conf.styles_for :bootstrap_pills do
         navigation_default_classes [:nav, 'nav-pills']
       end
@@ -24,16 +24,16 @@ module SemanticNavigation
         navigation_default_classes [:nav]
       end
     end
-    
+
     if Rails.env == "production"
       config.after_initialize {
-        load "#{Rails.root}/config/semantic_navigation.rb"
+        load "#{Rails.root}/config/initializers/semantic_navigation.rb"
       }
     else
       ActionDispatch::Callbacks.before {
-        load "#{Rails.root}/config/semantic_navigation.rb"
-      }      
+        load "#{Rails.root}/config/initializers/semantic_navigation.rb"
+      }
     end
-    
+
   end
 end

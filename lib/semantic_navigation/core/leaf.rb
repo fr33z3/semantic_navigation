@@ -2,7 +2,7 @@ module SemanticNavigation
   module Core
     class Leaf < Base
       attr_accessor :link_classes
-      
+
       def url
         urls.first
       end
@@ -10,14 +10,14 @@ module SemanticNavigation
       def initialize(options, level)
         super options, level
       end
-      
+
       def name(renderer_name = nil)
         rendering_name = @name
         rendering_name = rendering_name[renderer_name.to_sym] || rendering_name[:default] if rendering_name.is_a?(Hash)
         rendering_name = view_object.instance_eval(&rendering_name).to_s if rendering_name.is_a?(Proc)
         rendering_name || i18n_name(renderer_name)
       end
-      
+
       def mark_active
         if @url
           @active = urls.map{|u| current_page?(u) rescue false}.reduce(:"|")
@@ -45,7 +45,7 @@ module SemanticNavigation
           end
         end
       end
-      
-    end    
+
+    end
   end
 end
