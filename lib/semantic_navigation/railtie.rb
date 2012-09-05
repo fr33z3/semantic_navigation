@@ -25,13 +25,23 @@ module SemanticNavigation
       end
     end
 
+    def self.actual_config_location
+      locations =  ["#{Rails.root}/config/initializers/semantic_navigation.rb", 
+                    "#{Rails.root}/config/semantic_navigation.rb"]
+      actual_location = locations.find{|l| File.exists?(l)}
+      throw "Please create a semantic_navigation configuration file before starting the project!" unless actual_location
+      puts "DEPRECATION WARNING: Please move the configuration file from #{locations.second} 
+            to #{locations.first}! Current configuration file path will be deprecated soon!" if locations.find_index(actual_location) == 1
+      actual_location
+    end
+   
     if Rails.env == "production"
       config.after_initialize {
-        load "#{Rails.root}/config/initializers/semantic_navigation.rb"
+        load SemanticNavigation::Railtie.actual_config_location
       }
     else
       ActionDispatch::Callbacks.before {
-        load "#{Rails.root}/config/initializers/semantic_navigation.rb"
+        load SemanticNavigation::Railtie.actual_config_location
       }
     end
 
