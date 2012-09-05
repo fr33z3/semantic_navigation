@@ -6,9 +6,9 @@ module SemanticNavigation
 
       style_accessor :last_as_link => false,
                      :breadcrumb_separator => '/'
-      
+
       navigation_default_classes [:breadcrumb]
-      
+
       show_navigation_active_class false
       show_node_active_class false
       show_leaf_active_class false
@@ -17,18 +17,18 @@ module SemanticNavigation
       show_node_id false
       show_leaf_id false
       show_link_id false
-      
+
       property_for :base, :ico
-      
+
       private
-      
+
       def navigation(object)
         content_tag :ul, nil, :id => show_id(:navigation, object.id),
                               :class => merge_classes(:navigation, object.active, object.classes) do
           yield
         end
       end
-      
+
       def node(object)
         content_tag(:li, nil, :id => show_id(:leaf, object.id),
                               :class => merge_classes(:leaf, object.active, object.classes)) do
@@ -39,7 +39,7 @@ module SemanticNavigation
         end +
         yield
       end
-     
+
       def leaf(object)
         content_tag :li, nil, :id => show_id(:leaf, object.id),
                               :class => merge_classes(:leaf, object.active, object.classes) do
@@ -52,7 +52,7 @@ module SemanticNavigation
           end].sum
         end
       end
-      
+
     end
   end
 end

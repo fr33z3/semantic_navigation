@@ -2,7 +2,7 @@ module SemanticNavigation
   module Core
     class Navigation < Base
       attr_accessor :sub_elements
-      
+
       def initialize(options, level = 0)
         @sub_elements = []
         super options, level
@@ -10,7 +10,7 @@ module SemanticNavigation
 
       def item(id, url=nil, options={}, &block)
         options[:id] = id.to_sym
-        
+
         if url.is_a?(Array)
           options[:url] = [url].flatten(1).map{|url| decode_url(url)}
         else
@@ -18,7 +18,7 @@ module SemanticNavigation
         end
 
         options[:i18n_name] = @i18n_name
-        
+
         if block_given?
           element = Node.new(options, @level+1)
           element.instance_eval &block
@@ -32,7 +32,7 @@ module SemanticNavigation
             puts 'Warning: do not define `dividers` using `item` method. Use `divider` instead. This logic will be deprecated soon.'
           end
         end
-        
+
         @sub_elements.push element
       end
 
@@ -59,7 +59,7 @@ module SemanticNavigation
       end
 
       def mark_active
-        @sub_elements.each do |element| 
+        @sub_elements.each do |element|
           element.mark_active
         end
         @active = !@sub_elements.find{|element| element.active}.nil?
@@ -71,12 +71,12 @@ module SemanticNavigation
         if url.is_a? String
           controller_name, action_name = url.split('#')
           if controller_name && action_name
-            decoded_url = {:controller => controller_name, :action => action_name}  
-          end        
+            decoded_url = {:controller => controller_name, :action => action_name}
+          end
         end
         decoded_url || url
       end
-      
+
     end
   end
 end
