@@ -10,7 +10,7 @@ describe SemanticNavigation::HelperMethods do
 
   describe "#navigation_for" do
 
-    before :each do 
+    before :each do
       SemanticNavigation::Configuration.stub!(:new).and_return (@config_instance = mock)
     end
 
@@ -41,42 +41,42 @@ describe SemanticNavigation::HelperMethods do
 
     it 'should return name for an active item' do
       SemanticNavigation::Configuration.navigate :some_menu do
-      	item :first, '/first', :name => 'First'
-      	item :second, '/second', :name => 'Second'
-  	  end
-  	  @view_instance.should_receive(:current_page?).with('/first').and_return false
-  	  @view_instance.should_receive(:current_page?).with('/second').and_return true
-  	  result = @view_instance.active_item_for :some_menu
-  	  result.should == 'Second'
+        item :first, '/first', :name => 'First'
+        item :second, '/second', :name => 'Second'
+      end
+      @view_instance.should_receive(:current_page?).with('/first').and_return false
+      @view_instance.should_receive(:current_page?).with('/second').and_return true
+      result = @view_instance.active_item_for :some_menu
+      result.should == 'Second'
     end
 
     it 'should return name for a last level' do
       SemanticNavigation::Configuration.navigate :some_menu do
-      	item :first_node, '/first_node', :name => 'First node' do
-      	  item :first, '/first', :name => 'First'
-      	end
-      	item :second_node, 'second_node', :name => 'Second node' do
-      	  item :second, '/second', :name => 'Second'
-      	end
-  	  end
-  	  @view_instance.should_receive(:current_page?).exactly(4).times.and_return(false, false,true,false) # First, First node, Second, Second node
-  	  result = @view_instance.active_item_for :some_menu
-  	  result.should == 'Second'
-    end    
+        item :first_node, '/first_node', :name => 'First node' do
+          item :first, '/first', :name => 'First'
+        end
+        item :second_node, 'second_node', :name => 'Second node' do
+          item :second, '/second', :name => 'Second'
+        end
+      end
+      @view_instance.should_receive(:current_page?).exactly(4).times.and_return(false, false,true,false) # First, First node, Second, Second node
+      result = @view_instance.active_item_for :some_menu
+      result.should == 'Second'
+    end
 
     it 'should return name for a requested level' do
       SemanticNavigation::Configuration.navigate :some_menu do
-      	item :first_node, '/first_node', :name => 'First node' do
-      	  item :first, '/first', :name => 'First'
-      	end
-      	item :second_node, 'second_node', :name => 'Second node' do
-      	  item :second, '/second', :name => 'Second'
-      	end
-  	  end
-  	  @view_instance.should_receive(:current_page?).exactly(4).times.and_return(false, false,true,false) # First, First node, Second, Second node
-  	  result = @view_instance.active_item_for :some_menu, 1
-  	  result.should == 'Second node'
-    end  
+        item :first_node, '/first_node', :name => 'First node' do
+          item :first, '/first', :name => 'First'
+        end
+        item :second_node, 'second_node', :name => 'Second node' do
+          item :second, '/second', :name => 'Second'
+        end
+      end
+      @view_instance.should_receive(:current_page?).exactly(4).times.and_return(false, false,true,false) # First, First node, Second, Second node
+      result = @view_instance.active_item_for :some_menu, 1
+      result.should == 'Second node'
+    end
 
   end
 
