@@ -43,10 +43,11 @@ module SemanticNavigation
         @sub_elements.push Leaf.new(options, @level+1)
       end
 
-      def divider
-        options = {:id => :divider,
-                   :url => nil,
-                   :i18n_name => nil}
+      def divider(options = {})
+        options[:id] = :divider
+        options[:url] = nil
+        options[:i18n_name] = nil
+        options[:name] = nil
         @sub_elements.push Leaf.new(options, @level+1)
       end
 
