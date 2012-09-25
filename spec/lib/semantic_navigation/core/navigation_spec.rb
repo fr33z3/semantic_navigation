@@ -216,6 +216,64 @@ describe SemanticNavigation::Core::Navigation do
 
   end
 
+  describe "#render_if scope" do
+    before :each do
+      @navigation = SemanticNavigation::Core::Navigation.new({})
+
+      @view_object = mock
+      SemanticNavigation::Configuration.stub(:view_object).and_return @view_object
+    end
+
+    it "should scope the items" do
+      @navigation.scope do
+        item :first_item,  "controller1#action"
+        item :second_item, "controller2#action"
+      end
+
+      @navigation.sub_elements.size.should == 2
+    end
+
+    it "should scope the creating items options" do
+      some_condition = mock
+      @navigation.scope :render_if => some_condition do
+        item :first_item, "controller1#action"
+        item :second_item, "controller2#action"
+      end
+
+      @navigation.sub_elements[0..1].each do |element|
+        element.instance_variable_get(:"@render_if").should == some_condition
+      end
+    end
+
+    it "should not scope unscoped items" do
+      some_condition = mock
+      @navigation.scope render_if: some_condition do
+        item :first_item, "controller1#action"
+        item :second_item, "controller2#action"
+      end
+      @navigation.item :third_item, "controller3#action"
+
+      last_item = @navigation.sub_elements.last
+      last_item.instance_variable_get(:"@render_if").should == nil
+    end
+
+    it "should not override defined scopes" do
+      some_condition = mock
+      some_condition2 = mock
+      @navigation.scope :render_if => some_condition do
+        item :first_item, "controller1#action", render_if: some_condition2
+        item :second_item, "controller2#action"
+      end
+
+      first_item = @navigation.sub_elements.first
+      second_item = @navigation.sub_elements.last
+
+      first_item.instance_variable_get(:"@render_if").should == some_condition2
+      second_item.instance_variable_get(:"@render_if").should == some_condition
+    end
+
+  end
+
   describe '#method_missing' do
     it 'should get unknown method and call super' do
       @navigation = SemanticNavigation::Core::Navigation.new({})

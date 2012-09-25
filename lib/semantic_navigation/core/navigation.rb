@@ -5,11 +5,13 @@ module SemanticNavigation
 
       def initialize(options, level = 0)
         @sub_elements = []
+        @scope_options = {}
         super options, level
       end
 
       def item(id, url=nil, options={}, &block)
         options[:id] = id.to_sym
+        options[:render_if] ||= @scope_options[:render_if]
 
         if url.is_a?(Array)
           options[:url] = [url].flatten(1).map{|url| decode_url(url)}
@@ -57,6 +59,12 @@ module SemanticNavigation
         else
           super(m,args,&block)
         end
+      end
+
+      def scope(options = {}, &block)
+        @scope_options = options
+        self.instance_eval &block
+        @scope_options = {}
       end
 
       def mark_active
