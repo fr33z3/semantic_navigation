@@ -6,25 +6,12 @@ module SemanticNavigation
         base.send :include, InstanceMethods
         base.extend(ClassMethods)
         base.class_eval do
-          style_accessor :navigation_active_class => [:active],
-                         :node_active_class => [:active],
-                         :leaf_active_class => [:active],
-                         :link_active_class => [:active],
-
-                         :show_navigation_active_class => true,
-                         :show_node_active_class => true,
-                         :show_leaf_active_class => true,
-                         :show_link_active_class => true,
-
-                         :show_navigation_id => true,
-                         :show_node_id => true,
-                         :show_leaf_id => true,
-                         :show_link_id => true,
-
-                         :navigation_default_classes => [],
-                         :node_default_classes => [],
-                         :leaf_default_classes => [],
-                         :link_default_classes => []
+          [:navigation, :node, :leaf, :link].each do |e|
+            style_accessor :"#{e}_active_class" => [:active],
+                           :"show_#{e}_active_class" => true,
+                           :"show_#{e}_id" => true,
+                           :"#{e}_default_classes" => []
+          end
         end
       end
 
