@@ -40,6 +40,7 @@ module SemanticNavigation
 
       def header(id, options={})
         options[:id] = id.to_sym
+        options[:render_if] ||= @scope_options[:render_if]
         options[:url] = nil
         options[:i18n_name] = @i18n_name
         @sub_elements.push Leaf.new(options, @level+1)
@@ -47,6 +48,7 @@ module SemanticNavigation
 
       def divider(options = {})
         options[:id] = :divider
+        options[:render_if] ||= @scope_options[:render_if]
         options[:url] = nil
         options[:i18n_name] = nil
         options[:name] = nil
