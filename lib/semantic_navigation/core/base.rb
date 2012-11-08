@@ -2,7 +2,7 @@ module SemanticNavigation
   module Core
     class Base
 
-      attr_accessor :id, :level, :classes, :active
+      attr_accessor :id, :level, :classes, :active, :html
       attr_writer :render_if
 
       def render_if
@@ -11,6 +11,7 @@ module SemanticNavigation
 
       def initialize(options, level)
         @level = level
+        @html = {}
         options.keys.each do |option_name|
           instance_variable_set :"@#{option_name}", options[option_name]
         end

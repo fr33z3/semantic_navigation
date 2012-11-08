@@ -4,10 +4,13 @@ module SemanticNavigation
       include UrlMethods
       include NameMethods
 
-      attr_accessor :link_classes, :node_classes
+      attr_accessor :link_classes, :node_classes,
+                    :link_html, :node_html
 
       def initialize(options, level)
         @url = []
+        @link_html = {}
+        @node_html = {}
         super options, level
       end
 
