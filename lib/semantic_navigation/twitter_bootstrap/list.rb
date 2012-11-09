@@ -15,31 +15,35 @@ module SemanticNavigation
       private
 
       def navigation(object)
-        content_tag :ul, nil, :id => show_id(:navigation, object.id),
-                                :class => merge_classes(:navigation, object.active, object.classes) do
+        content_tag :ul, nil, {id: show_id(:navigation, object.id),
+                               class: merge_classes(:navigation, object.active, object.classes)
+                              }.merge(object.html) do
           yield
         end
       end
 
       def node(object)
         if object.ico
-          name = [content_tag(:i,nil,:class => "icon-#{object.ico}"),
+          name = [content_tag(:i,nil, class: "icon-#{object.ico}"),
                   object_name(object)].sum
         else
           name = object_name(object)
         end
 
-        content_tag :li, nil, :id => show_id(:leaf, object.id),
-                              :class => merge_classes(:leaf, object.active, object.classes) do
-           link_to(name, object.url, :id => show_id(:link, object.id),
-                                            :class => merge_classes(:link, object.active, object.link_classes)) +
+        content_tag :li, nil, {id: show_id(:leaf, object.id),
+                               class: merge_classes(:leaf, object.active, object.classes)
+                              }.merge(object.html) do
+           link_to(name, object.url, {id: show_id(:link, object.id),
+                                      class: merge_classes(:link, object.active, object.link_classes)
+                                     }.merge(object.link_html)) +
           yield
         end
       end
 
       def node_content(object)
-        content_tag(:ul, nil, :id => show_id(:node, object.id),
-                              :class => merge_classes(:node, object.active, object.node_classes)) do
+        content_tag(:ul, nil, {id: show_id(:node, object.id),
+                               class: merge_classes(:node, object.active, object.node_classes)
+                              }.merge(object.node_html)) do
           yield
         end
       end
@@ -54,19 +58,21 @@ module SemanticNavigation
         end
 
         if object.ico
-          name = [content_tag(:i,nil,:class => "icon-#{object.ico}"),
+          name = [content_tag(:i,nil,class: "icon-#{object.ico}"),
                   object_name(object)].sum
         else
           name = object_name(object)
         end
 
-        content_tag :li, nil, :id => show_id(:leaf, object.id),
-                              :class => classes do
+        content_tag :li, nil, {id: show_id(:leaf, object.id),
+                               class: classes
+                              }.merge(object.html) do
           if object.url.nil?
             name
           else
-            link_to name, object.url, :id => show_id(:link, object.id),
-                                      :class => merge_classes(:link, object.active, object.link_classes)
+            link_to name, object.url, {id: show_id(:link, object.id),
+                                       class: merge_classes(:link, object.active, object.link_classes)
+                                      }.merge(object.link_html)
           end
         end
       end
