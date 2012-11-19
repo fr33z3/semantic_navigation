@@ -12,6 +12,7 @@ module SemanticNavigation
                            :"show_#{e}_id" => true,
                            :"#{e}_default_classes" => []
           end
+          style_accessor menu_tag: :ul
         end
       end
 
@@ -93,6 +94,12 @@ module SemanticNavigation
 
         def object_name(object)
           object.name(self.name)
+        end
+
+        def content_menu_tag(parameters)
+          content_tag menu_tag, nil, parameters do
+            yield
+          end
         end
 
       end

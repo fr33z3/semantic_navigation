@@ -48,6 +48,69 @@ describe SemanticNavigation::Renderers::List do
                       "</ul>"].join
   end
 
+  it 'renders one level navigation with specific menu tag' do
+    @configuration.run do
+
+      register_renderer :my_list, :list
+
+      styles_for :my_list do
+        menu_tag :ol
+      end
+
+      navigate :menu do
+        item :url1, 'url1', :name => 'url1'
+        item :url2, 'url2', :name => 'url2'
+      end
+    end
+
+    result = @view_object.navigation_for :menu, as: :my_list
+    result.should == ["<ol class=\"list\" id=\"menu\">",
+                        "<li id=\"url1\">",
+                          "<a href=\"url1\" id=\"url1\">",
+                            "url1",
+                          "</a>",
+                        "</li>",
+                        "<li id=\"url2\">",
+                          "<a href=\"url2\" id=\"url2\">",
+                            "url2",
+                          "</a>",
+                         "</li>",
+                      "</ol>"].join
+  end
+
+  it 'renders one level navigation with specific menu tag' do
+    @configuration.run do
+
+      register_renderer :my_list, :list
+
+      styles_for :my_list do
+        menu_tag :ol
+      end
+
+      navigate :menu do
+        item :url1, 'url1', :name => 'url1' do
+          item :url2, 'url2', :name => 'url2'
+        end
+      end
+    end
+
+    result = @view_object.navigation_for :menu, as: :my_list
+    result.should == ["<ol class=\"list\" id=\"menu\">",
+                        "<li id=\"url1\">",
+                          "<a href=\"url1\" id=\"url1\">",
+                            "url1",
+                          "</a>",
+                          "<ol id=\"url1\">",
+                            "<li id=\"url2\">",
+                              "<a href=\"url2\" id=\"url2\">",
+                                "url2",
+                              "</a>",
+                            "</li>",
+                          "</ol>",
+                        "</li>",
+                      "</ol>"].join
+  end
+
 it 'should render one multilevel navigation' do
     @configuration.run do
       navigate :menu do

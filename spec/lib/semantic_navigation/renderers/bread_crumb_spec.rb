@@ -42,6 +42,31 @@ describe SemanticNavigation::Renderers::BreadCrumb do
                       "</ul>"].join
   end
 
+  it 'renders breadcrumb with secific menu tag' do
+    @configuration.run do
+     
+      register_renderer :my_breadcrumb, :breadcrumb
+
+      styles_for :my_breadcrumb do
+        menu_tag :ol
+      end
+
+      navigate :menu do
+        item :url1, 'url1', :name => 'url1'
+        item :url2, 'url2', :name => 'url2'
+      end
+    end
+
+    @view_object.should_receive(:current_page?).and_return(false,true)
+
+    result = @view_object.navigation_for :menu, :as => :my_breadcrumb
+    result.should == ["<ol class=\"breadcrumb\" id=\"menu\">",
+                        "<li id=\"url2\">",
+                          "url2",
+                        "</li>",
+                      "</ol>"].join
+  end  
+
 it 'should render one multilevel navigation breadcrumb' do
     @configuration.run do
       navigate :menu do

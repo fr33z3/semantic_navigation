@@ -9,9 +9,9 @@ module SemanticNavigation
       private
 
       def navigation(object)
-        content_tag :ul, nil, {id: show_id(:navigation, object.id),
-                               class: merge_classes(:navigation, object.active, object.classes)
-                              }.merge(object.html) do
+        content_menu_tag({id: show_id(:navigation, object.id),
+                          class: merge_classes(:navigation, object.active, object.classes)
+                         }.merge(object.html)) do
           yield
         end
       end
@@ -30,7 +30,7 @@ module SemanticNavigation
       end
 
       def node_content(object)
-        content_tag(:ul, nil, {id: show_id(:node, object.id),
+        content_menu_tag({id: show_id(:node, object.id),
                                class: merge_classes(:node, object.active, object.node_classes)
                               }.merge(object.node_html)) do
           yield
