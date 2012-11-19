@@ -1,4 +1,8 @@
-### 0.1.0 
+### 0.1.1 / November 19, 2012
+* Added html properties for navigation tags
+* Added property to change navigation tag
+
+### 0.1.0 / October 2, 2012
 * Making register_renderer function to catch already registered renderer class by received symbol name
 * Added scoping for items definitions
 * Added renderers generators
