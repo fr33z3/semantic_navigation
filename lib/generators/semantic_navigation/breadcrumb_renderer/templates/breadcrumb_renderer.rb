@@ -1,8 +1,8 @@
 class Renderers::<%= class_name %>
   #Default render helpers. Do not delete this if don't want to write your own.      
-  include RenderHelpers
+  include SemanticNavigation::Renderers::MixIn::RenderHelpers
   #The default list rendering logic. Do not delete if don't want to write your own.
-  include ActsAsBreadcrumb
+  include SemanticNavigation::Renderers::MixIn::ActsAsBreadcrumb
   style_accessor :last_as_link => false,
                  :breadcrumb_separator => '/'
 

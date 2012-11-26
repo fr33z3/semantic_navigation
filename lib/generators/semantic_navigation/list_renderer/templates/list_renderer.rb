@@ -1,8 +1,8 @@
 class Renderers::<%= class_name %>
   #Default render helpers. Do not delete this if don't want to write your own.
-  include SemanticNavigation::Renderers::RenderHelpers
+  include SemanticNavigation::Renderers::MixIn::RenderHelpers
   #The default list rendering logic. Do not delete if don't want to write your own.
-  include SemanticNavigation::Renderers::ActsAsList
+  include SemanticNavigation::Renderers::MixIn::ActsAsList
 
   #Default navigation classes
   navigation_active_class [:active]

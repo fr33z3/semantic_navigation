@@ -1,8 +1,8 @@
 module SemanticNavigation
   module TwitterBootstrap
     class Tabs
-      include SemanticNavigation::Renderers::RenderHelpers
-      include SemanticNavigation::Renderers::ActsAsList
+      include SemanticNavigation::Renderers::MixIn::RenderHelpers
+      include SemanticNavigation::Renderers::MixIn::ActsAsList
 
       style_accessor direction: 'left'
 

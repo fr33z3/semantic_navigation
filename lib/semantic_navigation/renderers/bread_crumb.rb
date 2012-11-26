@@ -1,8 +1,8 @@
 module SemanticNavigation
   module Renderers
     class BreadCrumb
-      include RenderHelpers
-      include ActsAsBreadcrumb
+      include MixIn::RenderHelpers
+      include MixIn::ActsAsBreadcrumb
 
       style_accessor last_as_link: false,
                      breadcrumb_separator: '/'

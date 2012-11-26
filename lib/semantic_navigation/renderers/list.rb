@@ -1,8 +1,8 @@
 module SemanticNavigation
   module Renderers
     class List
-      include RenderHelpers
-      include ActsAsList
+      include MixIn::RenderHelpers
+      include MixIn::ActsAsList
 
       navigation_default_classes [:list]
 

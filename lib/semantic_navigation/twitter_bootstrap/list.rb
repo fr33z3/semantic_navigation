@@ -1,8 +1,8 @@
 module SemanticNavigation
   module TwitterBootstrap
     class List
-      include SemanticNavigation::Renderers::RenderHelpers
-      include SemanticNavigation::Renderers::ActsAsList
+      include SemanticNavigation::Renderers::MixIn::RenderHelpers
+      include SemanticNavigation::Renderers::MixIn::ActsAsList
 
       navigation_default_classes [:nav, 'nav-list']
       show_navigation_id false

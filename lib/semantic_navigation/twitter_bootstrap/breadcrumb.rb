@@ -1,8 +1,8 @@
 module SemanticNavigation
   module TwitterBootstrap
     class Breadcrumb
-      include SemanticNavigation::Renderers::RenderHelpers
-      include SemanticNavigation::Renderers::ActsAsBreadcrumb
+      include SemanticNavigation::Renderers::MixIn::RenderHelpers
+      include SemanticNavigation::Renderers::MixIn::ActsAsBreadcrumb
 
       style_accessor last_as_link: false,
                      breadcrumb_separator: '/'
