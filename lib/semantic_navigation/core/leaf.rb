@@ -1,8 +1,8 @@
 module SemanticNavigation
   module Core
     class Leaf < Base
-      include UrlMethods
-      include NameMethods
+      include MixIn::UrlMethods
+      include MixIn::NameMethods
 
       attr_accessor :link_classes, :link_html
 

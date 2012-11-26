@@ -1,8 +1,8 @@
 module SemanticNavigation
   module Core
     class Node < Navigation
-      include UrlMethods
-      include NameMethods
+      include MixIn::UrlMethods
+      include MixIn::NameMethods
 
       attr_accessor :link_classes, :node_classes,
                     :link_html, :node_html
