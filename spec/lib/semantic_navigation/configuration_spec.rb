@@ -7,33 +7,38 @@ describe SemanticNavigation::Configuration do
   end
 
   describe "#run" do
-    it 'should receive class eval if block passed' do
+    it 'receives class eval if block passed' do
       SemanticNavigation::Configuration.should_receive(:class_eval)
       SemanticNavigation::Configuration.run do
         do_something
       end
     end
 
-    it 'should not receive class_eval if block not passed' do
+    it 'doesnt receive class_eval if block not passed' do
       SemanticNavigation::Configuration.run
     end
   end
 
   describe '#navigate' do
-    it 'should receive at least only id and save navigation instance in class variables' do
-      nav_instance = SemanticNavigation::Configuration.navigate :some_menu
-      navigations = SemanticNavigation::Configuration.class_variable_get("@@navigations")
-      navigations.keys.should == [:some_menu]
-      navigations[:some_menu].should == nav_instance
+
+    context :receives do
+
+      it 'at least only id and save navigation instance in class variables' do
+        nav_instance = SemanticNavigation::Configuration.navigate :some_menu
+        navigations = SemanticNavigation::Configuration.class_variable_get("@@navigations")
+        navigations.keys.should == [:some_menu]
+        navigations[:some_menu].should == nav_instance
+      end
+  
+      it 'id and pass to Navigation instance create options hash' do
+        SemanticNavigation::Core::Navigation.should_receive(:new).with({:id=>:some_menu,
+                                                                        :i18n_name=>"semantic_navigation.some_menu"})
+        SemanticNavigation::Configuration.navigate :some_menu
+      end
+
     end
 
-    it 'should receive id and pass to Navigation instance create options hash' do
-      SemanticNavigation::Core::Navigation.should_receive(:new).with({:id=>:some_menu,
-                                                                      :i18n_name=>"semantic_navigation.some_menu"})
-      SemanticNavigation::Configuration.navigate :some_menu
-    end
-
-    it 'should pass received block to navigation class instance' do
+    it 'passes received block to navigation class instance' do
       navigation = mock
       navigation.should_receive(:instance_eval)
       SemanticNavigation::Core::Navigation.should_receive(:new).and_return navigation
@@ -42,7 +47,7 @@ describe SemanticNavigation::Configuration do
       end
     end
 
-    it 'should merge id, i18n_name and received params and pass them to navigation instance create method' do
+    it 'merges id, i18n_name and received params and pass them to navigation instance create method' do
       SemanticNavigation::Core::Navigation.should_receive(:new).with({:id => :some_menu,
                                                                       :i18n_name=>"semantic_navigation.some_menu",
                                                                       :some_attr => 1,
@@ -52,14 +57,14 @@ describe SemanticNavigation::Configuration do
   end
 
   describe '#navigation' do
-    it 'should return navigation instance by name' do
+    it 'returns navigation instance by name' do
       nav_instance = SemanticNavigation::Configuration.navigate :some_menu
       SemanticNavigation::Configuration.navigation(:some_menu).should == nav_instance
     end
   end
 
   describe '#styles_for' do
-    it 'should save styles block as a proc' do
+    it 'saves styles block as a proc' do
       proc_object = SemanticNavigation::Configuration.styles_for :some_renderer do
         do_something1 true
         do_something2 'some_attr'
@@ -79,21 +84,21 @@ describe SemanticNavigation::Configuration do
       class SomeRenderer; end
     end
 
-    it 'should register renderer by passed name and class' do
+    it 'registers renderer by passed name and class' do
       SemanticNavigation::Configuration.register_renderer :some_renderer, SomeRenderer
       renderers = SemanticNavigation::Configuration.class_variable_get("@@renderers")
       renderers[:some_renderer].should_not be_nil
       renderers[:some_renderer].should == SomeRenderer
     end
 
-    it 'should register renderer by passed classes and generate the name for it' do
+    it 'registers renderer by passed classes and generate the name for it' do
       SemanticNavigation::Configuration.register_renderer SomeRenderer
       renderers = SemanticNavigation::Configuration.class_variable_get("@@renderers")
       renderers[:some_renderer].should_not be_nil
       renderers[:some_renderer].should == SomeRenderer
     end
 
-    it 'should reregister the renderer class regigstered before' do
+    it 'registers the renderer class regigstered before' do
       SemanticNavigation::Configuration.register_renderer SomeRenderer
       SemanticNavigation::Configuration.register_renderer :another_name, :some_renderer
       renderers = SemanticNavigation::Configuration.class_variable_get("@@renderers")
@@ -101,7 +106,7 @@ describe SemanticNavigation::Configuration do
       renderers[:another_name].should == SomeRenderer
     end
 
-    it 'should register a new helper method based on name of a renderer and depending on method navigation_for' do
+    it 'registers a new helper method based on name of a renderer and depending on method navigation_for' do
       SemanticNavigation::Configuration.register_renderer SomeRenderer
       SemanticNavigation::HelperMethods.method_defined?(:some_renderer_for).should be_true
 
@@ -128,14 +133,14 @@ describe SemanticNavigation::Configuration do
       SemanticNavigation::Configuration.class_variable_set "@@navigations", {:some_menu => @navigation}
     end
 
-    it 'should send render method to Renderer class; mark active navigation elements;' do
+    it 'sends render method to Renderer class; mark active navigation elements;' do
       @navigation.should_receive(:mark_active)
       @navigation.should_receive(:render).with(@renderer_instance)
       @renderer_instance.should_receive(:name=).with(:renderer)
       SemanticNavigation::Configuration.new.render(:some_menu, :renderer, {}, @view_object)
     end
 
-    it 'should send renderer options' do
+    it 'sends renderer options' do
       @navigation.should_receive(:mark_active)
       @navigation.should_receive(:render).with(@renderer_instance)
       @renderer_instance.should_receive(:level=).with(1)
@@ -143,7 +148,7 @@ describe SemanticNavigation::Configuration do
       SemanticNavigation::Configuration.new.render(:some_menu, :renderer, {:level => 1}, @view_object)
     end
 
-    it 'should exec default renderer styles from configuration' do
+    it 'execs default renderer styles from configuration' do
       render_styles = proc{}
       SemanticNavigation::Configuration.class_variable_set "@@render_styles", {:renderer => render_styles}
       @renderer_instance.should_receive(:instance_eval).with(&render_styles)
@@ -153,7 +158,7 @@ describe SemanticNavigation::Configuration do
       SemanticNavigation::Configuration.new.render(:some_menu, :renderer, {}, @view_object)
     end
 
-    it 'should set @@view_object in configuration class' do
+    it 'sets @@view_object in configuration class' do
       @navigation.should_receive(:mark_active)
       @navigation.should_receive(:render).with(@renderer_instance)
       @renderer_instance.should_receive(:name=).with(:renderer)
