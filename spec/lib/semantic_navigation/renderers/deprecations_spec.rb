@@ -13,7 +13,8 @@ describe 'SemanticNavigation::Deprecations' do
   	  class SomeRenderer
   	    begin
   	      include SemanticNavigation::Renderers::RenderHelpers
-  	    rescue
+  	    rescue => e
+  	      puts e
   	    end
   	  end
    
@@ -32,7 +33,8 @@ describe 'SemanticNavigation::Deprecations' do
   	  class SomeRenderer
   	    begin
   	      include SemanticNavigation::Renderers::ActsAsBreadcrumb
-  	    rescue
+  	    rescue => e
+          puts e
   	    end
   	  end
    
@@ -51,7 +53,8 @@ describe 'SemanticNavigation::Deprecations' do
   	  class SomeRenderer
   	    begin
   	      include SemanticNavigation::Renderers::ActsAsList
-  	    rescue
+  	    rescue => e
+  	      puts e
   	    end
   	  end
    
