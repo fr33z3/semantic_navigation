@@ -9,6 +9,9 @@ SimpleCov.start do
   add_group "Twitter Bootstrap Renderer", "lib/semantic_navigation/twitter_bootstrap"
 end
 require 'semantic_navigation'
+SemanticNavigation::Configuration.run do |c|
+  c.display_deprecation_messages= false
+end
 
 RSpec.configure do |config|
   config.color_enabled = true

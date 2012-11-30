@@ -1,10 +1,17 @@
 module SemanticNavigation
   class Configuration
 
-    @@view_object = nil
     @@navigations = {}
     @@renderers = {}
     @@render_styles = {}
+
+    cattr_accessor :view_object do
+      nil
+    end
+    
+    cattr_accessor :display_deprecation_messages do
+      true
+    end
 
     def self.run(&block)
       self.class_eval &block if block_given?
@@ -50,14 +57,6 @@ module SemanticNavigation
           navigation_for name, options
         end
       "
-    end
-
-    def self.view_object
-      @@view_object
-    end
-
-    def self.view_object=(view_object)
-      @@view_object = view_object
     end
 
     def self.navigation(name)
