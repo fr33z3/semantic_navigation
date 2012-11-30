@@ -3,10 +3,9 @@ module SemanticNavigation
   	module ActsAsBreadcrumb
   	  
   	  def self.included(base)
-        puts ['DEPRECATION WARNING: You are using the deprecated namespace for module',
-            '`SemanticNavigation::Renderers::ActsAsBreadcrumb`. ',
-            'Please use the new namespace `SemanticNavigation::Renderers::MixIn::ActsAsBreadcrumb`'
-             ].join
+        SemanticNavigation.deprecation_message(:module,
+                          "SemanticNavigation::Renderers::ActsAsBreadcrumb",
+                          "SemanticNavigation::Renderers::MixIn::ActsAsBreadcrumb")
         base.send :include, SemanticNavigation::Renderers::MixIn::ActsAsBreadcrumb
   	  end
 

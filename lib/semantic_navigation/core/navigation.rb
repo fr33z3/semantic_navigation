@@ -29,9 +29,15 @@ module SemanticNavigation
           #Deprecation warning message
           #TODO:Should be deleted after moving the header and divider definition via item
           if element.url.nil? && !element.name.empty?
-            puts 'Warning: do not define `headers` using `item` method. Use `header` instead. This logic will be deprecated soon.'
+            SemanticNavigation.deprecation_message(:method,
+                                                   'item',
+                                                   'header',
+                                                   'header definition')
           elsif element.url.nil? && element.name.empty?
-            puts 'Warning: do not define `dividers` using `item` method. Use `divider` instead. This logic will be deprecated soon.'
+            SemanticNavigation.deprecation_message(:method,
+                                                   'item',
+                                                   'header',
+                                                   'divider definition')
           end
         end
 

@@ -3,10 +3,9 @@ module SemanticNavigation
   	module RenderHelpers
       
       def self.included(base)
-        puts ['DEPRECATION WARNING: You are using the deprecated namespace for module',
-            '`SemanticNavigation::Renderers::RenderHelpers`. ',
-            'Please use the new namespace `SemanticNavigation::Renderers::MixIn::RenderHelpers`'
-             ].join
+        SemanticNavigation.deprecation_message(:module,
+                          "SemanticNavigation::Renderers::RenderHelpers",
+                          "SemanticNavigation::Renderers::MixIn::RenderHelpers")        
         base.send :include, SemanticNavigation::Renderers::MixIn::RenderHelpers
       end
 
