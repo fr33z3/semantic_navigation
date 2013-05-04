@@ -1,4 +1,4 @@
-# semantic_navigation
+# semantic_navigation [![Gem Version](https://badge.fury.io/rb/semantic_navigation.png)](http://badge.fury.io/rb/semantic_navigation) [![Build Status](https://travis-ci.org/fr33z3/semantic_navigation.png)](https://travis-ci.org/fr33z3/semantic_navigation)
 
 Simple navigation menus implementation for Rails 3 application with multiple and nesting menus.
 
