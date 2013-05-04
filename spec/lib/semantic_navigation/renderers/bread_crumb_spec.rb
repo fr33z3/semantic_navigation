@@ -1,7 +1,7 @@
 require 'spec_helper'
 
 describe SemanticNavigation::Renderers::BreadCrumb do
-  
+
   context :renders do
 
     before :each do
@@ -17,26 +17,26 @@ describe SemanticNavigation::Renderers::BreadCrumb do
     end
 
     it 'empty ul tag for empty navigation' do
-    
+
       @configuration.run do
         navigate :menu do
         end
       end
-      
+
       result = @view_object.navigation_for :menu, :as => :breadcrumb
       result.should == "<ul class=\"breadcrumb\" id=\"menu\"></ul>"
-    end  
-  
+    end
+
     it 'one level navigation breadcrumb' do
       @configuration.run do
         navigate :menu do
-        	item :url1, 'url1', :name => 'url1'
-        	item :url2, 'url2', :name => 'url2'
+          item :url1, 'url1', :name => 'url1'
+          item :url2, 'url2', :name => 'url2'
         end
       end
-  
+
       @view_object.should_receive(:current_page?).and_return(false,true)
-  
+
       result = @view_object.navigation_for :menu, :as => :breadcrumb
       result.should == ["<ul class=\"breadcrumb\" id=\"menu\">",
                           "<li id=\"url2\">",
@@ -44,46 +44,46 @@ describe SemanticNavigation::Renderers::BreadCrumb do
                           "</li>",
                         "</ul>"].join
     end
-  
+
     it 'breadcrumb with secific menu tag' do
       @configuration.run do
-       
+
         register_renderer :my_breadcrumb, :breadcrumb
-  
+
         styles_for :my_breadcrumb do
           menu_tag :ol
         end
-  
+
         navigate :menu do
           item :url1, 'url1', :name => 'url1'
           item :url2, 'url2', :name => 'url2'
         end
       end
-  
+
       @view_object.should_receive(:current_page?).and_return(false,true)
-  
+
       result = @view_object.navigation_for :menu, :as => :my_breadcrumb
       result.should == ["<ol class=\"breadcrumb\" id=\"menu\">",
                           "<li id=\"url2\">",
                             "url2",
                           "</li>",
                         "</ol>"].join
-    end  
-  
+    end
+
   it 'one multilevel navigation breadcrumb' do
       @configuration.run do
         navigate :menu do
-        	item :url1, 'url1', :name => 'url1' do
+          item :url1, 'url1', :name => 'url1' do
             item :suburl1, 'suburl1', :name => 'suburl1'
-        	end
-        	item :url2, 'url2', :name => 'url2' do
+          end
+          item :url2, 'url2', :name => 'url2' do
             item :suburl2, 'suburl2', :name => 'suburl2'
-        	end
+          end
         end
       end
-  
+
       @view_object.should_receive(:current_page?).and_return(true,false,false,false)
-  
+
       result = @view_object.navigation_for :menu, :as => :breadcrumb
       result.should == ["<ul class=\"breadcrumb\" id=\"menu\">",
                           "<li id=\"url1\">",
@@ -97,22 +97,22 @@ describe SemanticNavigation::Renderers::BreadCrumb do
                             "suburl1",
                           "</li>",
                         "</ul>"].join
-    end  
-  
+    end
+
     it 'last item as link if :last_as_link => true' do
       @configuration.run do
         navigate :menu do
-        	item :url1, 'url1', :name => 'url1' do
+          item :url1, 'url1', :name => 'url1' do
             item :suburl1, 'suburl1', :name => 'suburl1'
-        	end
-        	item :url2, 'url2', :name => 'url2' do
+          end
+          item :url2, 'url2', :name => 'url2' do
             item :suburl2, 'suburl2', :name => 'suburl2'
-        	end
+          end
         end
       end
-  
+
       @view_object.should_receive(:current_page?).and_return(true,false,false,false)
-  
+
       result = @view_object.navigation_for :menu, :as => :breadcrumb, :last_as_link => true
       result.should == ["<ul class=\"breadcrumb\" id=\"menu\">",
                           "<li id=\"url1\">",
@@ -128,71 +128,71 @@ describe SemanticNavigation::Renderers::BreadCrumb do
                               "suburl1",
                             "</a>",
                           "</li>",
-                        "</ul>"].join  	
+                        "</ul>"].join
     end
-  
+
     it 'only root level' do
       @configuration.run do
         navigate :menu do
-        	item :url1, 'url1', :name => 'url1' do
+          item :url1, 'url1', :name => 'url1' do
             item :suburl1, 'suburl1', :name => 'suburl1'
-        	end
-        	item :url2, 'url2', :name => 'url2' do
+          end
+          item :url2, 'url2', :name => 'url2' do
             item :suburl2, 'suburl2', :name => 'suburl2'
-        	end
+          end
         end
       end
-  
+
       @view_object.should_receive(:current_page?).and_return(true,false,false,false)
-  
+
       result = @view_object.navigation_for :menu, :level => 0, :as => :breadcrumb
       result.should == ["<ul class=\"breadcrumb\" id=\"menu\">",
-      	                "<li id=\"url1\">",
-      	                  "url1",
-      	                "</li>",
-                        "</ul>"].join  	
+                        "<li id=\"url1\">",
+                          "url1",
+                        "</li>",
+                        "</ul>"].join
     end
-  
+
     it 'second level' do
       @configuration.run do
         navigate :menu do
-        	item :url1, 'url1', :name => 'url1' do
+          item :url1, 'url1', :name => 'url1' do
             item :suburl1, 'suburl1', :name => 'suburl1'
-        	end
-        	item :url2, 'url2', :name => 'url2' do
+          end
+          item :url2, 'url2', :name => 'url2' do
             item :suburl2, 'suburl2', :name => 'suburl2'
-        	end
+          end
         end
       end
-  
+
       @view_object.should_receive(:current_page?).and_return(true, false, false, false)
-  
+
       result = @view_object.navigation_for :menu, :level => 1, :as => :breadcrumb
       result.should == ["<ul class=\"breadcrumb\" id=\"menu\">",
                           "<li id=\"suburl1\">",
                             "suburl1",
                           "</li>",
-                        "</ul>"].join  	
+                        "</ul>"].join
     end
-  
+
     it 'the exact levels' do
       @configuration.run do
         navigate :menu do
-        	item :url1, 'url1', :name => 'url1' do
+          item :url1, 'url1', :name => 'url1' do
             item :suburl1, 'suburl1', :name => 'suburl1' do
-            	item :subsub1, 'subsub1', :name => 'subsub1'
+              item :subsub1, 'subsub1', :name => 'subsub1'
             end
-        	end
-        	item :url2, 'url2', :name => 'url2' do
+          end
+          item :url2, 'url2', :name => 'url2' do
             item :suburl2, 'suburl2', :name => 'suburl2' do
-            	item :subsub2, 'subsub2', :name => 'subsub2'
+              item :subsub2, 'subsub2', :name => 'subsub2'
             end
-        	end
+          end
         end
       end
-  
+
       @view_object.should_receive(:current_page?).and_return(true, false, false, false, false, false)
-  
+
       result = @view_object.navigation_for :menu, :levels => 0..1, :as => :breadcrumb
       result.should == ["<ul class=\"breadcrumb\" id=\"menu\">",
                           "<li id=\"url1\">",
@@ -207,26 +207,26 @@ describe SemanticNavigation::Renderers::BreadCrumb do
                           "</li>",
                         "</ul>"].join
     end
-  
+
     it 'navigation except some item' do
       @configuration.run do
         navigate :menu do
-        	item :url1, 'url1', :name => 'url1' do
+          item :url1, 'url1', :name => 'url1' do
             item :suburl1, 'suburl1', :name => 'suburl1'
-        	end
-        	item :url2, 'url2', :name => 'url2' do
+          end
+          item :url2, 'url2', :name => 'url2' do
             item :suburl2, 'suburl2', :name => 'suburl2'
-        	end
+          end
         end
       end
-      
+
       @view_object.should_receive(:current_page?).and_return(true, false, false, false)
       result = @view_object.navigation_for :menu, :except_for => [:suburl1], :as => :breadcrumb
       result.should == ["<ul class=\"breadcrumb\" id=\"menu\">",
-      	                  "<li id=\"url1\">",
-      	                    "url1",
+                          "<li id=\"url1\">",
+                            "url1",
                           "</li>",
-                        "</ul>"].join  	
+                        "</ul>"].join
     end
   end
 end

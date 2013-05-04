@@ -15,18 +15,18 @@ describe SemanticNavigation::TwitterBootstrap::Breadcrumb do
           @configuration.register_renderer :bootstrap_breadcrumb, SemanticNavigation::TwitterBootstrap::Breadcrumb
           @view_object = ViewObject.new
     end
-  
+
     it 'empty ul tag for empty navigation' do
-  
+
       @configuration.run do
         navigate :menu do
         end
       end
-  
+
       result = @view_object.navigation_for :menu, :as => :bootstrap_breadcrumb
       result.should == "<ul class=\"breadcrumb\"></ul>"
     end
-  
+
     it 'one level navigation breadcrumb' do
       @configuration.run do
         navigate :menu do
@@ -34,9 +34,9 @@ describe SemanticNavigation::TwitterBootstrap::Breadcrumb do
           item :url2, 'url2', :name => 'url2'
         end
       end
-  
+
       @view_object.should_receive(:current_page?).and_return(false,true)
-  
+
       result = @view_object.navigation_for :menu, :as => :bootstrap_breadcrumb
       result.should == ["<ul class=\"breadcrumb\">",
                           "<li>",
@@ -44,7 +44,7 @@ describe SemanticNavigation::TwitterBootstrap::Breadcrumb do
                           "</li>",
                         "</ul>"].join
     end
-  
+
   it 'one multilevel navigation breadcrumb' do
       @configuration.run do
         navigate :menu do
@@ -56,9 +56,9 @@ describe SemanticNavigation::TwitterBootstrap::Breadcrumb do
           end
         end
       end
-  
+
       @view_object.should_receive(:current_page?).and_return(true,false,false,false)
-  
+
       result = @view_object.navigation_for :menu, :as => :bootstrap_breadcrumb
       result.should == ["<ul class=\"breadcrumb\">",
                           "<li>",
@@ -73,7 +73,7 @@ describe SemanticNavigation::TwitterBootstrap::Breadcrumb do
                           "</li>",
                         "</ul>"].join
     end
-  
+
     it 'last item as link if :last_as_link => true' do
       @configuration.run do
         navigate :menu do
@@ -85,9 +85,9 @@ describe SemanticNavigation::TwitterBootstrap::Breadcrumb do
           end
         end
       end
-  
+
       @view_object.should_receive(:current_page?).and_return(true,false,false,false)
-  
+
       result = @view_object.navigation_for :menu, :as => :bootstrap_breadcrumb, :last_as_link => true
       result.should == ["<ul class=\"breadcrumb\">",
                           "<li>",
@@ -104,7 +104,7 @@ describe SemanticNavigation::TwitterBootstrap::Breadcrumb do
                           "</li>",
                         "</ul>"].join
     end
-  
+
     it 'only root level' do
       @configuration.run do
         navigate :menu do
@@ -116,9 +116,9 @@ describe SemanticNavigation::TwitterBootstrap::Breadcrumb do
           end
         end
       end
-  
+
       @view_object.should_receive(:current_page?).and_return(true,false,false,false)
-  
+
       result = @view_object.navigation_for :menu, :level => 0, :as => :bootstrap_breadcrumb
       result.should == ["<ul class=\"breadcrumb\">",
                           "<li>",
@@ -126,7 +126,7 @@ describe SemanticNavigation::TwitterBootstrap::Breadcrumb do
                           "</li>",
                         "</ul>"].join
     end
-  
+
     it 'second level' do
       @configuration.run do
         navigate :menu do
@@ -138,9 +138,9 @@ describe SemanticNavigation::TwitterBootstrap::Breadcrumb do
           end
         end
       end
-  
+
       @view_object.should_receive(:current_page?).and_return(true, false, false, false)
-  
+
       result = @view_object.navigation_for :menu, :level => 1, :as => :bootstrap_breadcrumb
       result.should == ["<ul class=\"breadcrumb\">",
                           "<li>",
@@ -148,7 +148,7 @@ describe SemanticNavigation::TwitterBootstrap::Breadcrumb do
                           "</li>",
                         "</ul>"].join
     end
-  
+
     it 'the exact levels' do
       @configuration.run do
         navigate :menu do
@@ -164,9 +164,9 @@ describe SemanticNavigation::TwitterBootstrap::Breadcrumb do
           end
         end
       end
-  
+
       @view_object.should_receive(:current_page?).and_return(true, false, false, false, false, false)
-  
+
       result = @view_object.navigation_for :menu, :levels => 0..1, :as => :bootstrap_breadcrumb
       result.should == ["<ul class=\"breadcrumb\">",
                           "<li>",
@@ -181,7 +181,7 @@ describe SemanticNavigation::TwitterBootstrap::Breadcrumb do
                           "</li>",
                         "</ul>"].join
     end
-  
+
     it 'navigation except some item' do
       @configuration.run do
         navigate :menu do
@@ -193,7 +193,7 @@ describe SemanticNavigation::TwitterBootstrap::Breadcrumb do
           end
         end
       end
-  
+
       @view_object.should_receive(:current_page?).and_return(true, false, false, false)
       result = @view_object.navigation_for :menu, :except_for => [:suburl1], :as => :bootstrap_breadcrumb
       result.should == ["<ul class=\"breadcrumb\">",

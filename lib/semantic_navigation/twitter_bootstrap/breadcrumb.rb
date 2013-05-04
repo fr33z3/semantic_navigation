@@ -36,7 +36,7 @@ module SemanticNavigation
                               }.merge(object.html)) do
           [object.ico ? content_tag(:i, nil, class: "icon-#{object.ico}") : ''.html_safe,
           link_to(object_name(object),
-                  object.url, 
+                  object.url,
                   {id: show_id(:link, object.id),
                    class: merge_classes(:link, object.active, object.link_classes)
                   }.merge(object.link_html)),
@@ -51,8 +51,8 @@ module SemanticNavigation
                               }.merge(object.html) do
           [object.ico ? content_tag(:i, nil, class: "icon-#{object.ico}") : ''.html_safe,
           if last_as_link
-            link_to(object_name(object), 
-                    object.url, 
+            link_to(object_name(object),
+                    object.url,
                     {id: show_id(:link, object.id),
                      class: merge_classes(:link, object.active, object.link_classes)
                     }.merge(object.link_html))

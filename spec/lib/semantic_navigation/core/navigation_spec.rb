@@ -1,9 +1,9 @@
 require 'spec_helper'
 
 describe SemanticNavigation::Core::Navigation do
-  
+
   describe '#initialize' do
-    
+
     it 'creates instance of navigation with level 0 and empty subitems' do
       navigation = SemanticNavigation::Core::Navigation.new({})
       navigation.level.should == 0
@@ -25,23 +25,23 @@ describe SemanticNavigation::Core::Navigation do
   end
 
   describe '#item' do
-  	before :each do
-  	  @navigation = SemanticNavigation::Core::Navigation.new({})
-  	end
+    before :each do
+      @navigation = SemanticNavigation::Core::Navigation.new({})
+    end
 
-  	it "receives item method and make the leaf" do
+    it "receives item method and make the leaf" do
       @navigation.item :some_id, 'some_url'
       @navigation.sub_elements.size.should == 1
       @navigation.sub_elements.first.is_a?(SemanticNavigation::Core::Leaf).should be_true
-  	end
+    end
 
-  	it "receives item method with block and create node" do
+    it "receives item method with block and create node" do
       @navigation.item :node_id, 'node_url' do
-      	item :leaf_id, 'leaf_url'
+        item :leaf_id, 'leaf_url'
       end
       @navigation.sub_elements.size.should == 1
       @navigation.sub_elements.first.is_a?(SemanticNavigation::Core::Node).should be_true
-  	end
+    end
 
     it "receives item method with array of urls and save them properly" do
       @navigation.item :leaf_id, ['string/url',"controller#action",:symbolic_name,['array','like','url']]
@@ -78,52 +78,52 @@ describe SemanticNavigation::Core::Navigation do
       end
       urls = @navigation.sub_elements.first.send :urls
       urls.should == ['string_url', 'somefunc']
-    end 
+    end
   end
 
   describe '#header' do
-  	before :each do
-  	  @navigation = SemanticNavigation::Core::Navigation.new({})
-  	  @navigation.header :some_id
-  	end
+    before :each do
+      @navigation = SemanticNavigation::Core::Navigation.new({})
+      @navigation.header :some_id
+    end
 
-  	it "creates item with nil url" do
-   	  @navigation.sub_elements.size.should == 1
-   	  @navigation.sub_elements.first.url.should be_nil
-  	end
+    it "creates item with nil url" do
+      @navigation.sub_elements.size.should == 1
+      @navigation.sub_elements.first.url.should be_nil
+    end
   end
 
   describe "#divider" do
-  	before :each do
-  	  @navigation = SemanticNavigation::Core::Navigation.new({})
-  	end
+    before :each do
+      @navigation = SemanticNavigation::Core::Navigation.new({})
+    end
 
-  	it "creates divider item with nil url and name" do
+    it "creates divider item with nil url and name" do
       @navigation.divider
-  	  @navigation.sub_elements.size.should == 1
-  	  @navigation.sub_elements.first.url.should be_nil
-  	  @navigation.sub_elements.first.name.should be_empty
-  	end
+      @navigation.sub_elements.size.should == 1
+      @navigation.sub_elements.first.url.should be_nil
+      @navigation.sub_elements.first.name.should be_empty
+    end
 
     it "receives any length method containing char `_` and create divider" do
-  	  
-  	  (1..10).each do |c|
+
+      (1..10).each do |c|
         @navigation.send ('_'*c).to_sym
-  	  end
-  	  @navigation.sub_elements.size.should == 10
-  	  @navigation.sub_elements.map(&:id).should == [:divider]*10
-  	end
+      end
+      @navigation.sub_elements.size.should == 10
+      @navigation.sub_elements.map(&:id).should == [:divider]*10
+    end
   end
 
   describe "#decode_url" do
-    
+
     before :each do
       @navigation = SemanticNavigation::Core::Navigation.new({})
     end
 
     it "while creating the item make support for urls in format controller#action" do
       view_object = mock
-     
+
       @navigation.item :some_id, 'controller#action'
       @navigation.sub_elements.size.should == 1
       @navigation.sub_elements.first.url.should == {:controller => "controller", :action => "action"}
@@ -134,14 +134,14 @@ describe SemanticNavigation::Core::Navigation do
     context :returns do
       it 'true if render_if proc is nil' do
         navigation = SemanticNavigation::Core::Navigation.new({})
-        navigation.render_if.should be_true  
+        navigation.render_if.should be_true
       end
-  
+
       it 'true if render_if proc return true' do
         navigation = SemanticNavigation::Core::Navigation.new({:render_if => proc{true}})
         navigation.render_if.should be_true
       end
-  
+
       it 'false if render_if proc return false' do
         navigation = SemanticNavigation::Core::Navigation.new({:render_if => proc{false}})
         navigation.render_if.should be_false
@@ -186,7 +186,7 @@ describe SemanticNavigation::Core::Navigation do
       @navigation.item :second_item, '222'
       @view_object.should_receive(:current_page?).with('111').and_return true
       @view_object.should_receive(:current_page?).with('222').and_return false
-      
+
       @navigation.mark_active
     end
 
@@ -203,7 +203,7 @@ describe SemanticNavigation::Core::Navigation do
       @navigation.item :first_item, {:controller => "controller1", :action => "action"}
       @navigation.item :second_item, {:controller => "controller2", :action => "action"}
       @view_object.stub(:params).and_return({:controller => "controller1", :action => "action", :some_other_params => "blablabla"})
-      
+
       @navigation.mark_active
       @navigation.sub_elements[0].active.should be_true
       @navigation.sub_elements[1].active.should be_false
@@ -217,7 +217,7 @@ describe SemanticNavigation::Core::Navigation do
       @navigation.mark_active
       @navigation.sub_elements[0].active.should be_true
       @navigation.sub_elements[1].active.should be_false
-    end    
+    end
 
   end
 

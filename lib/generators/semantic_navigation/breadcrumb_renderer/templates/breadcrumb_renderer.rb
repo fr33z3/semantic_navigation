@@ -1,5 +1,5 @@
 class Renderers::<%= class_name %>
-  #Default render helpers. Do not delete this if don't want to write your own.      
+  #Default render helpers. Do not delete this if don't want to write your own.
   include SemanticNavigation::Renderers::MixIn::RenderHelpers
   #The default list rendering logic. Do not delete if don't want to write your own.
   include SemanticNavigation::Renderers::MixIn::ActsAsBreadcrumb
@@ -25,7 +25,7 @@ class Renderers::<%= class_name %>
   navigation_default_classes ['<%= file_name %>']
   node_default_classes ['<%= file_name %>']
   leaf_default_classes ['<%= file_name %>']
-  link_default_classes ['<%= file_name %>']      
+  link_default_classes ['<%= file_name %>']
 
   private
 

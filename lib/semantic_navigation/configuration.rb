@@ -8,7 +8,7 @@ module SemanticNavigation
     cattr_accessor :view_object do
       nil
     end
-    
+
     cattr_accessor :display_deprecation_messages do
       true
     end

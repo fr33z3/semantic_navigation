@@ -25,7 +25,7 @@ describe SemanticNavigation::HelperMethods do
         @config_instance.should_receive(:render).with(:some_menu, :some_renderer, {}, @view_instance)
         @view_instance.navigation_for :some_menu, :as => :some_renderer
       end
-  
+
       it 'received properties' do
         @config_instance.should_receive(:render).with(:some_menu, :some_renderer, {:level => 1, :except_for => :some_id}, @view_instance)
         @view_instance.navigation_for :some_menu, :as => :some_renderer, :level => 1, :except_for => :some_id
@@ -43,7 +43,7 @@ describe SemanticNavigation::HelperMethods do
         result = @view_instance.active_item_for :some_menu
         result.should be_empty
       end
-  
+
       it 'name for an active item' do
         SemanticNavigation::Configuration.navigate :some_menu do
           item :first, '/first', :name => 'First'
@@ -54,7 +54,7 @@ describe SemanticNavigation::HelperMethods do
         result = @view_instance.active_item_for :some_menu
         result.should == 'Second'
       end
-  
+
       it 'name for a last level' do
         SemanticNavigation::Configuration.navigate :some_menu do
           item :first_node, '/first_node', :name => 'First node' do
@@ -68,7 +68,7 @@ describe SemanticNavigation::HelperMethods do
         result = @view_instance.active_item_for :some_menu
         result.should == 'Second'
       end
-  
+
       it 'name for a requested level' do
         SemanticNavigation::Configuration.navigate :some_menu do
           item :first_node, '/first_node', :name => 'First node' do

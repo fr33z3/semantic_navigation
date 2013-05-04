@@ -29,7 +29,7 @@ describe SemanticNavigation::Configuration do
         navigations.keys.should == [:some_menu]
         navigations[:some_menu].should == nav_instance
       end
-  
+
       it 'id and pass to Navigation instance create options hash' do
         SemanticNavigation::Core::Navigation.should_receive(:new).with({:id=>:some_menu,
                                                                         :i18n_name=>"semantic_navigation.some_menu"})

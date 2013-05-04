@@ -13,28 +13,28 @@ describe SemanticNavigation::Renderers::List do
       end
       @configuration = SemanticNavigation::Configuration
       @configuration.register_renderer :list, SemanticNavigation::Renderers::List
-    	@view_object = ViewObject.new
+      @view_object = ViewObject.new
     end
 
     it 'empty ul tag for empty navigation' do
-    
+
       @configuration.run do
         navigate :menu do
         end
       end
-      
+
       result = @view_object.navigation_for :menu
       result.should == "<ul class=\"list\" id=\"menu\"><\/ul>"
-    end  
-  
+    end
+
     it 'one level navigation' do
       @configuration.run do
         navigate :menu do
-        	item :url1, 'url1', :name => 'url1'
-        	item :url2, 'url2', :name => 'url2'
+          item :url1, 'url1', :name => 'url1'
+          item :url2, 'url2', :name => 'url2'
         end
       end
-  
+
       result = @view_object.navigation_for :menu
       result.should == ["<ul class=\"list\" id=\"menu\">",
                           "<li id=\"url1\">",
@@ -49,22 +49,22 @@ describe SemanticNavigation::Renderers::List do
                            "</li>",
                         "</ul>"].join
     end
-  
+
     it 'one level navigation with specific menu tag' do
       @configuration.run do
-  
+
         register_renderer :my_list, :list
-  
+
         styles_for :my_list do
           menu_tag :ol
         end
-  
+
         navigate :menu do
           item :url1, 'url1', :name => 'url1'
           item :url2, 'url2', :name => 'url2'
         end
       end
-  
+
       result = @view_object.navigation_for :menu, as: :my_list
       result.should == ["<ol class=\"list\" id=\"menu\">",
                           "<li id=\"url1\">",
@@ -79,23 +79,23 @@ describe SemanticNavigation::Renderers::List do
                            "</li>",
                         "</ol>"].join
     end
-  
+
     it 'one level navigation with specific menu tag' do
       @configuration.run do
-  
+
         register_renderer :my_list, :list
-  
+
         styles_for :my_list do
           menu_tag :ol
         end
-  
+
         navigate :menu do
           item :url1, 'url1', :name => 'url1' do
             item :url2, 'url2', :name => 'url2'
           end
         end
       end
-  
+
       result = @view_object.navigation_for :menu, as: :my_list
       result.should == ["<ol class=\"list\" id=\"menu\">",
                           "<li id=\"url1\">",
@@ -112,19 +112,19 @@ describe SemanticNavigation::Renderers::List do
                           "</li>",
                         "</ol>"].join
     end
-  
+
     it 'one multilevel navigation' do
         @configuration.run do
           navigate :menu do
-          	item :url1, 'url1', :name => 'url1' do
+            item :url1, 'url1', :name => 'url1' do
               item :suburl1, 'suburl1', :name => 'suburl1'
-          	end
-          	item :url2, 'url2', :name => 'url2' do
+            end
+            item :url2, 'url2', :name => 'url2' do
               item :suburl2, 'suburl2', :name => 'suburl2'
-          	end
+            end
           end
         end
-    
+
       result = @view_object.navigation_for :menu
       result.should == ["<ul class=\"list\" id=\"menu\">",
                           "<li id=\"url1\">",
@@ -152,20 +152,20 @@ describe SemanticNavigation::Renderers::List do
                             "</ul>",
                           "</li>",
                         "</ul>"].join
-    end  
-  
+    end
+
     it 'only root level' do
       @configuration.run do
         navigate :menu do
-        	item :url1, 'url1', :name => 'url1' do
+          item :url1, 'url1', :name => 'url1' do
             item :suburl1, 'suburl1', :name => 'suburl1'
-        	end
-        	item :url2, 'url2', :name => 'url2' do
+          end
+          item :url2, 'url2', :name => 'url2' do
             item :suburl2, 'suburl2', :name => 'suburl2'
-        	end
+          end
         end
       end
-  
+
       result = @view_object.navigation_for :menu, :level => 0
       result.should == ["<ul class=\"list\" id=\"menu\">",
                           "<li id=\"url1\">",
@@ -178,23 +178,23 @@ describe SemanticNavigation::Renderers::List do
                               "url2",
                             "</a>",
                           "</li>",
-                        "</ul>"].join  	
+                        "</ul>"].join
     end
-  
+
     it 'second level if some item of first level is active' do
       @configuration.run do
         navigate :menu do
-        	item :url1, 'url1', :name => 'url1' do
+          item :url1, 'url1', :name => 'url1' do
             item :suburl1, 'suburl1', :name => 'suburl1'
-        	end
-        	item :url2, 'url2', :name => 'url2' do
+          end
+          item :url2, 'url2', :name => 'url2' do
             item :suburl2, 'suburl2', :name => 'suburl2'
-        	end
+          end
         end
       end
-  
+
       @view_object.should_receive(:current_page?).and_return(false, true, false, false)
-  
+
       result = @view_object.navigation_for :menu, :level => 1
       result.should == ["<ul class=\"list active\" id=\"menu\">",
                           "<li id=\"suburl1\">",
@@ -202,25 +202,25 @@ describe SemanticNavigation::Renderers::List do
                               "suburl1",
                             "</a>",
                           "</li>",
-                        "</ul>"].join  	
+                        "</ul>"].join
     end
-  
+
     it 'the exact levels' do
       @configuration.run do
         navigate :menu do
-        	item :url1, 'url1', :name => 'url1' do
+          item :url1, 'url1', :name => 'url1' do
             item :suburl1, 'suburl1', :name => 'suburl1' do
-            	item :subsub1, 'subsub1', :name => 'subsub1'
+              item :subsub1, 'subsub1', :name => 'subsub1'
             end
-        	end
-        	item :url2, 'url2', :name => 'url2' do
+          end
+          item :url2, 'url2', :name => 'url2' do
             item :suburl2, 'suburl2', :name => 'suburl2' do
-            	item :subsub2, 'subsub2', :name => 'subsub2'
+              item :subsub2, 'subsub2', :name => 'subsub2'
             end
-        	end
+          end
         end
       end
-  
+
       result = @view_object.navigation_for :menu, :levels => 0..1
       result.should == ["<ul class=\"list\" id=\"menu\">",
                           "<li id=\"url1\">",
@@ -247,21 +247,21 @@ describe SemanticNavigation::Renderers::List do
                               "</li>",
                             "</ul>",
                           "</li>",
-                        "</ul>"].join  	
+                        "</ul>"].join
     end
-  
+
     it 'navigation except some item' do
       @configuration.run do
         navigate :menu do
-        	item :url1, 'url1', :name => 'url1' do
+          item :url1, 'url1', :name => 'url1' do
             item :suburl1, 'suburl1', :name => 'suburl1'
-        	end
-        	item :url2, 'url2', :name => 'url2' do
+          end
+          item :url2, 'url2', :name => 'url2' do
             item :suburl2, 'suburl2', :name => 'suburl2'
-        	end
+          end
         end
       end
-  
+
       result = @view_object.navigation_for :menu, :except_for => [:url1]
       result.should == ["<ul class=\"list\" id=\"menu\">",
                           "<li id=\"url2\">",
@@ -276,21 +276,21 @@ describe SemanticNavigation::Renderers::List do
                               "</li>",
                             "</ul>",
                           "</li>",
-                        "</ul>"].join  	
+                        "</ul>"].join
     end
-  
+
     it 'navigation except some items' do
       @configuration.run do
         navigate :menu do
-        	item :url1, 'url1', :name => 'url1' do
+          item :url1, 'url1', :name => 'url1' do
             item :suburl1, 'suburl1', :name => 'suburl1'
-        	end
-        	item :url2, 'url2', :name => 'url2' do
+          end
+          item :url2, 'url2', :name => 'url2' do
             item :suburl2, 'suburl2', :name => 'suburl2'
-        	end
+          end
         end
       end
-  
+
       result = @view_object.navigation_for :menu, :except_for => [:suburl1,:url2]
       result.should == ["<ul class=\"list\" id=\"menu\">",
                           "<li id=\"url1\">",
@@ -300,7 +300,7 @@ describe SemanticNavigation::Renderers::List do
                           "<ul id=\"url1\">",
                           "</ul>",
                           "</li>",
-                        "</ul>"].join  	
-    end  
+                        "</ul>"].join
+    end
   end
 end
