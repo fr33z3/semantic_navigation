@@ -1,7 +1,9 @@
 language: ruby
 rvm:
-  - 1.9.3
   - 1.9.2
+  - 1.9.3
   - ruby-head
 gemfile:
-  - gemfiles/rails3  
+  - gemfiles/3.2.gemfile
+  - gemfiles/4.0.gemfile
+
