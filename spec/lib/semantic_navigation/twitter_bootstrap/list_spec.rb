@@ -14,18 +14,18 @@ describe SemanticNavigation::TwitterBootstrap::List do
           @configuration.register_renderer :bootstrap_list, SemanticNavigation::TwitterBootstrap::List
           @view_object = ViewObject.new
     end
-  
+
     it 'empty ul tag for empty navigation' do
-  
+
       @configuration.run do
         navigate :menu do
         end
       end
-  
+
       result = @view_object.navigation_for :menu, :as => :bootstrap_list
       result.should == "<ul class=\"nav nav-list\"></ul>"
     end
-  
+
     it 'one level navigation' do
       @configuration.run do
         navigate :menu do
@@ -33,7 +33,7 @@ describe SemanticNavigation::TwitterBootstrap::List do
           item :url2, 'url2', :name => 'url2'
         end
       end
-  
+
       result = @view_object.navigation_for :menu, :as => :bootstrap_list
       result.should == ["<ul class=\"nav nav-list\">",
                           "<li>",
@@ -48,7 +48,7 @@ describe SemanticNavigation::TwitterBootstrap::List do
                           "</li>",
                         "</ul>"].join
     end
-  
+
   it 'one multilevel navigation' do
       @configuration.run do
         navigate :menu do
@@ -60,7 +60,7 @@ describe SemanticNavigation::TwitterBootstrap::List do
           end
         end
       end
-  
+
       result = @view_object.navigation_for :menu, :as => :bootstrap_list
       result.should == ["<ul class=\"nav nav-list\">",
                           "<li>",
@@ -89,7 +89,7 @@ describe SemanticNavigation::TwitterBootstrap::List do
                           "</li>",
                         "</ul>"].join
     end
-  
+
     it 'only root level' do
       @configuration.run do
         navigate :menu do
@@ -101,7 +101,7 @@ describe SemanticNavigation::TwitterBootstrap::List do
           end
         end
       end
-  
+
       result = @view_object.navigation_for :menu, :level => 0, :as => :bootstrap_list
       result.should == ["<ul class=\"nav nav-list\">",
                           "<li>",
@@ -116,7 +116,7 @@ describe SemanticNavigation::TwitterBootstrap::List do
                           "</li>",
                         "</ul>"].join
     end
-  
+
     it 'second level if some item of first level is active' do
       @configuration.run do
         navigate :menu do
@@ -128,9 +128,9 @@ describe SemanticNavigation::TwitterBootstrap::List do
           end
         end
       end
-  
+
       @view_object.should_receive(:current_page?).and_return(false, true, false, false)
-  
+
       result = @view_object.navigation_for :menu, :level => 1, :as => :bootstrap_list
       result.should == ["<ul class=\"nav nav-list active\">",
                           "<li>",
@@ -140,7 +140,7 @@ describe SemanticNavigation::TwitterBootstrap::List do
                           "</li>",
                         "</ul>"].join
     end
-  
+
     it 'the exact levels' do
       @configuration.run do
         navigate :menu do
@@ -156,7 +156,7 @@ describe SemanticNavigation::TwitterBootstrap::List do
           end
         end
       end
-  
+
       result = @view_object.navigation_for :menu, :levels => 0..1, :as => :bootstrap_list
       result.should == ["<ul class=\"nav nav-list\">",
                           "<li>",
@@ -185,7 +185,7 @@ describe SemanticNavigation::TwitterBootstrap::List do
                           "</li>",
                         "</ul>"].join
     end
-  
+
     it 'navigation except some item' do
       @configuration.run do
         navigate :menu do
@@ -197,7 +197,7 @@ describe SemanticNavigation::TwitterBootstrap::List do
           end
         end
       end
-  
+
       result = @view_object.navigation_for :menu, :except_for => [:url1], :as => :bootstrap_list
       result.should == ["<ul class=\"nav nav-list\">",
                           "<li>",
@@ -214,7 +214,7 @@ describe SemanticNavigation::TwitterBootstrap::List do
                           "</li>",
                         "</ul>"].join
     end
-  
+
     it 'navigation except some items' do
       @configuration.run do
         navigate :menu do
@@ -226,7 +226,7 @@ describe SemanticNavigation::TwitterBootstrap::List do
           end
         end
       end
-  
+
       result = @view_object.navigation_for :menu, :except_for => [:suburl1,:url2], :as => :bootstrap_list
       result.should == ["<ul class=\"nav nav-list\">",
                           "<li>",
@@ -238,28 +238,28 @@ describe SemanticNavigation::TwitterBootstrap::List do
                           "</li>",
                         "</ul>"].join
     end
-  
+
     it 'divider' do
       @configuration.run do
         navigate :menu do
           divider
         end
       end
-  
+
       result = @view_object.navigation_for :menu, :as => :bootstrap_list
       result.should == ["<ul class=\"nav nav-list\">",
                           "<li class=\"divider\">",
                           "</li>",
                         "</ul>"].join
     end
-  
+
     it 'header' do
       @configuration.run do
         navigate :menu do
           header :some_header, :name => 'header_name'
         end
       end
-  
+
       result = @view_object.navigation_for :menu, :as => :bootstrap_list
       result.should == ["<ul class=\"nav nav-list\">",
                           "<li class=\"nav-header\">",
@@ -267,14 +267,14 @@ describe SemanticNavigation::TwitterBootstrap::List do
                           "</li>",
                         "</ul>"].join
     end
-  
+
     it 'item with icon' do
       @configuration.run do
         navigate :menu do
           item :some_item, 'some_url', :name => 'item_name', :ico => 'user'
         end
       end
-  
+
       result = @view_object.navigation_for :menu, :as => :bootstrap_list
       result.should == ["<ul class=\"nav nav-list\">",
                           "<li>",
@@ -286,7 +286,7 @@ describe SemanticNavigation::TwitterBootstrap::List do
                           "</li>",
                         "</ul>"].join
     end
-  
+
     it 'node with icon' do
       @configuration.run do
         navigate :menu do
@@ -295,7 +295,7 @@ describe SemanticNavigation::TwitterBootstrap::List do
           end
         end
       end
-  
+
       result = @view_object.navigation_for :menu, :as => :bootstrap_list
       result.should == ["<ul class=\"nav nav-list\">",
                           "<li>",
@@ -313,5 +313,5 @@ describe SemanticNavigation::TwitterBootstrap::List do
                           "</li>",
                         "</ul>"].join
     end
-  end  
+  end
 end

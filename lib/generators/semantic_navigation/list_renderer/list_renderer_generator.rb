@@ -13,7 +13,6 @@ module SemanticNavigation
         register_string = "  register_renderer :#{file_name}, Renderers::#{class_name}\n"
         inject_into_file semantic_navigation_config, register_string, :after => "SemanticNavigation::Configuration.run do\n"
       end
-
     end
   end
 end

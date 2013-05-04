@@ -53,7 +53,7 @@ class Renderers::<%= class_name %>
     end
   end
 
-  #Navigation leaf block  
+  #Navigation leaf block
   def leaf(object)
     content_tag :li, nil, :id => show_id(:leaf, object.id),
                           :class => merge_classes(:leaf, object.active, object.classes) do
