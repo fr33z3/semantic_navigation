@@ -34,7 +34,7 @@ module SemanticNavigation
         def render_leaf(object)
           show = !until_level.nil? ? object.level <= until_level+1 : true
           return nil unless show
-          
+
           leaf(object)
         end
       end

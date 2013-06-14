@@ -20,8 +20,8 @@ module SemanticNavigation
         content_tag :li, nil, {id: show_id(:leaf, object.id),
                                class: merge_classes(:leaf, object.active, object.classes)
                               }.merge(object.html) do
-          link_to(object_name(object), 
-                  object.url, 
+          link_to(object_name(object),
+                  object.url,
                   {id: show_id(:link, object.id),
                    class: merge_classes(:link, object.active, object.link_classes)
                   }.merge(object.link_html))+
@@ -41,8 +41,8 @@ module SemanticNavigation
         content_tag :li, nil, {id: show_id(:leaf, object.id),
                                class: merge_classes(:leaf, object.active, object.classes)
                               }.merge(object.html) do
-          link_to object_name(object), 
-                  object.url, 
+          link_to object_name(object),
+                  object.url,
                   {id: show_id(:link, object.id),
                    class: merge_classes(:link, object.active, object.link_classes)
                   }.merge(object.link_html)
