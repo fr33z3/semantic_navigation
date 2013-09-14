@@ -19,5 +19,18 @@ module SemanticNavigation
       puts message.join("\n")
     end
   end
+
+  def self.actual_config_location
+    locations =  ["#{Rails.root}/config/initializers/semantic_navigation.rb", 
+                  "#{Rails.root}/config/semantic_navigation.rb"]
+    actual_location = locations.find{|l| File.exists?(l)}
+    raise ["Please create a semantic_navigation configuration",
+           "(rails g semantic_navigation:install)", 
+           "file before starting the project!"].join(" ") unless actual_location
+    puts "DEPRECATION WARNING: Please move the configuration file from #{locations.second} 
+          to #{locations.first}! Current configuration file path will be deprecated soon!" if locations.find_index(actual_location) == 1
+    actual_location
+  end
+
 end
 
