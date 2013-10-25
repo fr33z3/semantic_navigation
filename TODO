@@ -1,0 +1,14 @@
+ActiveSupport helper methods:
+  - Write specs for active_item_for if it getting block
+  - Write wiki about that
+
+Concept:
+  - Rewrite leaf/node concept
+  - Add possible to define renderers as templates
+  - Add renderers for other template frameworks
+  - Move bootstrap renderers to bootstrap version 4.0.0
+  - Possible to make dynamic items in menu (database or something else)
+  
+Convention over configuration:
+  - Move menu definitions outside the initializers folder
+  - Leave menu configuration options in initalizers folder
