@@ -6,11 +6,11 @@ module SemanticNavigation
         def render_navigation(object)
           return '' unless object.render_if
           navigation(object) do
-            while !object.class.in?(SemanticNavigation::Core::Leaf, NilClass) &&
+            while !object.class.in?([SemanticNavigation::Core::Leaf, NilClass]) &&
                   from_level.to_i > object.level
               object = object.sub_elements.find(&:active)
             end
-            unless object.class.in?(SemanticNavigation::Core::Leaf, NilClass)
+            unless object.class.in?([SemanticNavigation::Core::Leaf, NilClass])
               active_element = object.sub_elements.find{|e| e.active}
               active_element.render(self) if active_element
             end
