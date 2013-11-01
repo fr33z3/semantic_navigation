@@ -5,7 +5,7 @@ module SemanticNavigation
       desc "This generator creates list like rendering class"
 
       def generate_list_renderer
-        template "list_renderer.rb", "app/models/renderers/#{file_name}.rb"
+        template "list_renderer.rb", "app/navigation/renderers/#{file_name}.rb"
       end
 
       def register_renderer
