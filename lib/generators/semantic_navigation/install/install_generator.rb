@@ -12,7 +12,7 @@ module SemanticNavigation
         | http://github.com/fr33z3/semantic_navigation/wiki.            |
         +===============================================================+
         EOM
-        copy_file "semantic_navigation.rb", "config/initializers/semantic_navigation.rb"
+        copy_file "semantic_navigation.rb", "app/navigation/semantic_navigation.rb"
         copy_file "semantic_navigation.en.yml", "config/locales/semantic_navigation.en.yml"
       end
     end

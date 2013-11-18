@@ -8,7 +8,9 @@ module SemanticNavigation
         ActionView::Base.send :include, HelperMethods
       end
 
-      ActiveSupport::Dependencies.autoload_paths << "#{Rails.root}/app/navigation/**/*"
+      ActiveSupport::Dependencies.autoload_paths += [
+        "#{Rails.root}/app/navigation/renderers/*"
+      ]
 
       conf = SemanticNavigation::Configuration
       conf.register_renderer :list, Renderers::List
