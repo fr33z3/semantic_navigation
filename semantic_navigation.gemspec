@@ -23,5 +23,6 @@ Gem::Specification.new do |s|
    s.add_development_dependency "rspec", ">= 2.0.1"
    s.add_development_dependency "simplecov"
    s.add_development_dependency "appraisal"
+   s.add_runtime_dependency "colorize"
    s.add_runtime_dependency "rails", ">= 3.2.0"
 end
