@@ -5,7 +5,7 @@ describe SemanticNavigation::Core::Navigation do
   describe '#initialize' do
 
     it 'creates instance of navigation with level 0 and empty subitems' do
-      navigation = SemanticNavigation::Core::Navigation.new({})
+      navigation = SemanticNavigation::Core::Navigation.new({id: 'navigation'})
       navigation.level.should == 0
       navigation.sub_elements.should be_empty
     end
@@ -26,16 +26,16 @@ describe SemanticNavigation::Core::Navigation do
 
   describe '#item' do
     before :each do
-      @navigation = SemanticNavigation::Core::Navigation.new({})
+      @navigation = SemanticNavigation::Core::Navigation.new({id: 'some_navigation'})
     end
 
-    it "receives item method and make the leaf" do
+    it "receives id and url and makes the leaf" do
       @navigation.item :some_id, 'some_url'
       @navigation.sub_elements.size.should == 1
       @navigation.sub_elements.first.is_a?(SemanticNavigation::Core::Leaf).should be_true
     end
 
-    it "receives item method with block and create node" do
+    it "if receives block then create node" do
       @navigation.item :node_id, 'node_url' do
         item :leaf_id, 'leaf_url'
       end
@@ -43,7 +43,22 @@ describe SemanticNavigation::Core::Navigation do
       @navigation.sub_elements.first.is_a?(SemanticNavigation::Core::Node).should be_true
     end
 
-    it "receives item method with array of urls and save them properly" do
+    it "can receive only url and generate id for leafs" do
+      @navigation.item 'leaf_url1'
+      @navigation.item 'leaf_url2'
+      leaf1, leaf2 = @navigation.sub_elements
+      leaf1.instance_variable_get("@id").should == :some_navigation_0
+      leaf2.instance_variable_get("@id").should == :some_navigation_1
+    end
+
+    it 'can receive url and options without id' do
+      @navigation.item 'leaf_url', {ico: 'some_ico.png'}
+      leaf = @navigation.sub_elements.first
+      leaf.instance_variable_get("@url").should == 'leaf_url'
+      leaf.instance_variable_get("@ico").should == 'some_ico.png'
+    end
+
+    it "receives array of urls and save them properly" do
       @navigation.item :leaf_id, ['string/url',"controller#action",:symbolic_name,['array','like','url']]
       urls = @navigation.sub_elements.first.instance_variable_get("@url")
       urls.should == ['string/url',
