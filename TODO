@@ -8,6 +8,9 @@ Concept:
   - Add renderers for other template frameworks
   - Move bootstrap renderers to bootstrap version 4.0.0
   - Possible to make dynamic items in menu (database or something else)
+  - Pattern routes, can accept Proc
+  - scope can set default url params
+  - active_if method, can accept Proc
   
 Convention over configuration:
   - Move menu definitions outside the initializers folder
