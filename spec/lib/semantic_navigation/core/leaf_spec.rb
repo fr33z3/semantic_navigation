@@ -95,6 +95,13 @@ describe SemanticNavigation::Core::Leaf do
 
     context :marked do
 
+      it 'as active even if controller name starts from `/`' do
+        leaf = SemanticNavigation::Core::Leaf.new({url: {controller: '/first', action: 'index'}}, 1)
+        @view_object.stub(:params).and_return({controller: 'first', action: 'index'})
+        leaf.mark_active.should be_true
+        leaf.active.should be_true
+      end
+
       it 'as active if have active url with symbol names' do
         leaf = SemanticNavigation::Core::Leaf.new({:url => {:controller => :first, :action => :index}}, 1)
         @view_object.stub(:params).and_return({:controller => 'first', :action => 'index'})

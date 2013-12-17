@@ -29,9 +29,11 @@ module SemanticNavigation
       end
 
       def current_page?(options = {})
-       result = true
+        result = true
         if options.is_a? Hash
-          options.each do |key, value|
+          opts = options.dup
+          opts[:controller] = opts[:controller].to_s[1..-1] if opts[:controller] && opts[:controller][0] == '/'
+          opts.each do |key, value|
             result &= (view_object.params[key.to_sym].to_s == value.to_s)
           end
         else
