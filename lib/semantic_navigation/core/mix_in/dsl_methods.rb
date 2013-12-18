@@ -73,7 +73,7 @@ module SemanticNavigation
 
         def scope_url_params(url)
           if url.is_a? Hash
-          	url.merge(@scope_options[:url] || {})
+          	(@scope_options[:url] || {}).merge(url)
           else
           	url
           end

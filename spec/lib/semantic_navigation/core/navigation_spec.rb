@@ -272,6 +272,15 @@ describe SemanticNavigation::Core::Navigation do
         urls[0].should == {controller: 'controller', action: 'action1', some_attr: 'some_attr'}
         urls[1].should == {controller: 'controller', action: 'action2', some_attr: 'some_attr'}
       end
+
+      it "can't override defined url attributes" do
+        @navigation.scope url: {some_attr: 'some_attr'} do
+          item :item, {controller: 'controller', action: 'action', some_attr: 'old_attr'}
+        end
+
+        url = @navigation.sub_elements[0].instance_variable_get(:"@url")
+        url[:some_attr].should == 'old_attr'
+      end
     end
 
     describe ':render_if' do
