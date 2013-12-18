@@ -221,7 +221,7 @@ describe SemanticNavigation::Core::Navigation do
 
   end
 
-  describe "#render_if scope" do
+  describe "#scope" do
     before :each do
       @navigation = SemanticNavigation::Core::Navigation.new({})
 
@@ -238,43 +238,83 @@ describe SemanticNavigation::Core::Navigation do
       @navigation.sub_elements.size.should == 2
     end
 
-    it "scopes the creating items options" do
-      some_condition = mock
-      @navigation.scope :render_if => some_condition do
-        item :first_item, "controller1#action"
-        item :second_item, "controller2#action"
+    describe ':url' do
+      it 'scopes hashed url' do
+        @navigation.scope url: {controller: 'common_controller'} do
+          item :first_item, {action: 'first_action'}
+          item :second_item, {action: 'second_item'}
+        end
+
+        @navigation.sub_elements[0..1].each do |element|
+          url = element.instance_variable_get(:"@url")
+          url[:controller].should == 'common_controller'
+        end
       end
 
-      @navigation.sub_elements[0..1].each do |element|
-        element.instance_variable_get(:"@render_if").should == some_condition
+      it 'scopes route like urls' do
+        @navigation.scope url: {some_attr: 'some_attr'} do
+          item :first_item, "controller1#action"
+          item :second_item, "controller2#action"
+        end
+         
+        url1 = @navigation.sub_elements[0].instance_variable_get(:"@url")
+        url1.should == {controller: 'controller1', action: 'action', some_attr: 'some_attr'}
+        url2 = @navigation.sub_elements[1].instance_variable_get(:"@url")
+        url2.should == {controller: 'controller2', action: 'action', some_attr: 'some_attr'}        
+      end
+
+      it 'scopes array of urls' do
+        @navigation.scope url: {some_attr: 'some_attr'} do
+          item :item, ["controller#action1", "controller#action2"]
+        end
+
+        urls = @navigation.sub_elements[0].instance_variable_get(:"@url")
+        urls[0].should == {controller: 'controller', action: 'action1', some_attr: 'some_attr'}
+        urls[1].should == {controller: 'controller', action: 'action2', some_attr: 'some_attr'}
       end
     end
 
-    it "doesnt scope unscoped items" do
-      some_condition = mock
-      @navigation.scope render_if: some_condition do
-        item :first_item, "controller1#action"
-        item :second_item, "controller2#action"
-      end
-      @navigation.item :third_item, "controller3#action"
+    describe ':render_if' do
 
-      last_item = @navigation.sub_elements.last
-      last_item.instance_variable_get(:"@render_if").should == nil
-    end
 
-    it "doesnt override defined scopes" do
-      some_condition = mock
-      some_condition2 = mock
-      @navigation.scope :render_if => some_condition do
-        item :first_item, "controller1#action", render_if: some_condition2
-        item :second_item, "controller2#action"
+      it "scopes the creating items options" do
+        some_condition = mock
+        @navigation.scope :render_if => some_condition do
+          item :first_item, "controller1#action"
+          item :second_item, "controller2#action"
+        end
+
+        @navigation.sub_elements[0..1].each do |element|
+          element.instance_variable_get(:"@render_if").should == some_condition
+        end
       end
 
-      first_item = @navigation.sub_elements.first
-      second_item = @navigation.sub_elements.last
+      it "doesnt scope unscoped items" do
+        some_condition = mock
+        @navigation.scope render_if: some_condition do
+          item :first_item, "controller1#action"
+          item :second_item, "controller2#action"
+        end
+        @navigation.item :third_item, "controller3#action"
 
-      first_item.instance_variable_get(:"@render_if").should == some_condition2
-      second_item.instance_variable_get(:"@render_if").should == some_condition
+        last_item = @navigation.sub_elements.last
+        last_item.instance_variable_get(:"@render_if").should == nil
+      end
+
+      it "doesnt override defined scopes" do
+        some_condition = mock
+        some_condition2 = mock
+        @navigation.scope :render_if => some_condition do
+          item :first_item, "controller1#action", render_if: some_condition2
+          item :second_item, "controller2#action"
+        end
+
+        first_item = @navigation.sub_elements.first
+        second_item = @navigation.sub_elements.last
+
+        first_item.instance_variable_get(:"@render_if").should == some_condition2
+        second_item.instance_variable_get(:"@render_if").should == some_condition
+      end
     end
 
   end

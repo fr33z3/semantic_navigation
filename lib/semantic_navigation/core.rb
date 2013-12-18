@@ -2,6 +2,7 @@
 base
 mix_in/url_methods
 mix_in/name_methods
+mix_in/dsl_methods
 navigation
 leaf
 node

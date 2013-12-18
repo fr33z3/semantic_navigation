@@ -1,16 +1,19 @@
 module SemanticNavigation
   module Core
-    class Node < Navigation
+    class Node < Base
       include MixIn::UrlMethods
       include MixIn::NameMethods
+      include MixIn::DslMethods
 
       attr_accessor :link_classes, :node_classes,
-                    :link_html, :node_html
+                    :link_html, :node_html, :sub_elements
 
       def initialize(options, level)
         @url = []
         @link_html = {}
         @node_html = {}
+        @scope_options = {}
+        @sub_elements = []
         super options, level
       end
 
