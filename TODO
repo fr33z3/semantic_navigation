@@ -9,7 +9,6 @@ Concept:
   - Move bootstrap renderers to bootstrap version 4.0.0
   - Possible to make dynamic items in menu (database or something else)
   - Pattern routes, can accept Proc
-  - scope can set default url params
   - active_if method, can accept Proc
   - add possibility for routes like {controller: 'some_controller', actions: ['index', 'new', 'create']}, or
     "some_controller#(index|new|create)"
