@@ -9,7 +9,7 @@ module SemanticNavigation
       end
 
       def register_renderer
-        semantic_navigation_config = Railtie.actual_config_location
+        semantic_navigation_config = SemanticNavigation.actual_config_location
         register_string = "  register_renderer :#{file_name}, Renderers::#{class_name}\n"
         inject_into_file semantic_navigation_config, register_string, :after => "SemanticNavigation::Configuration.run do\n"
       end
