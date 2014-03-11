@@ -12,6 +12,7 @@ Concept:
   - active_if method, can accept Proc
   - add possibility for routes like {controller: 'some_controller', actions: ['index', 'new', 'create']}, or
     "some_controller#(index|new|create)"
+  - add wrap_false property for item
   
 Convention over configuration:
   - Move menu definitions outside the initializers folder
