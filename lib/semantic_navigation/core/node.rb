@@ -4,6 +4,7 @@ module SemanticNavigation
       include MixIn::UrlMethods
       include MixIn::NameMethods
       include MixIn::DslMethods
+      include MixIn::ConditionMethods
 
       attr_accessor :link_classes, :node_classes,
                     :link_html, :node_html, :sub_elements

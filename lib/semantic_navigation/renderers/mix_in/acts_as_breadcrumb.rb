@@ -23,8 +23,10 @@ module SemanticNavigation
             render_element = active_element.render(self)
           end
           if render_element
-            node(object) do
+            if object.skip?(self.name)
               render_element
+            else
+              node(object){ render_element }
             end
           else
             render_leaf(object)
@@ -33,6 +35,7 @@ module SemanticNavigation
 
         def render_leaf(object)
           show = !until_level.nil? ? object.level <= until_level+1 : true
+          show &= !object.skip?(self.name)
           return nil unless show
 
           leaf(object)

@@ -3,6 +3,7 @@ module SemanticNavigation
     class Leaf < Base
       include MixIn::UrlMethods
       include MixIn::NameMethods
+      include MixIn::ConditionMethods
 
       attr_accessor :link_classes, :link_html
 
