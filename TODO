@@ -1,4 +1,5 @@
 ActiveSupport helper methods:
+  - Write specs for active_level_for
   - Write specs for active_item_for if it getting block
   - Write specs for skip_for property
   - Make skip_for property work with other renderers

@@ -7,6 +7,22 @@ module SemanticNavigation::HelperMethods
   end
 
   def active_item_for(name, level = nil, &block)
+    item = _current_item(name, level)
+    if block_given?
+      capture(item, &block)  
+    else
+      item != navigation ? item.name(:active_item_for) : ''
+    end
+  end
+
+  def active_level_for(name)
+    item = _current_item(name, nil)
+    item.try(:level) || -1
+  end
+
+  private
+
+  def _current_item(name, level)
     SemanticNavigation::Configuration.view_object = self
     navigation = SemanticNavigation::Configuration.navigation(name)
     navigation.mark_active
@@ -16,10 +32,7 @@ module SemanticNavigation::HelperMethods
           (!level.nil? ? item.level < level : true)
       item = item.sub_elements.find{|e| e.active}
     end
-    if !block_given?
-      item != navigation ? item.name(:active_item_for) : ''
-    else
-      capture(item, &block)  
-    end
+    item
   end
+
 end
