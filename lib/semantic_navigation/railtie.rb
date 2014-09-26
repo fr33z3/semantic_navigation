@@ -11,10 +11,16 @@ module SemanticNavigation
       conf = SemanticNavigation::Configuration
       conf.register_renderer :list, Renderers::List
       conf.register_renderer :breadcrumb, Renderers::BreadCrumb
-      conf.register_renderer :bootstrap_breadcrumb, TwitterBootstrap::Breadcrumb
-      conf.register_renderer :bootstrap_list, TwitterBootstrap::List
-      conf.register_renderer :bootstrap_tabs, TwitterBootstrap::Tabs
-      conf.register_renderer :bootstrap_pills, TwitterBootstrap::Tabs
+    end
+
+    def self.register_bootstrap_renderers
+      conf = SemanticNavigation::Configuration
+      namespace = conf.bootstrap_version == 2 ? TwitterBootstrap : TwitterBootstrap3
+      conf.register_renderer :bootstrap_breadcrumb, namespace::Breadcrumb
+      conf.register_renderer :bootstrap_list, namespace::List
+      conf.register_renderer :bootstrap_tabs, namespace::Tabs
+      conf.register_renderer :bootstrap_pills, namespace::Tabs
+      
       conf.register_renderer :bootstrap_simple_nav, SemanticNavigation::Renderers::List
 
       conf.styles_for :bootstrap_pills do
@@ -25,15 +31,17 @@ module SemanticNavigation
       end
     end
 
-     if Rails.env == "production"
-       config.after_initialize {
-         load SemanticNavigation.actual_config_location
-       }
-     else
-       ActionDispatch::Callbacks.before {
-         load SemanticNavigation.actual_config_location
-       }
-     end
+    if Rails.env == "production"
+     config.after_initialize {
+       load SemanticNavigation.actual_config_location
+       SemanticNavigation::Railtie.register_bootstrap_renderers
+     }
+    else
+     ActionDispatch::Callbacks.before {
+       load SemanticNavigation.actual_config_location
+       SemanticNavigation::Railtie.register_bootstrap_renderers
+     }
+    end
 
   end
 end

@@ -1,6 +1,8 @@
 module SemanticNavigation
   class Configuration
 
+    @@bootstrap_version = 2
+
     @@navigations = {}
     @@renderers = {}
     @@render_styles = {}
@@ -61,6 +63,14 @@ module SemanticNavigation
 
     def self.navigation(name)
       @@navigations[name]
+    end
+
+    def self.bootstrap_version(version=nil)
+      if version
+        @@bootstrap_version = version
+      else
+        @@bootstrap_version
+      end
     end
 
   end
