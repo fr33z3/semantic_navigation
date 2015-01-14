@@ -17,6 +17,7 @@ SemanticNavigation::Configuration.run do |c|
 end
 
 RSpec.configure do |config|
-  config.color_enabled = true
+  # throw config.methods.select{|s| s.to_s =~ /color/}
+  config.color = true
   config.formatter     = 'documentation'
 end

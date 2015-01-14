@@ -17,10 +17,8 @@ describe 'SemanticNavigation::Deprecations' do
           puts e
         end
       end
-
-      (SomeRenderer.include?(
-        SemanticNavigation::Renderers::MixIn::RenderHelpers
-      ) rescue false).should be_true
+      
+      expect(SomeRenderer).to be_include(SemanticNavigation::Renderers::MixIn::RenderHelpers)
     end
   end
 
@@ -38,9 +36,7 @@ describe 'SemanticNavigation::Deprecations' do
         end
       end
 
-      (SomeRenderer.include?(
-        SemanticNavigation::Renderers::MixIn::ActsAsBreadcrumb
-      ) rescue false).should be_true
+      expect(SomeRenderer).to be_include(SemanticNavigation::Renderers::MixIn::ActsAsBreadcrumb)
     end
   end
 
@@ -58,9 +54,7 @@ describe 'SemanticNavigation::Deprecations' do
         end
       end
 
-      (SomeRenderer.include?(
-        SemanticNavigation::Renderers::MixIn::ActsAsList
-      ) rescue false).should be_true
+      expect(SomeRenderer).to be_include(SemanticNavigation::Renderers::MixIn::ActsAsList)
     end
   end
 

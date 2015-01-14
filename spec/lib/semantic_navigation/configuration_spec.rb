@@ -39,7 +39,7 @@ describe SemanticNavigation::Configuration do
     end
 
     it 'passes received block to navigation class instance' do
-      navigation = mock
+      navigation = double
       navigation.should_receive(:instance_eval)
       SemanticNavigation::Core::Navigation.should_receive(:new).and_return navigation
       SemanticNavigation::Configuration.navigate :some_menu do
@@ -72,10 +72,10 @@ describe SemanticNavigation::Configuration do
       styles = SemanticNavigation::Configuration.class_variable_get("@@render_styles")
       styles[:some_renderer].should == proc_object
 
-      mock_renderer = mock
-      mock_renderer.should_receive(:do_something1).with(true)
-      mock_renderer.should_receive(:do_something2).with('some_attr')
-      mock_renderer.instance_eval &proc_object
+      double_renderer = double
+      double_renderer.should_receive(:do_something1).with(true)
+      double_renderer.should_receive(:do_something2).with('some_attr')
+      double_renderer.instance_eval &proc_object
     end
   end
 
@@ -108,13 +108,13 @@ describe SemanticNavigation::Configuration do
 
     it 'registers a new helper method based on name of a renderer and depending on method navigation_for' do
       SemanticNavigation::Configuration.register_renderer SomeRenderer
-      SemanticNavigation::HelperMethods.method_defined?(:some_renderer_for).should be_true
+      expect(SemanticNavigation::HelperMethods).to be_method_defined(:some_renderer_for)
 
       class SomeClass
         include SemanticNavigation::HelperMethods
       end
       some_class_instance = SomeClass.new
-      some_class_instance.should_receive(:navigation_for).with(:some_menu, {:as => :some_renderer})
+      expect(some_class_instance).to receive(:navigation_for).with(:some_menu, {as: :some_renderer})
 
       some_class_instance.some_renderer_for :some_menu
     end
@@ -123,11 +123,11 @@ describe SemanticNavigation::Configuration do
   describe '#render' do
 
     before :each do
-      @view_object = mock
-      @renderer = mock
-      @renderer_instance = mock
+      @view_object = double
+      @renderer = double
+      @renderer_instance = double
       @renderer.should_receive(:new).and_return @renderer_instance
-      @navigation = mock
+      @navigation = double
 
       SemanticNavigation::Configuration.class_variable_set "@@renderers", {:renderer => @renderer}
       SemanticNavigation::Configuration.class_variable_set "@@navigations", {:some_menu => @navigation}
@@ -151,7 +151,7 @@ describe SemanticNavigation::Configuration do
     it 'execs default renderer styles from configuration' do
       render_styles = proc{}
       SemanticNavigation::Configuration.class_variable_set "@@render_styles", {:renderer => render_styles}
-      @renderer_instance.should_receive(:instance_eval).with(&render_styles)
+      expect(@renderer_instance).to receive(:instance_eval)
       @renderer_instance.should_receive(:name=).with(:renderer)
       @navigation.should_receive(:mark_active)
       @navigation.should_receive(:render).with(@renderer_instance)

@@ -89,8 +89,8 @@ describe SemanticNavigation::Core::Leaf do
   describe '#mark_active' do
 
     before :each do
-      @view_object = mock
-      SemanticNavigation::Configuration.stub!(:view_object).and_return @view_object
+      @view_object = double
+      allow(SemanticNavigation::Configuration).to receive(:view_object).and_return @view_object
     end
 
     context :marked do
@@ -98,50 +98,56 @@ describe SemanticNavigation::Core::Leaf do
       it 'as active even if controller name starts from `/`' do
         leaf = SemanticNavigation::Core::Leaf.new({url: {controller: '/first', action: 'index'}}, 1)
         @view_object.stub(:params).and_return({controller: 'first', action: 'index'})
-        leaf.mark_active.should be_true
-        leaf.active.should be_true
+        
+        expect(leaf.mark_active).to eq true
+        expect(leaf.active).to eq true
       end
 
       it 'as active if have active url with symbol names' do
         leaf = SemanticNavigation::Core::Leaf.new({:url => {:controller => :first, :action => :index}}, 1)
         @view_object.stub(:params).and_return({:controller => 'first', :action => 'index'})
-        leaf.mark_active.should be_true
-        leaf.active.should be_true
+        
+        expect(leaf.mark_active).to eq true
+        expect(leaf.active).to eq true
       end
 
       it 'as active if have active url with string names' do
         leaf = SemanticNavigation::Core::Leaf.new({:url => {:controller => "first", :action => "index"}}, 1)
         @view_object.stub(:params).and_return({:controller => 'first', :action => 'index'})
-        leaf.mark_active.should be_true
-        leaf.active.should be_true
+        
+        expect(leaf.mark_active).to eq true
+        expect(leaf.active).to eq true
       end
 
       it 'as inactive if have inactive url with symbol names' do
         leaf = SemanticNavigation::Core::Leaf.new({:url => {:controller => :first, :action => :index}}, 1)
         @view_object.stub(:params).and_return({controller: "second", action: 'index'})
-        leaf.mark_active.should be_false
-        leaf.active.should be_false
+        expect(leaf.mark_active).to eq false
+        expect(leaf.active).to eq false
       end
 
       it 'as inactive if have inactive url with string names' do
         leaf = SemanticNavigation::Core::Leaf.new({:url => {:controller => "first", :action => "index"}}, 1)
         @view_object.stub(:params).and_return({controller: "second", action: 'index'})
-        leaf.mark_active.should be_false
-        leaf.active.should be_false
+        
+        expect(leaf.mark_active).to eq false
+        expect(leaf.active).to eq false
       end
 
       it 'as inactive if have nil url' do
         leaf = SemanticNavigation::Core::Leaf.new({},1)
-        leaf.mark_active.should be_false
-        leaf.active.should be_false
+        
+        expect(leaf.mark_active).to eq false
+        expect(leaf.active).to eq false
       end
 
       it 'as active if at least one url in passed array is active' do
         leaf = SemanticNavigation::Core::Leaf.new({:url => [{:controller => :leaf_controller1, :action => :action},
                                                             {:controller => :leaf_controller2, :action => :action}]},1)
         @view_object.stub(:params).and_return(:controller => 'leaf_controller2', :action => 'action')
+        
         leaf.mark_active
-        leaf.active.should be_true
+        expect(leaf.active).to eq true
       end
 
     end

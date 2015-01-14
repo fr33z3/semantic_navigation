@@ -64,7 +64,7 @@ describe SemanticNavigation::Core::Node do
       @node = SemanticNavigation::Core::Node.new({:url => [{:controller => :node_controller, :action => :action},
                                                            {:controller => :node_controller2, :action => :action}]},1)
 
-      @view_object = mock
+      @view_object = double
       @view_object.stub(:params).and_return({:action => "some", :action => "some"})
       SemanticNavigation::Configuration.stub(:view_object).and_return @view_object
     end
@@ -73,7 +73,7 @@ describe SemanticNavigation::Core::Node do
 
       it '@active variable to false if no active sub_elements and node url is not active' do
         @node.mark_active
-        @node.instance_variable_get("@active").should be_false
+        expect(@node.instance_variable_get("@active")).to eq false
       end
 
       it '@active variable to true if at least one sub_element is active' do
@@ -83,9 +83,9 @@ describe SemanticNavigation::Core::Node do
         @view_object.should_receive(:current_page?).with('222').and_return false
 
         @node.mark_active
-        @node.sub_elements[0].active.should be_true
-        @node.sub_elements[1].active.should be_false
-        @node.active.should be_true
+        expect(@node.sub_elements[0].active).to eq true
+        expect(@node.sub_elements[1].active).to eq false
+        expect(@node.active).to eq true
       end
 
       it '@active variable to false if all sub_elements is unactive' do
@@ -95,9 +95,9 @@ describe SemanticNavigation::Core::Node do
         @view_object.should_receive(:current_page?).with('444').and_return false
 
         @node.mark_active
-        @node.sub_elements[0].active.should be_false
-        @node.sub_elements[1].active.should be_false
-        @node.active.should be_false
+        expect(@node.sub_elements[0].active).to eq false
+        expect(@node.sub_elements[1].active).to eq false
+        expect(@node.active).to eq false
       end
     end
 
@@ -107,9 +107,9 @@ describe SemanticNavigation::Core::Node do
       @view_object.stub(:params).and_return({:controller => "controller1", :action => "action", :some_other_params => "blablabla"})
 
       @node.mark_active
-      @node.sub_elements[0].active.should be_true
-      @node.sub_elements[1].active.should be_false
-      @node.active.should be true
+      expect(@node.sub_elements[0].active).to eq true
+      expect(@node.sub_elements[1].active).to eq false
+      expect(@node.active).to eq true
     end
 
     it 'works for route like urls as good as for Hash url params' do
@@ -118,15 +118,15 @@ describe SemanticNavigation::Core::Node do
       @view_object.stub(:params).and_return({:controller => "controller1", :action => "action", :some_other_params => "blablabla"})
 
       @node.mark_active
-      @node.sub_elements[0].active.should be_true
-      @node.sub_elements[1].active.should be_false
-      @node.active.should be true
+      expect(@node.sub_elements[0].active).to eq true
+      expect(@node.sub_elements[1].active).to eq false
+      expect(@node.active).to eq true
     end
 
     it 'is active if at least one url in passed array is active' do
       @view_object.stub(:params).and_return(:controller => 'node_controller2', :action => 'action')
       @node.mark_active
-      @node.active.should be_true
+      expect(@node.active).to eq true
     end
 
     it 'accepts array like urls with other urls' do

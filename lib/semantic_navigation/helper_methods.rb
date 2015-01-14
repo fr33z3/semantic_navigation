@@ -11,7 +11,7 @@ module SemanticNavigation::HelperMethods
     if block_given?
       capture(item, &block)  
     else
-      item != navigation ? item.name(:active_item_for) : ''
+      !item.is_a?(SemanticNavigation::Core::Navigation) ? item.name(:active_item_for) : ''
     end
   end
 

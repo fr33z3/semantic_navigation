@@ -11,7 +11,7 @@ describe SemanticNavigation::HelperMethods do
   describe "#navigation_for" do
 
     before :each do
-      SemanticNavigation::Configuration.stub!(:new).and_return (@config_instance = mock)
+      allow(SemanticNavigation::Configuration).to receive(:new).and_return (@config_instance = double)
     end
 
     it 'default renderer is :list' do
