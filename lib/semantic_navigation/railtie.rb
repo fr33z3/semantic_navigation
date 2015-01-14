@@ -38,7 +38,6 @@ module SemanticNavigation
      }
     else
      ActionDispatch::Callbacks.to_prepare {
-       require 'pry'
        load SemanticNavigation.actual_config_location
        SemanticNavigation::Railtie.register_bootstrap_renderers
      }
