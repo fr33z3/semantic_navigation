@@ -5,16 +5,16 @@ module SemanticNavigation
 
         def item(id, url=nil, options={}, &block)
           options[:id] = id.to_sym
-          options[:render_if] ||= @scope_options[:render_if]
-  
+          options[:render_if] = [*@render_if, options[:render_if], *@scope_render_if].compact
+
           if url.is_a?(Array)
             options[:url] = [url].flatten(1).map{|url| scope_url_params(decode_url(url))}
           else
             options[:url] = scope_url_params(decode_url(url))
           end
-  
+
           options[:i18n_name] = @i18n_name
-  
+
           if block_given?
             element = Node.new(options, @level+1)
             element.instance_eval &block
@@ -34,21 +34,21 @@ module SemanticNavigation
                                                      'divider definition')
             end
           end
-  
+
           @sub_elements.push element
         end
 
         def header(id, options={})
           options[:id] = id.to_sym
-          options[:render_if] ||= @scope_options[:render_if]
+          options[:render_if] = [options[:render_if], *@scope_render_if].compact
           options[:url] = nil
           options[:i18n_name] = @i18n_name
           @sub_elements.push Leaf.new(options, @level+1)
         end
-  
+
         def divider(options = {})
           options[:id] = :divider
-          options[:render_if] ||= @scope_options[:render_if]
+          options[:render_if] ||= [options[:render_if], *@scope_render_if].compact
           options[:url] = nil
           options[:i18n_name] = nil
           options[:name] = nil
@@ -64,16 +64,20 @@ module SemanticNavigation
         end
 
         def scope(options = {}, &block)
-          @scope_options = options
+          @scope_url ||= options[:url]
+          (@scope_render_if ||= []).push options[:render_if]
+
           self.instance_eval &block
-          @scope_options = {}
+
+          @scope_render_if.pop
+          @scope_url = {}
         end
 
         private
 
         def scope_url_params(url)
           if url.is_a? Hash
-          	(@scope_options[:url] || {}).merge(url)
+          	(@scope_url || {}).merge(url)
           else
           	url
           end
@@ -87,7 +91,7 @@ module SemanticNavigation
             end
           end
           decoded_url || url
-        end        
+        end
 
       end
     end

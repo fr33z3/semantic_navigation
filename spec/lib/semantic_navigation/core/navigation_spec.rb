@@ -7,7 +7,7 @@ describe SemanticNavigation::Core::Navigation do
     it 'creates instance of navigation with level 0 and empty subitems' do
       navigation = SemanticNavigation::Core::Navigation.new({})
       navigation.level.should == 0
-      
+
       expect(navigation.sub_elements).to be_empty
     end
 
@@ -15,13 +15,13 @@ describe SemanticNavigation::Core::Navigation do
       navigation = SemanticNavigation::Core::Navigation.new :id => :some_id,
                                                             :classes => [:one, :two]
       navigation.id.should == :some_id
-      
+
       expect(navigation.classes).to eq [:one, :two]
     end
 
     it 'creates instance and save unintended properties' do
       navigation = SemanticNavigation::Core::Navigation.new :some_attribute => :some_value
-      
+
       expect(navigation.instance_variable_get("@some_attribute")).to eq :some_value
     end
 
@@ -35,7 +35,7 @@ describe SemanticNavigation::Core::Navigation do
     it "receives item method and make the leaf" do
       @navigation.item :some_id, 'some_url'
       @navigation.sub_elements.size.should == 1
-      
+
       expect(@navigation.sub_elements.first).to be_is_a(SemanticNavigation::Core::Leaf)
     end
 
@@ -44,14 +44,14 @@ describe SemanticNavigation::Core::Navigation do
         item :leaf_id, 'leaf_url'
       end
       @navigation.sub_elements.size.should == 1
-      
+
       expect(@navigation.sub_elements.first).to be_is_a(SemanticNavigation::Core::Node)
     end
 
     it "receives item method with array of urls and save them properly" do
       @navigation.item :leaf_id, ['string/url',"controller#action",:symbolic_name,['array','like','url']]
       urls = @navigation.sub_elements.first.instance_variable_get("@url")
-      
+
       expect(urls).to eq ['string/url',
                          {:controller => 'controller', :action => 'action'},
                          :symbolic_name,
@@ -60,14 +60,14 @@ describe SemanticNavigation::Core::Navigation do
 
     it "receives item with Proc url and decode it to normal url (leaf)" do
       @navigation.item :leaf_id, proc{'some' + 'func'}
-      
+
       expect(@navigation.sub_elements.first.url).to eq 'somefunc'
     end
 
     it 'receives item with array of urls one of each is a Proc (leaf)' do
       @navigation.item :leaf_id, ['string_url',proc{'some' + 'func'}]
       urls = @navigation.sub_elements.first.send :urls
-      
+
       expect(urls).to eq ['string_url', 'somefunc']
     end
 
@@ -76,7 +76,7 @@ describe SemanticNavigation::Core::Navigation do
         item :first_value, '#'
         item :second_value, '#'
       end
-      
+
       expect(@navigation.sub_elements.first.url).to eq 'somefunc'
     end
 
@@ -86,7 +86,7 @@ describe SemanticNavigation::Core::Navigation do
         item :second_value, '#'
       end
       urls = @navigation.sub_elements.first.send :urls
-      
+
       expect(urls).to eq ['string_url', 'somefunc']
     end
   end
@@ -136,7 +136,7 @@ describe SemanticNavigation::Core::Navigation do
 
       @navigation.item :some_id, 'controller#action'
       @navigation.sub_elements.size.should == 1
-      
+
       expect(@navigation.sub_elements.first.url).to eq({:controller => "controller", :action => "action"})
     end
   end
@@ -145,17 +145,17 @@ describe SemanticNavigation::Core::Navigation do
     context :returns do
       it 'true if render_if proc is nil' do
         navigation = SemanticNavigation::Core::Navigation.new({})
-        
+
         expect(navigation.render_if).to eq true
       end
 
       it 'true if render_if proc return true' do
-        navigation = SemanticNavigation::Core::Navigation.new({:render_if => proc{true}})
+        navigation = SemanticNavigation::Core::Navigation.new({:render_if => [proc{true}]})
         expect(navigation.render_if).to eq true
       end
 
       it 'false if render_if proc return false' do
-        navigation = SemanticNavigation::Core::Navigation.new({:render_if => proc{false}})
+        navigation = SemanticNavigation::Core::Navigation.new({:render_if => [proc{false}]})
         expect(navigation.render_if).to eq false
       end
 
@@ -163,9 +163,9 @@ describe SemanticNavigation::Core::Navigation do
 
     context :passes do
       it 'self to passed proc' do
-        navigation = SemanticNavigation::Core::Navigation.new({:id => :some_id, :render_if => proc{|o| o.id == :some_id}})
+        navigation = SemanticNavigation::Core::Navigation.new({:id => :some_id, :render_if => [proc{|o| o.id == :some_id}]})
         expect(navigation.render_if).to eq true
-        navigation = SemanticNavigation::Core::Navigation.new({:id => :another_id, :render_if => proc{|o| o.id == :some_id}})
+        navigation = SemanticNavigation::Core::Navigation.new({:id => :another_id, :render_if => [proc{|o| o.id == :some_id}]})
         expect(navigation.render_if).to eq false
       end
     end
@@ -268,11 +268,11 @@ describe SemanticNavigation::Core::Navigation do
           item :first_item, "controller1#action"
           item :second_item, "controller2#action"
         end
-         
+
         url1 = @navigation.sub_elements[0].instance_variable_get(:"@url")
         url1.should == {controller: 'controller1', action: 'action', some_attr: 'some_attr'}
         url2 = @navigation.sub_elements[1].instance_variable_get(:"@url")
-        url2.should == {controller: 'controller2', action: 'action', some_attr: 'some_attr'}        
+        url2.should == {controller: 'controller2', action: 'action', some_attr: 'some_attr'}
       end
 
       it 'scopes array of urls' do
@@ -306,7 +306,7 @@ describe SemanticNavigation::Core::Navigation do
         end
 
         @navigation.sub_elements[0..1].each do |element|
-          element.instance_variable_get(:"@render_if").should == some_condition
+          element.instance_variable_get(:"@render_if").should == [some_condition]
         end
       end
 
@@ -319,7 +319,7 @@ describe SemanticNavigation::Core::Navigation do
         @navigation.item :third_item, "controller3#action"
 
         last_item = @navigation.sub_elements.last
-        last_item.instance_variable_get(:"@render_if").should == nil
+        last_item.instance_variable_get(:"@render_if").should == []
       end
 
       it "doesnt override defined scopes" do
@@ -333,8 +333,8 @@ describe SemanticNavigation::Core::Navigation do
         first_item = @navigation.sub_elements.first
         second_item = @navigation.sub_elements.last
 
-        first_item.instance_variable_get(:"@render_if").should == some_condition2
-        second_item.instance_variable_get(:"@render_if").should == some_condition
+        first_item.instance_variable_get(:"@render_if").should == [some_condition2, some_condition]
+        second_item.instance_variable_get(:"@render_if").should == [some_condition]
       end
     end
 
@@ -346,4 +346,5 @@ describe SemanticNavigation::Core::Navigation do
       lambda{@navigation.unknow_method}.should raise_exception
     end
   end
+
 end
