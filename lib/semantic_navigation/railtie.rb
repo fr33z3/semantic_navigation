@@ -33,13 +33,13 @@ module SemanticNavigation
 
     if Rails.env == "production"
      config.after_initialize {
-       load SemanticNavigation.actual_config_location
        SemanticNavigation::Railtie.register_bootstrap_renderers
+       load SemanticNavigation.actual_config_location
      }
     else
      ActionDispatch::Callbacks.to_prepare {
-       load SemanticNavigation.actual_config_location
        SemanticNavigation::Railtie.register_bootstrap_renderers
+       load SemanticNavigation.actual_config_location
      }
     end
 
