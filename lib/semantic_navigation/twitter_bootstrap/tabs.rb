@@ -13,6 +13,7 @@ module SemanticNavigation
       show_link_id false
 
       property_for :base, :ico
+      style_accessor :node_urls => false
 
       private
 
@@ -28,7 +29,7 @@ module SemanticNavigation
         content_tag :li, nil, {id: show_id(:leaf, object.id),
                                class: merge_classes(:leaf, object.active, [object.classes,'dropdown'].flatten)
                               }.merge(object.html) do
-          content_tag(:a, {:href => '#',
+          content_tag(:a, {:href => (node_urls ? object.url : "#"),
                            id: show_id(:link, object.id),
                            class: merge_classes(:link, object.active, [object.link_classes,'dropdown-toggle'].flatten),
                            'data-toggle'=> :dropdown
