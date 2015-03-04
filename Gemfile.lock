@@ -1,7 +1,7 @@
 PATH
   remote: .
   specs:
-    semantic_navigation (0.2.5)
+    semantic_navigation (0.2.7)
       rails (>= 3.2.0)
 
 GEM

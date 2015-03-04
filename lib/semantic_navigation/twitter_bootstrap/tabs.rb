@@ -14,6 +14,7 @@ module SemanticNavigation
 
       property_for :base, :ico
       style_accessor :node_urls => false
+      style_accessor :data_toggle => true
 
       private
 
@@ -29,11 +30,14 @@ module SemanticNavigation
         content_tag :li, nil, {id: show_id(:leaf, object.id),
                                class: merge_classes(:leaf, object.active, [object.classes,'dropdown'].flatten)
                               }.merge(object.html) do
-          content_tag(:a, {:href => (node_urls ? @view_object.url_for(object.url) : "#"),
-                           id: show_id(:link, object.id),
-                           class: merge_classes(:link, object.active, [object.link_classes,'dropdown-toggle'].flatten),
-                           'data-toggle'=> :dropdown
-                           }.merge(object.link_html)) do
+          link_params = {
+            :href => (node_urls ? @view_object.url_for(object.url) : "#"),
+            id: show_id(:link, object.id),
+            class: merge_classes(:link, object.active, [object.link_classes,'dropdown-toggle'].flatten),
+          }.merge(object.link_html)
+          link_params['data-toggle'] = :dropdown if data_toggle
+
+          content_tag(:a, link_params) do
             [object.ico ? content_tag(:i,nil,class: "icon-#{object.ico}") : '',
              object_name(object),
              content_tag(:b,nil,class: :caret)
