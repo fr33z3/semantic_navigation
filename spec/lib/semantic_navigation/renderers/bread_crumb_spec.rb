@@ -1,77 +1,154 @@
 require 'spec_helper'
 
 describe SemanticNavigation::Renderers::BreadCrumb do
+  class ViewObject
+    attr_accessor :output_buffer
+    include ActionView::Helpers::TagHelper
+    include SemanticNavigation::HelperMethods
+    include ActionView::Helpers::UrlHelper
+  end
+  let(:configuration) { SemanticNavigation::Configuration }
+  let(:view_object) { ViewObject.new }
 
-  context :renders do
+  before do
+    configuration.register_renderer :breadcrumb, SemanticNavigation::Renderers::BreadCrumb
+  end
 
-    before :each do
-      class ViewObject
-        attr_accessor :output_buffer
-        include ActionView::Helpers::TagHelper
-        include SemanticNavigation::HelperMethods
-        include ActionView::Helpers::UrlHelper
-      end
-      @configuration = SemanticNavigation::Configuration
-      @configuration.register_renderer :breadcrumb, SemanticNavigation::Renderers::BreadCrumb
-      @view_object = ViewObject.new
+  context "empty navigation" do
+    subject { view_object.navigation_for(:menu, as: :breadcrumb) }
+
+    before do
+      configuration.run { navigate(:menu) { } }
     end
 
-    it 'empty ul tag for empty navigation' do
+    it { is_expected.to have_tag("ul") }
+    it { is_expected.to have_tag("ul", with: { id: "menu" }) }
+    it { is_expected.to have_tag("ul", with: { class: "breadcrumb" }) }
+    it { is_expected.to have_tag("ul", with: { id: "menu", class: "breadcrumb" }, text: "") }
+  end
 
-      @configuration.run do
+  context "one level navigation breadcrumb" do
+    subject { view_object.navigation_for(:menu, as: :breadcrumb) }
+
+    before do
+      configuration.run do
         navigate :menu do
+          item :url1, "url1", name: "url1"
+          item :url2, "url2", name: "url2"
         end
       end
 
-      result = @view_object.navigation_for :menu, :as => :breadcrumb
-      result.should == "<ul class=\"breadcrumb\" id=\"menu\"></ul>"
+      allow(view_object).to receive(:current_page?).and_return(false, true)
     end
 
-    it 'one level navigation breadcrumb' do
-      @configuration.run do
-        navigate :menu do
-          item :url1, 'url1', :name => 'url1'
-          item :url2, 'url2', :name => 'url2'
-        end
+    it { is_expected.to have_tag("ul") }
+    it "renders breadcrumb" do
+      is_expected.to have_tag("ul", with: {id: "menu", class: "breadcrumb"}) do
+        with_tag("li", with: { id: "url2" }, text: "url2")
+      end
+    end
+
+    context "when no any current page" do
+      before do
+        allow(view_object).to receive(:current_page?).and_return(false, false)
       end
 
-      @view_object.should_receive(:current_page?).and_return(false,true)
-
-      result = @view_object.navigation_for :menu, :as => :breadcrumb
-      result.should == ["<ul class=\"breadcrumb\" id=\"menu\">",
-                          "<li id=\"url2\">",
-                            "url2",
-                          "</li>",
-                        "</ul>"].join
+      it { is_expected.to have_tag("ul", with: { id: "menu", class: "breadcrumb" }, text: "") }
     end
+  end
 
-    it 'breadcrumb with secific menu tag' do
-      @configuration.run do
+  context "with specific html tag" do
+    subject { view_object.navigation_for :menu, as: :my_breadcrumb }
 
+    before do
+      configuration.run do
         register_renderer :my_breadcrumb, :breadcrumb
 
-        styles_for :my_breadcrumb do
-          menu_tag :ol
-        end
+        styles_for(:my_breadcrumb) { menu_tag :ol }
 
         navigate :menu do
-          item :url1, 'url1', :name => 'url1'
-          item :url2, 'url2', :name => 'url2'
+          item :url1, "url1", name: "url1"
+          item :url2, "url2", name: "url2"
         end
       end
 
-      @view_object.should_receive(:current_page?).and_return(false,true)
-
-      result = @view_object.navigation_for :menu, :as => :my_breadcrumb
-      result.should == ["<ol class=\"breadcrumb\" id=\"menu\">",
-                          "<li id=\"url2\">",
-                            "url2",
-                          "</li>",
-                        "</ol>"].join
+      allow(view_object).to receive(:current_page?).and_return(false, true)
     end
 
-  it 'one multilevel navigation breadcrumb' do
-      @configuration.run do
+    it "renders proper breadramb" do
+      is_expected.to have_tag("ol", with: {id: "menu", class: "breadcrumb"}) do
+        with_tag("li", with: { id: "url2" }, text: "url2")
+      end
+    end
+
+    context "when no any current page" do
+      before do
+        allow(view_object).to receive(:current_page?).and_return(false, false)
+      end
+
+      it { is_expected.to have_tag("ol", with: { id: "menu", class: "breadcrumb" }, text: "") }
+    end
+  end
+
+  context "multilevel navigation breadcrumb" do
+    subject { view_object.navigation_for :menu, as: :breadcrumb }
+
+    before do
+      configuration.run do
+        navigate :menu do
+          item :url1, "url1", name: "url1" do
+            item :suburl1, "suburl1", name: "suburl1"
+          end
+          item :url2, "url2", name: "url2" do
+            item :suburl2, "suburl2", name: "suburl2"
+          end
+        end
+      end
+
+      allow(view_object).to receive(:current_page?).and_return(true, false, false, false)
+    end
+
+    it { is_expected.to have_tag("ul", with: { id: "menu", class: "breadcrumb" }) }
+    it "renders proper navigation" do
+      is_expected.to have_tag("ul", with: { id: "menu", class: "breadcrumb" }) do
+        with_tag("li", with: { id: "url1" }) do
+          with_tag("a", with: { id: "url1", href: "url1" }, text: "url1")
+        end
+        with_tag("li", text: "/")
+        with_tag("li", with: { id: "suburl1"}, text: "suburl1")
+      end
+    end
+
+    context "when no any current page" do
+      before do
+        allow(view_object).to receive(:current_page?).and_return(false, false, false, false)
+      end
+
+      it "renders empty navigation" do
+        is_expected.to have_tag("ul", with: { id: "menu", class: "breadcrumb" }, text: "")
+      end
+    end
+
+    context "when last_as_link is true" do
+      subject { view_object.navigation_for :menu, as: :breadcrumb, last_as_link: true }
+
+      it "renders proper breadcrumb" do
+        is_expected.to have_tag("ul", with: { id: "menu", class: "breadcrumb"}) do
+          with_tag("li", with: { id: "url1" }) do
+            with_tag("a", with: { id: "url1", href: "url1" }, text: "url1")
+          end
+          with_tag("li", text: "/")
+          with_tag("li", with: { id: "suburl1" }) do
+            with_tag("a", with: { id: "suburl1", href: "suburl1" }, text: "suburl1")
+          end
+        end
+      end
+    end
+  end
+
+  context "rendering levels" do
+    before do
+      configuration.run do
         navigate :menu do
           item :url1, 'url1', :name => 'url1' do
             item :suburl1, 'suburl1', :name => 'suburl1'
@@ -82,151 +159,51 @@ describe SemanticNavigation::Renderers::BreadCrumb do
         end
       end
 
-      @view_object.should_receive(:current_page?).and_return(true,false,false,false)
-
-      result = @view_object.navigation_for :menu, :as => :breadcrumb
-      result.should == ["<ul class=\"breadcrumb\" id=\"menu\">",
-                          "<li id=\"url1\">",
-                            "<a href=\"url1\" id=\"url1\">",
-                              "url1",
-                            "</a>",
-                          "</li>",
-                          "<li>/",
-                          "</li>",
-                          "<li id=\"suburl1\">",
-                            "suburl1",
-                          "</li>",
-                        "</ul>"].join
+      allow(view_object).to receive(:current_page?).and_return(true, false, false, false)
     end
 
-    it 'last item as link if :last_as_link => true' do
-      @configuration.run do
-        navigate :menu do
-          item :url1, 'url1', :name => 'url1' do
-            item :suburl1, 'suburl1', :name => 'suburl1'
-          end
-          item :url2, 'url2', :name => 'url2' do
-            item :suburl2, 'suburl2', :name => 'suburl2'
-          end
+    context "root level" do
+      subject { view_object.navigation_for :menu, level: 0, as: :breadcrumb }
+
+      it "renders only root level" do
+        is_expected.to have_tag("ul", with: { id: "menu", class: "breadcrumb" }) do
+          with_tag("li", with: { id: "url1" }, text: "url1")
         end
       end
-
-      @view_object.should_receive(:current_page?).and_return(true,false,false,false)
-
-      result = @view_object.navigation_for :menu, :as => :breadcrumb, :last_as_link => true
-      result.should == ["<ul class=\"breadcrumb\" id=\"menu\">",
-                          "<li id=\"url1\">",
-                            "<a href=\"url1\" id=\"url1\">",
-                              "url1",
-                            "</a>",
-                          "</li>",
-                          "<li>",
-                            "/",
-                          "</li>",
-                          "<li id=\"suburl1\">",
-                            "<a href=\"suburl1\" id=\"suburl1\">",
-                              "suburl1",
-                            "</a>",
-                          "</li>",
-                        "</ul>"].join
     end
 
-    it 'only root level' do
-      @configuration.run do
-        navigate :menu do
-          item :url1, 'url1', :name => 'url1' do
-            item :suburl1, 'suburl1', :name => 'suburl1'
-          end
-          item :url2, 'url2', :name => 'url2' do
-            item :suburl2, 'suburl2', :name => 'suburl2'
-          end
+    context "second level" do
+      subject { view_object.navigation_for :menu, level: 1, as: :breadcrumb }
+
+      it "renders only second level" do
+        is_expected.to have_tag("ul", with: { id: "menu", class: "breadcrumb" }) do
+          with_tag("li", with: { id: "suburl1" }, text: "suburl1")
         end
       end
-
-      @view_object.should_receive(:current_page?).and_return(true,false,false,false)
-
-      result = @view_object.navigation_for :menu, :level => 0, :as => :breadcrumb
-      result.should == ["<ul class=\"breadcrumb\" id=\"menu\">",
-                        "<li id=\"url1\">",
-                          "url1",
-                        "</li>",
-                        "</ul>"].join
     end
 
-    it 'second level' do
-      @configuration.run do
-        navigate :menu do
-          item :url1, 'url1', :name => 'url1' do
-            item :suburl1, 'suburl1', :name => 'suburl1'
+    context "exact levels" do
+      subject { view_object.navigation_for :menu, levels: 0..1, as: :breadcrumb }
+
+      it "renders exact levels" do
+        is_expected.to have_tag("ul", with: { id: "menu", class: "breadcrumb" }) do
+          with_tag("li", with: { id: "url1" }) do
+            with_tag("a", with: { id: "url1", href: "url1" }, text: "url1")
           end
-          item :url2, 'url2', :name => 'url2' do
-            item :suburl2, 'suburl2', :name => 'suburl2'
-          end
+          with_tag("li", text: "/")
+          with_tag("li", with: { id: "suburl1" }, text: "suburl1")
         end
       end
-
-      @view_object.should_receive(:current_page?).and_return(true, false, false, false)
-
-      result = @view_object.navigation_for :menu, :level => 1, :as => :breadcrumb
-      result.should == ["<ul class=\"breadcrumb\" id=\"menu\">",
-                          "<li id=\"suburl1\">",
-                            "suburl1",
-                          "</li>",
-                        "</ul>"].join
     end
 
-    it 'the exact levels' do
-      @configuration.run do
-        navigate :menu do
-          item :url1, 'url1', :name => 'url1' do
-            item :suburl1, 'suburl1', :name => 'suburl1' do
-              item :subsub1, 'subsub1', :name => 'subsub1'
-            end
-          end
-          item :url2, 'url2', :name => 'url2' do
-            item :suburl2, 'suburl2', :name => 'suburl2' do
-              item :subsub2, 'subsub2', :name => 'subsub2'
-            end
-          end
+    context "except some level" do
+      subject { view_object.navigation_for :menu, except_for: [:suburl1], as: :breadcrumb }
+
+      it "renders navigation except some level" do
+        is_expected.to have_tag("ul", with: { id: "menu", class: "breadcrumb" }) do
+          with_tag("li", with: { id: "url1" }, text: "url1")
         end
       end
-
-      @view_object.should_receive(:current_page?).and_return(true, false, false, false, false, false)
-
-      result = @view_object.navigation_for :menu, :levels => 0..1, :as => :breadcrumb
-      result.should == ["<ul class=\"breadcrumb\" id=\"menu\">",
-                          "<li id=\"url1\">",
-                            "<a href=\"url1\" id=\"url1\">",
-                              "url1",
-                            "</a>",
-                          "</li>",
-                          "<li>/",
-                          "</li>",
-                          "<li id=\"suburl1\">",
-                            "suburl1",
-                          "</li>",
-                        "</ul>"].join
-    end
-
-    it 'navigation except some item' do
-      @configuration.run do
-        navigate :menu do
-          item :url1, 'url1', :name => 'url1' do
-            item :suburl1, 'suburl1', :name => 'suburl1'
-          end
-          item :url2, 'url2', :name => 'url2' do
-            item :suburl2, 'suburl2', :name => 'suburl2'
-          end
-        end
-      end
-
-      @view_object.should_receive(:current_page?).and_return(true, false, false, false)
-      result = @view_object.navigation_for :menu, :except_for => [:suburl1], :as => :breadcrumb
-      result.should == ["<ul class=\"breadcrumb\" id=\"menu\">",
-                          "<li id=\"url1\">",
-                            "url1",
-                          "</li>",
-                        "</ul>"].join
     end
   end
 end

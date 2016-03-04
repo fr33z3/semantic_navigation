@@ -1,7 +1,9 @@
-require 'rspec'
-require 'rails'
-require 'action_view'
-require 'simplecov'
+require "rubygems"
+require "rspec"
+require "rails"
+require "rspec-html-matchers"
+require "action_view"
+require "simplecov"
 
 SimpleCov.start do
   add_filter '/spec/'
@@ -18,6 +20,7 @@ end
 
 RSpec.configure do |config|
   # throw config.methods.select{|s| s.to_s =~ /color/}
+  config.include RSpecHtmlMatchers
   config.color = true
   config.formatter     = 'documentation'
 end
