@@ -13,6 +13,9 @@ SimpleCov.start do
 end
 
 require 'semantic_navigation'
+Dir[File.expand_path("../support/**/*.rb", __FILE__)].each do |file|
+  require file
+end
 
 SemanticNavigation::Configuration.run do |c|
   c.display_deprecation_messages = false

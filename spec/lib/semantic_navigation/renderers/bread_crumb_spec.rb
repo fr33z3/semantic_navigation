@@ -1,14 +1,8 @@
 require 'spec_helper'
 
-describe SemanticNavigation::Renderers::BreadCrumb do
-  class ViewObject
-    attr_accessor :output_buffer
-    include ActionView::Helpers::TagHelper
-    include SemanticNavigation::HelperMethods
-    include ActionView::Helpers::UrlHelper
-  end
+RSpec.describe SemanticNavigation::Renderers::BreadCrumb do
+  include_context "view_object"
   let(:configuration) { SemanticNavigation::Configuration }
-  let(:view_object) { ViewObject.new }
 
   before do
     configuration.register_renderer :breadcrumb, SemanticNavigation::Renderers::BreadCrumb
@@ -16,10 +10,7 @@ describe SemanticNavigation::Renderers::BreadCrumb do
 
   context "empty navigation" do
     subject { view_object.navigation_for(:menu, as: :breadcrumb) }
-
-    before do
-      configuration.run { navigate(:menu) { } }
-    end
+    include_context "empty_navigation"
 
     it { is_expected.to have_tag("ul") }
     it { is_expected.to have_tag("ul", with: { id: "menu" }) }
@@ -29,28 +20,24 @@ describe SemanticNavigation::Renderers::BreadCrumb do
 
   context "one level navigation breadcrumb" do
     subject { view_object.navigation_for(:menu, as: :breadcrumb) }
+    include_context "one_level_navigation"
 
-    before do
-      configuration.run do
-        navigate :menu do
-          item :url1, "url1", name: "url1"
-          item :url2, "url2", name: "url2"
-        end
+    context "when second page is current" do
+      before do
+        allow(view_object).to receive(:current_page?).and_return(false, true)
       end
 
-      allow(view_object).to receive(:current_page?).and_return(false, true)
-    end
-
-    it { is_expected.to have_tag("ul") }
-    it "renders breadcrumb" do
-      is_expected.to have_tag("ul", with: {id: "menu", class: "breadcrumb"}) do
-        with_tag("li", with: { id: "url2" }, text: "url2")
+      it { is_expected.to have_tag("ul") }
+      it "renders breadcrumb" do
+        is_expected.to have_tag("ul", with: {id: "menu", class: "breadcrumb"}) do
+          with_tag("li", with: { id: "url2" }, text: "url2")
+        end
       end
     end
 
     context "when no any current page" do
       before do
-        allow(view_object).to receive(:current_page?).and_return(false, false)
+        allow(view_object).to receive(:current_page?).and_return(false)
       end
 
       it { is_expected.to have_tag("ul", with: { id: "menu", class: "breadcrumb" }, text: "") }
@@ -59,23 +46,18 @@ describe SemanticNavigation::Renderers::BreadCrumb do
 
   context "with specific html tag" do
     subject { view_object.navigation_for :menu, as: :my_breadcrumb }
+    include_context "one_level_navigation"
 
     before do
       configuration.run do
         register_renderer :my_breadcrumb, :breadcrumb
-
         styles_for(:my_breadcrumb) { menu_tag :ol }
-
-        navigate :menu do
-          item :url1, "url1", name: "url1"
-          item :url2, "url2", name: "url2"
-        end
       end
 
       allow(view_object).to receive(:current_page?).and_return(false, true)
     end
 
-    it "renders proper breadramb" do
+    it "renders proper breadcramb" do
       is_expected.to have_tag("ol", with: {id: "menu", class: "breadcrumb"}) do
         with_tag("li", with: { id: "url2" }, text: "url2")
       end
@@ -83,7 +65,7 @@ describe SemanticNavigation::Renderers::BreadCrumb do
 
     context "when no any current page" do
       before do
-        allow(view_object).to receive(:current_page?).and_return(false, false)
+        allow(view_object).to receive(:current_page?).and_return(false)
       end
 
       it { is_expected.to have_tag("ol", with: { id: "menu", class: "breadcrumb" }, text: "") }
@@ -92,19 +74,9 @@ describe SemanticNavigation::Renderers::BreadCrumb do
 
   context "multilevel navigation breadcrumb" do
     subject { view_object.navigation_for :menu, as: :breadcrumb }
+    include_context "two_level_navigation"
 
     before do
-      configuration.run do
-        navigate :menu do
-          item :url1, "url1", name: "url1" do
-            item :suburl1, "suburl1", name: "suburl1"
-          end
-          item :url2, "url2", name: "url2" do
-            item :suburl2, "suburl2", name: "suburl2"
-          end
-        end
-      end
-
       allow(view_object).to receive(:current_page?).and_return(true, false, false, false)
     end
 
@@ -121,7 +93,7 @@ describe SemanticNavigation::Renderers::BreadCrumb do
 
     context "when no any current page" do
       before do
-        allow(view_object).to receive(:current_page?).and_return(false, false, false, false)
+        allow(view_object).to receive(:current_page?).and_return(false)
       end
 
       it "renders empty navigation" do
@@ -147,18 +119,9 @@ describe SemanticNavigation::Renderers::BreadCrumb do
   end
 
   context "rendering levels" do
-    before do
-      configuration.run do
-        navigate :menu do
-          item :url1, 'url1', :name => 'url1' do
-            item :suburl1, 'suburl1', :name => 'suburl1'
-          end
-          item :url2, 'url2', :name => 'url2' do
-            item :suburl2, 'suburl2', :name => 'suburl2'
-          end
-        end
-      end
+    include_context "two_level_navigation"
 
+    before do
       allow(view_object).to receive(:current_page?).and_return(true, false, false, false)
     end
 

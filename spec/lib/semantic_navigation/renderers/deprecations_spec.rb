@@ -1,6 +1,6 @@
 require 'spec_helper'
 
-describe 'SemanticNavigation::Deprecations' do
+RSpec.describe 'SemanticNavigation::Deprecations' do
 
   context :'SemanticNavigation::Renderers::RenderHelpers' do
 
@@ -17,7 +17,7 @@ describe 'SemanticNavigation::Deprecations' do
           puts e
         end
       end
-      
+
       expect(SomeRenderer).to be_include(SemanticNavigation::Renderers::MixIn::RenderHelpers)
     end
   end
