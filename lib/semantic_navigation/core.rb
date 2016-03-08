@@ -1,10 +1,9 @@
 %w(
 base
-mix_in/url_methods
-mix_in/name_methods
 mix_in/dsl_methods
 mix_in/condition_methods
 navigation
+navigation_item
 leaf
 node
 ).each do |file|

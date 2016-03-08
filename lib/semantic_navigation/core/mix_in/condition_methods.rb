@@ -2,15 +2,9 @@ module SemanticNavigation
   module Core
     module MixIn
       module ConditionMethods
-
-        def skip_for_renderer
-          @skip_for
+        def has_active_children?
+          sub_elements.map(&:active).any?
         end
-
-        def skip?(renderer_name)
-          renderer_name == skip_for_renderer
-        end
-
       end
     end
   end

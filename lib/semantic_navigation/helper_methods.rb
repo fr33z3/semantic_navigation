@@ -1,38 +1,29 @@
 module SemanticNavigation::HelperMethods
 
-  def navigation_for(name, options = {})
-    render_name = options.delete :as
-    render_name ||= :list
-    SemanticNavigation::Configuration.new.render(name, render_name, options, self)
+  def navigation_for(navigation_name, options = {})
+    render_name = options.delete(:as) || :list
+    __configuration__.new.render(navigation_name, render_name, options, self)
   end
 
-  def active_item_for(name, level = nil, &block)
-    item = _current_item(name, level)
+  def active_item_for(navigation_name, level = nil, &block)
+    __configuration__.view_object = self
+    item = __configuration__.navigation_current_item(navigation_name, level)
     if block_given?
-      capture(item, &block)  
+      capture(item, &block)
     else
-      !item.is_a?(SemanticNavigation::Core::Navigation) ? item.name(:active_item_for) : ''
+      item.is_root? ? "" : item.name(:active_item_for)
     end
   end
 
-  def active_level_for(name)
-    item = _current_item(name, nil)
-    item.try(:level) || -1
+  def active_level_for(navigation_name)
+    __configuration__.view_object = self
+    __configuration__.navigation_current_level(navigation_name, nil)
   end
 
   private
 
-  def _current_item(name, level)
-    SemanticNavigation::Configuration.view_object = self
-    navigation = SemanticNavigation::Configuration.navigation(name)
-    navigation.mark_active
-    item = navigation
-    while !item.is_a?(SemanticNavigation::Core::Leaf) &&
-          !item.sub_elements.find{|e| e.active}.nil? &&
-          (!level.nil? ? item.level < level : true)
-      item = item.sub_elements.find{|e| e.active}
-    end
-    item
+  def __configuration__
+    SemanticNavigation::Configuration
   end
 
 end

@@ -1,8 +1,6 @@
 module SemanticNavigation
   module Core
-    class Node < Base
-      include MixIn::UrlMethods
-      include MixIn::NameMethods
+    class Node < NavigationItem
       include MixIn::DslMethods
       include MixIn::ConditionMethods
 
@@ -16,6 +14,10 @@ module SemanticNavigation
         @scope_options = {}
         @sub_elements = []
         super options, level
+      end
+
+      def has_active_children?
+        sub_elements.map(&:active).any?
       end
 
       def mark_active

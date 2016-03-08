@@ -73,5 +73,21 @@ module SemanticNavigation
       end
     end
 
+    def self.navigation_current_item(navigation_name, level)
+      navigation = self.navigation(navigation_name)
+      navigation.mark_active
+      item = navigation
+      while !item.is_leaf? && item.has_active_children? &&
+            (!level.nil? ? item.level < level : true)
+        item = item.sub_elements.find{|e| e.active}
+      end
+      item
+    end
+
+    def self.navigation_current_level(navigation_name)
+      item = navigation_current_item(navigation_name, nil)
+      item.try(:level) || -1
+    end
+
   end
 end

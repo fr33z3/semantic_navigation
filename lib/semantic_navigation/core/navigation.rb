@@ -2,6 +2,7 @@ module SemanticNavigation
   module Core
     class Navigation < Base
       include MixIn::DslMethods
+      include MixIn::ConditionMethods
 
       attr_accessor :sub_elements
 
@@ -11,11 +12,14 @@ module SemanticNavigation
         super options, 0
       end
 
+      def is_root?
+        true
+      end
+
       def mark_active
-        @sub_elements.each do |element|
+        @active = sub_elements.map do |element|
           element.mark_active
-        end
-        @active = !@sub_elements.find{|element| element.active}.nil?
+        end.any?
       end
 
     end

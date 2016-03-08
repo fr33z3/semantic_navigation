@@ -28,6 +28,14 @@ module SemanticNavigation
         renderer.send :"render_#{class_name}", self
       end
 
+      def is_root?
+        false
+      end
+
+      def is_leaf?
+        false
+      end
+
       private
 
       def view_object
