@@ -9,7 +9,7 @@ Gem::Specification.new do |s|
   s.email       = ["megacoder@rambler.ru"]
   s.homepage    = "https://github.com/fr33z3/semantic_navigation"
   s.summary     = %q{Make the navigation in your Rails app by several lines}
-  s.description = %q{Simply and customizable navigation in the Ruby on Rails 3 application.
+  s.description = %q{Simply and customizable navigation in the Ruby on Rails application.
                      Predefined bootstrap renderers}
 
   s.rubyforge_project = "semantic_navigation"
