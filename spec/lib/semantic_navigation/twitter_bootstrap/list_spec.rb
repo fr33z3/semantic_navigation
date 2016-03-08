@@ -23,7 +23,7 @@ describe SemanticNavigation::TwitterBootstrap::List do
       end
 
       result = @view_object.navigation_for :menu, :as => :bootstrap_list
-      result.should == "<ul class=\"nav nav-list\"></ul>"
+      expect(result).to eq "<ul class=\"nav nav-list\"></ul>"
     end
 
     it 'one level navigation' do
@@ -35,7 +35,7 @@ describe SemanticNavigation::TwitterBootstrap::List do
       end
 
       result = @view_object.navigation_for :menu, :as => :bootstrap_list
-      result.should == ["<ul class=\"nav nav-list\">",
+      expect(result).to eq ["<ul class=\"nav nav-list\">",
                           "<li>",
                             "<a href=\"url1\">",
                               "url1",
@@ -62,7 +62,7 @@ describe SemanticNavigation::TwitterBootstrap::List do
       end
 
       result = @view_object.navigation_for :menu, :as => :bootstrap_list
-      result.should == ["<ul class=\"nav nav-list\">",
+      expect(result).to eq ["<ul class=\"nav nav-list\">",
                           "<li>",
                             "<a href=\"url1\">",
                               "url1",
@@ -103,7 +103,7 @@ describe SemanticNavigation::TwitterBootstrap::List do
       end
 
       result = @view_object.navigation_for :menu, :level => 0, :as => :bootstrap_list
-      result.should == ["<ul class=\"nav nav-list\">",
+      expect(result).to eq ["<ul class=\"nav nav-list\">",
                           "<li>",
                             "<a href=\"url1\">",
                               "url1",
@@ -129,10 +129,10 @@ describe SemanticNavigation::TwitterBootstrap::List do
         end
       end
 
-      @view_object.should_receive(:current_page?).and_return(false, true, false, false)
+      allow(@view_object).to receive(:current_page?).and_return(false, true, false, false)
 
       result = @view_object.navigation_for :menu, :level => 1, :as => :bootstrap_list
-      result.should == ["<ul class=\"nav nav-list active\">",
+      expect(result).to eq ["<ul class=\"nav nav-list active\">",
                           "<li>",
                             "<a href=\"suburl1\">",
                               "suburl1",
@@ -158,7 +158,7 @@ describe SemanticNavigation::TwitterBootstrap::List do
       end
 
       result = @view_object.navigation_for :menu, :levels => 0..1, :as => :bootstrap_list
-      result.should == ["<ul class=\"nav nav-list\">",
+      expect(result).to eq ["<ul class=\"nav nav-list\">",
                           "<li>",
                             "<a href=\"url1\">",
                               "url1",
@@ -199,7 +199,7 @@ describe SemanticNavigation::TwitterBootstrap::List do
       end
 
       result = @view_object.navigation_for :menu, :except_for => [:url1], :as => :bootstrap_list
-      result.should == ["<ul class=\"nav nav-list\">",
+      expect(result).to eq ["<ul class=\"nav nav-list\">",
                           "<li>",
                             "<a href=\"url2\">",
                               "url2",
@@ -228,7 +228,7 @@ describe SemanticNavigation::TwitterBootstrap::List do
       end
 
       result = @view_object.navigation_for :menu, :except_for => [:suburl1,:url2], :as => :bootstrap_list
-      result.should == ["<ul class=\"nav nav-list\">",
+      expect(result).to eq ["<ul class=\"nav nav-list\">",
                           "<li>",
                             "<a href=\"url1\">",
                               "url1",
@@ -247,7 +247,7 @@ describe SemanticNavigation::TwitterBootstrap::List do
       end
 
       result = @view_object.navigation_for :menu, :as => :bootstrap_list
-      result.should == ["<ul class=\"nav nav-list\">",
+      expect(result).to eq ["<ul class=\"nav nav-list\">",
                           "<li class=\"divider\">",
                           "</li>",
                         "</ul>"].join
@@ -261,7 +261,7 @@ describe SemanticNavigation::TwitterBootstrap::List do
       end
 
       result = @view_object.navigation_for :menu, :as => :bootstrap_list
-      result.should == ["<ul class=\"nav nav-list\">",
+      expect(result).to eq ["<ul class=\"nav nav-list\">",
                           "<li class=\"nav-header\">",
                             'header_name',
                           "</li>",
@@ -276,7 +276,7 @@ describe SemanticNavigation::TwitterBootstrap::List do
       end
 
       result = @view_object.navigation_for :menu, :as => :bootstrap_list
-      result.should == ["<ul class=\"nav nav-list\">",
+      expect(result).to eq ["<ul class=\"nav nav-list\">",
                           "<li>",
                             "<a href=\"some_url\">",
                               "<i class=\"icon-user\">",
@@ -297,7 +297,7 @@ describe SemanticNavigation::TwitterBootstrap::List do
       end
 
       result = @view_object.navigation_for :menu, :as => :bootstrap_list
-      result.should == ["<ul class=\"nav nav-list\">",
+      expect(result).to eq ["<ul class=\"nav nav-list\">",
                           "<li>",
                             "<a href=\"node_url\">",
                               "<i class=\"icon-user\"></i>",
